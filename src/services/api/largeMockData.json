@@ -1,0 +1,3728 @@
+{
+  "schools": [
+    {
+      "id": "school-01",
+      "name": "St. Xavier International",
+      "slug": "st-xavier",
+      "address": "Mumbai, Maharashtra",
+      "phone": "+91 22 2345 6789",
+      "email": "admin@stxavier.edu",
+      "created_at": "2026-03-17T07:22:02.008Z",
+      "updated_at": "2026-03-17T07:22:02.009Z"
+    }
+  ],
+  "profiles": [
+    {
+      "id": "global-admin",
+      "school_id": "system",
+      "full_name": "Super Admin",
+      "email": "admin@gmail.com",
+      "role": "global_admin",
+      "avatar_url": null,
+      "created_at": "2026-03-17T07:22:02.009Z",
+      "updated_at": "2026-03-17T07:22:02.009Z"
+    },
+    {
+      "id": "teacher-0",
+      "school_id": "school-01",
+      "full_name": "Mr/Ms. Kavya Nair",
+      "email": "teacher0@demo.edu",
+      "role": "teacher",
+      "avatar_url": "https://i.pravatar.cc/150?u=teacher0",
+      "created_at": "2026-03-17T07:22:02.009Z",
+      "updated_at": "2026-03-17T07:22:02.009Z"
+    },
+    {
+      "id": "teacher-1",
+      "school_id": "school-01",
+      "full_name": "Mr/Ms. Arjun Iyer",
+      "email": "teacher1@demo.edu",
+      "role": "teacher",
+      "avatar_url": "https://i.pravatar.cc/150?u=teacher1",
+      "created_at": "2026-03-17T07:22:02.009Z",
+      "updated_at": "2026-03-17T07:22:02.009Z"
+    },
+    {
+      "id": "teacher-2",
+      "school_id": "school-01",
+      "full_name": "Mr/Ms. Ananya Singh",
+      "email": "teacher2@demo.edu",
+      "role": "teacher",
+      "avatar_url": "https://i.pravatar.cc/150?u=teacher2",
+      "created_at": "2026-03-17T07:22:02.009Z",
+      "updated_at": "2026-03-17T07:22:02.009Z"
+    },
+    {
+      "id": "teacher-3",
+      "school_id": "school-01",
+      "full_name": "Mr/Ms. Arjun Gupta",
+      "email": "teacher3@demo.edu",
+      "role": "teacher",
+      "avatar_url": "https://i.pravatar.cc/150?u=teacher3",
+      "created_at": "2026-03-17T07:22:02.009Z",
+      "updated_at": "2026-03-17T07:22:02.009Z"
+    },
+    {
+      "id": "teacher-4",
+      "school_id": "school-01",
+      "full_name": "Mr/Ms. Sneha Patel",
+      "email": "teacher4@demo.edu",
+      "role": "teacher",
+      "avatar_url": "https://i.pravatar.cc/150?u=teacher4",
+      "created_at": "2026-03-17T07:22:02.009Z",
+      "updated_at": "2026-03-17T07:22:02.009Z"
+    },
+    {
+      "id": "student-0",
+      "school_id": "school-01",
+      "full_name": "Priya Singh",
+      "email": "student0@demo.edu",
+      "role": "student",
+      "avatar_url": "https://i.pravatar.cc/150?u=student0",
+      "created_at": "2026-03-17T07:22:02.009Z",
+      "updated_at": "2026-03-17T07:22:02.009Z"
+    },
+    {
+      "id": "parent-0",
+      "school_id": "school-01",
+      "full_name": "Singh Parent",
+      "email": "parent0@demo.edu",
+      "role": "parent",
+      "avatar_url": "https://i.pravatar.cc/150?u=parent0",
+      "created_at": "2026-03-17T07:22:02.009Z",
+      "updated_at": "2026-03-17T07:22:02.009Z"
+    },
+    {
+      "id": "student-1",
+      "school_id": "school-01",
+      "full_name": "Priya Singh",
+      "email": "student1@demo.edu",
+      "role": "student",
+      "avatar_url": "https://i.pravatar.cc/150?u=student1",
+      "created_at": "2026-03-17T07:22:02.009Z",
+      "updated_at": "2026-03-17T07:22:02.009Z"
+    },
+    {
+      "id": "parent-1",
+      "school_id": "school-01",
+      "full_name": "Singh Parent",
+      "email": "parent1@demo.edu",
+      "role": "parent",
+      "avatar_url": "https://i.pravatar.cc/150?u=parent1",
+      "created_at": "2026-03-17T07:22:02.009Z",
+      "updated_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "student-2",
+      "school_id": "school-01",
+      "full_name": "Priya Dixit",
+      "email": "student2@demo.edu",
+      "role": "student",
+      "avatar_url": "https://i.pravatar.cc/150?u=student2",
+      "created_at": "2026-03-17T07:22:02.010Z",
+      "updated_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "parent-2",
+      "school_id": "school-01",
+      "full_name": "Dixit Parent",
+      "email": "parent2@demo.edu",
+      "role": "parent",
+      "avatar_url": "https://i.pravatar.cc/150?u=parent2",
+      "created_at": "2026-03-17T07:22:02.010Z",
+      "updated_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "student-3",
+      "school_id": "school-01",
+      "full_name": "Kavya Singh",
+      "email": "student3@demo.edu",
+      "role": "student",
+      "avatar_url": "https://i.pravatar.cc/150?u=student3",
+      "created_at": "2026-03-17T07:22:02.010Z",
+      "updated_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "parent-3",
+      "school_id": "school-01",
+      "full_name": "Singh Parent",
+      "email": "parent3@demo.edu",
+      "role": "parent",
+      "avatar_url": "https://i.pravatar.cc/150?u=parent3",
+      "created_at": "2026-03-17T07:22:02.010Z",
+      "updated_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "student-4",
+      "school_id": "school-01",
+      "full_name": "Ananya Sharma",
+      "email": "student4@demo.edu",
+      "role": "student",
+      "avatar_url": "https://i.pravatar.cc/150?u=student4",
+      "created_at": "2026-03-17T07:22:02.010Z",
+      "updated_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "parent-4",
+      "school_id": "school-01",
+      "full_name": "Sharma Parent",
+      "email": "parent4@demo.edu",
+      "role": "parent",
+      "avatar_url": "https://i.pravatar.cc/150?u=parent4",
+      "created_at": "2026-03-17T07:22:02.010Z",
+      "updated_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "student-5",
+      "school_id": "school-01",
+      "full_name": "Priya Dixit",
+      "email": "student5@demo.edu",
+      "role": "student",
+      "avatar_url": "https://i.pravatar.cc/150?u=student5",
+      "created_at": "2026-03-17T07:22:02.010Z",
+      "updated_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "parent-5",
+      "school_id": "school-01",
+      "full_name": "Dixit Parent",
+      "email": "parent5@demo.edu",
+      "role": "parent",
+      "avatar_url": "https://i.pravatar.cc/150?u=parent5",
+      "created_at": "2026-03-17T07:22:02.010Z",
+      "updated_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "student-6",
+      "school_id": "school-01",
+      "full_name": "Vikram Dixit",
+      "email": "student6@demo.edu",
+      "role": "student",
+      "avatar_url": "https://i.pravatar.cc/150?u=student6",
+      "created_at": "2026-03-17T07:22:02.010Z",
+      "updated_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "parent-6",
+      "school_id": "school-01",
+      "full_name": "Dixit Parent",
+      "email": "parent6@demo.edu",
+      "role": "parent",
+      "avatar_url": "https://i.pravatar.cc/150?u=parent6",
+      "created_at": "2026-03-17T07:22:02.010Z",
+      "updated_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "student-7",
+      "school_id": "school-01",
+      "full_name": "Rahul Dixit",
+      "email": "student7@demo.edu",
+      "role": "student",
+      "avatar_url": "https://i.pravatar.cc/150?u=student7",
+      "created_at": "2026-03-17T07:22:02.010Z",
+      "updated_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "parent-7",
+      "school_id": "school-01",
+      "full_name": "Dixit Parent",
+      "email": "parent7@demo.edu",
+      "role": "parent",
+      "avatar_url": "https://i.pravatar.cc/150?u=parent7",
+      "created_at": "2026-03-17T07:22:02.010Z",
+      "updated_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "student-8",
+      "school_id": "school-01",
+      "full_name": "Arjun Mehta",
+      "email": "student8@demo.edu",
+      "role": "student",
+      "avatar_url": "https://i.pravatar.cc/150?u=student8",
+      "created_at": "2026-03-17T07:22:02.010Z",
+      "updated_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "parent-8",
+      "school_id": "school-01",
+      "full_name": "Mehta Parent",
+      "email": "parent8@demo.edu",
+      "role": "parent",
+      "avatar_url": "https://i.pravatar.cc/150?u=parent8",
+      "created_at": "2026-03-17T07:22:02.010Z",
+      "updated_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "student-9",
+      "school_id": "school-01",
+      "full_name": "Priya Gupta",
+      "email": "student9@demo.edu",
+      "role": "student",
+      "avatar_url": "https://i.pravatar.cc/150?u=student9",
+      "created_at": "2026-03-17T07:22:02.010Z",
+      "updated_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "parent-9",
+      "school_id": "school-01",
+      "full_name": "Gupta Parent",
+      "email": "parent9@demo.edu",
+      "role": "parent",
+      "avatar_url": "https://i.pravatar.cc/150?u=parent9",
+      "created_at": "2026-03-17T07:22:02.010Z",
+      "updated_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "student-10",
+      "school_id": "school-01",
+      "full_name": "Kavya Mehta",
+      "email": "student10@demo.edu",
+      "role": "student",
+      "avatar_url": "https://i.pravatar.cc/150?u=student10",
+      "created_at": "2026-03-17T07:22:02.010Z",
+      "updated_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "parent-10",
+      "school_id": "school-01",
+      "full_name": "Mehta Parent",
+      "email": "parent10@demo.edu",
+      "role": "parent",
+      "avatar_url": "https://i.pravatar.cc/150?u=parent10",
+      "created_at": "2026-03-17T07:22:02.010Z",
+      "updated_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "student-11",
+      "school_id": "school-01",
+      "full_name": "Ananya Mehta",
+      "email": "student11@demo.edu",
+      "role": "student",
+      "avatar_url": "https://i.pravatar.cc/150?u=student11",
+      "created_at": "2026-03-17T07:22:02.010Z",
+      "updated_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "parent-11",
+      "school_id": "school-01",
+      "full_name": "Mehta Parent",
+      "email": "parent11@demo.edu",
+      "role": "parent",
+      "avatar_url": "https://i.pravatar.cc/150?u=parent11",
+      "created_at": "2026-03-17T07:22:02.010Z",
+      "updated_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "student-12",
+      "school_id": "school-01",
+      "full_name": "Kavya Singh",
+      "email": "student12@demo.edu",
+      "role": "student",
+      "avatar_url": "https://i.pravatar.cc/150?u=student12",
+      "created_at": "2026-03-17T07:22:02.010Z",
+      "updated_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "parent-12",
+      "school_id": "school-01",
+      "full_name": "Singh Parent",
+      "email": "parent12@demo.edu",
+      "role": "parent",
+      "avatar_url": "https://i.pravatar.cc/150?u=parent12",
+      "created_at": "2026-03-17T07:22:02.010Z",
+      "updated_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "student-13",
+      "school_id": "school-01",
+      "full_name": "Kavya Iyer",
+      "email": "student13@demo.edu",
+      "role": "student",
+      "avatar_url": "https://i.pravatar.cc/150?u=student13",
+      "created_at": "2026-03-17T07:22:02.010Z",
+      "updated_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "parent-13",
+      "school_id": "school-01",
+      "full_name": "Iyer Parent",
+      "email": "parent13@demo.edu",
+      "role": "parent",
+      "avatar_url": "https://i.pravatar.cc/150?u=parent13",
+      "created_at": "2026-03-17T07:22:02.010Z",
+      "updated_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "student-14",
+      "school_id": "school-01",
+      "full_name": "Ananya Patel",
+      "email": "student14@demo.edu",
+      "role": "student",
+      "avatar_url": "https://i.pravatar.cc/150?u=student14",
+      "created_at": "2026-03-17T07:22:02.010Z",
+      "updated_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "parent-14",
+      "school_id": "school-01",
+      "full_name": "Patel Parent",
+      "email": "parent14@demo.edu",
+      "role": "parent",
+      "avatar_url": "https://i.pravatar.cc/150?u=parent14",
+      "created_at": "2026-03-17T07:22:02.010Z",
+      "updated_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "student-15",
+      "school_id": "school-01",
+      "full_name": "Kavya Nair",
+      "email": "student15@demo.edu",
+      "role": "student",
+      "avatar_url": "https://i.pravatar.cc/150?u=student15",
+      "created_at": "2026-03-17T07:22:02.010Z",
+      "updated_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "parent-15",
+      "school_id": "school-01",
+      "full_name": "Nair Parent",
+      "email": "parent15@demo.edu",
+      "role": "parent",
+      "avatar_url": "https://i.pravatar.cc/150?u=parent15",
+      "created_at": "2026-03-17T07:22:02.010Z",
+      "updated_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "student-16",
+      "school_id": "school-01",
+      "full_name": "Ananya Patel",
+      "email": "student16@demo.edu",
+      "role": "student",
+      "avatar_url": "https://i.pravatar.cc/150?u=student16",
+      "created_at": "2026-03-17T07:22:02.010Z",
+      "updated_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "parent-16",
+      "school_id": "school-01",
+      "full_name": "Patel Parent",
+      "email": "parent16@demo.edu",
+      "role": "parent",
+      "avatar_url": "https://i.pravatar.cc/150?u=parent16",
+      "created_at": "2026-03-17T07:22:02.010Z",
+      "updated_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "student-17",
+      "school_id": "school-01",
+      "full_name": "Rahul Dixit",
+      "email": "student17@demo.edu",
+      "role": "student",
+      "avatar_url": "https://i.pravatar.cc/150?u=student17",
+      "created_at": "2026-03-17T07:22:02.010Z",
+      "updated_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "parent-17",
+      "school_id": "school-01",
+      "full_name": "Dixit Parent",
+      "email": "parent17@demo.edu",
+      "role": "parent",
+      "avatar_url": "https://i.pravatar.cc/150?u=parent17",
+      "created_at": "2026-03-17T07:22:02.010Z",
+      "updated_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "student-18",
+      "school_id": "school-01",
+      "full_name": "Priya Nair",
+      "email": "student18@demo.edu",
+      "role": "student",
+      "avatar_url": "https://i.pravatar.cc/150?u=student18",
+      "created_at": "2026-03-17T07:22:02.010Z",
+      "updated_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "parent-18",
+      "school_id": "school-01",
+      "full_name": "Nair Parent",
+      "email": "parent18@demo.edu",
+      "role": "parent",
+      "avatar_url": "https://i.pravatar.cc/150?u=parent18",
+      "created_at": "2026-03-17T07:22:02.010Z",
+      "updated_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "student-19",
+      "school_id": "school-01",
+      "full_name": "Kavya Sharma",
+      "email": "student19@demo.edu",
+      "role": "student",
+      "avatar_url": "https://i.pravatar.cc/150?u=student19",
+      "created_at": "2026-03-17T07:22:02.010Z",
+      "updated_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "parent-19",
+      "school_id": "school-01",
+      "full_name": "Sharma Parent",
+      "email": "parent19@demo.edu",
+      "role": "parent",
+      "avatar_url": "https://i.pravatar.cc/150?u=parent19",
+      "created_at": "2026-03-17T07:22:02.010Z",
+      "updated_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "student-20",
+      "school_id": "school-01",
+      "full_name": "Arjun Sharma",
+      "email": "student20@demo.edu",
+      "role": "student",
+      "avatar_url": "https://i.pravatar.cc/150?u=student20",
+      "created_at": "2026-03-17T07:22:02.010Z",
+      "updated_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "parent-20",
+      "school_id": "school-01",
+      "full_name": "Sharma Parent",
+      "email": "parent20@demo.edu",
+      "role": "parent",
+      "avatar_url": "https://i.pravatar.cc/150?u=parent20",
+      "created_at": "2026-03-17T07:22:02.010Z",
+      "updated_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "student-21",
+      "school_id": "school-01",
+      "full_name": "Kavya Gupta",
+      "email": "student21@demo.edu",
+      "role": "student",
+      "avatar_url": "https://i.pravatar.cc/150?u=student21",
+      "created_at": "2026-03-17T07:22:02.010Z",
+      "updated_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "parent-21",
+      "school_id": "school-01",
+      "full_name": "Gupta Parent",
+      "email": "parent21@demo.edu",
+      "role": "parent",
+      "avatar_url": "https://i.pravatar.cc/150?u=parent21",
+      "created_at": "2026-03-17T07:22:02.010Z",
+      "updated_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "student-22",
+      "school_id": "school-01",
+      "full_name": "Ishaan Dixit",
+      "email": "student22@demo.edu",
+      "role": "student",
+      "avatar_url": "https://i.pravatar.cc/150?u=student22",
+      "created_at": "2026-03-17T07:22:02.010Z",
+      "updated_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "parent-22",
+      "school_id": "school-01",
+      "full_name": "Dixit Parent",
+      "email": "parent22@demo.edu",
+      "role": "parent",
+      "avatar_url": "https://i.pravatar.cc/150?u=parent22",
+      "created_at": "2026-03-17T07:22:02.010Z",
+      "updated_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "student-23",
+      "school_id": "school-01",
+      "full_name": "Vikram Nair",
+      "email": "student23@demo.edu",
+      "role": "student",
+      "avatar_url": "https://i.pravatar.cc/150?u=student23",
+      "created_at": "2026-03-17T07:22:02.010Z",
+      "updated_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "parent-23",
+      "school_id": "school-01",
+      "full_name": "Nair Parent",
+      "email": "parent23@demo.edu",
+      "role": "parent",
+      "avatar_url": "https://i.pravatar.cc/150?u=parent23",
+      "created_at": "2026-03-17T07:22:02.010Z",
+      "updated_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "student-24",
+      "school_id": "school-01",
+      "full_name": "Ananya Iyer",
+      "email": "student24@demo.edu",
+      "role": "student",
+      "avatar_url": "https://i.pravatar.cc/150?u=student24",
+      "created_at": "2026-03-17T07:22:02.010Z",
+      "updated_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "parent-24",
+      "school_id": "school-01",
+      "full_name": "Iyer Parent",
+      "email": "parent24@demo.edu",
+      "role": "parent",
+      "avatar_url": "https://i.pravatar.cc/150?u=parent24",
+      "created_at": "2026-03-17T07:22:02.010Z",
+      "updated_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "student-25",
+      "school_id": "school-01",
+      "full_name": "Kavya Singh",
+      "email": "student25@demo.edu",
+      "role": "student",
+      "avatar_url": "https://i.pravatar.cc/150?u=student25",
+      "created_at": "2026-03-17T07:22:02.010Z",
+      "updated_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "parent-25",
+      "school_id": "school-01",
+      "full_name": "Singh Parent",
+      "email": "parent25@demo.edu",
+      "role": "parent",
+      "avatar_url": "https://i.pravatar.cc/150?u=parent25",
+      "created_at": "2026-03-17T07:22:02.010Z",
+      "updated_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "student-26",
+      "school_id": "school-01",
+      "full_name": "Kavya Sharma",
+      "email": "student26@demo.edu",
+      "role": "student",
+      "avatar_url": "https://i.pravatar.cc/150?u=student26",
+      "created_at": "2026-03-17T07:22:02.010Z",
+      "updated_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "parent-26",
+      "school_id": "school-01",
+      "full_name": "Sharma Parent",
+      "email": "parent26@demo.edu",
+      "role": "parent",
+      "avatar_url": "https://i.pravatar.cc/150?u=parent26",
+      "created_at": "2026-03-17T07:22:02.010Z",
+      "updated_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "student-27",
+      "school_id": "school-01",
+      "full_name": "Sneha Singh",
+      "email": "student27@demo.edu",
+      "role": "student",
+      "avatar_url": "https://i.pravatar.cc/150?u=student27",
+      "created_at": "2026-03-17T07:22:02.010Z",
+      "updated_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "parent-27",
+      "school_id": "school-01",
+      "full_name": "Singh Parent",
+      "email": "parent27@demo.edu",
+      "role": "parent",
+      "avatar_url": "https://i.pravatar.cc/150?u=parent27",
+      "created_at": "2026-03-17T07:22:02.010Z",
+      "updated_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "student-28",
+      "school_id": "school-01",
+      "full_name": "Vikram Mehta",
+      "email": "student28@demo.edu",
+      "role": "student",
+      "avatar_url": "https://i.pravatar.cc/150?u=student28",
+      "created_at": "2026-03-17T07:22:02.010Z",
+      "updated_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "parent-28",
+      "school_id": "school-01",
+      "full_name": "Mehta Parent",
+      "email": "parent28@demo.edu",
+      "role": "parent",
+      "avatar_url": "https://i.pravatar.cc/150?u=parent28",
+      "created_at": "2026-03-17T07:22:02.010Z",
+      "updated_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "student-29",
+      "school_id": "school-01",
+      "full_name": "Priya Dixit",
+      "email": "student29@demo.edu",
+      "role": "student",
+      "avatar_url": "https://i.pravatar.cc/150?u=student29",
+      "created_at": "2026-03-17T07:22:02.010Z",
+      "updated_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "parent-29",
+      "school_id": "school-01",
+      "full_name": "Dixit Parent",
+      "email": "parent29@demo.edu",
+      "role": "parent",
+      "avatar_url": "https://i.pravatar.cc/150?u=parent29",
+      "created_at": "2026-03-17T07:22:02.010Z",
+      "updated_at": "2026-03-17T07:22:02.010Z"
+    }
+  ],
+  "classes": [
+    {
+      "id": "class-0",
+      "school_id": "school-01",
+      "name": "Grade 10",
+      "section": "A",
+      "grade_level": "10",
+      "created_at": "2026-03-17T07:22:02.009Z"
+    },
+    {
+      "id": "class-1",
+      "school_id": "school-01",
+      "name": "Grade 10",
+      "section": "B",
+      "grade_level": "10",
+      "created_at": "2026-03-17T07:22:02.009Z"
+    },
+    {
+      "id": "class-2",
+      "school_id": "school-01",
+      "name": "Grade 11",
+      "section": "A",
+      "grade_level": "11",
+      "created_at": "2026-03-17T07:22:02.009Z"
+    }
+  ],
+  "subjects": [
+    {
+      "id": "subject-class-0-0",
+      "school_id": "school-01",
+      "class_id": "class-0",
+      "name": "Math",
+      "teacher_id": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.009Z"
+    },
+    {
+      "id": "subject-class-1-0",
+      "school_id": "school-01",
+      "class_id": "class-1",
+      "name": "Math",
+      "teacher_id": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.009Z"
+    },
+    {
+      "id": "subject-class-2-0",
+      "school_id": "school-01",
+      "class_id": "class-2",
+      "name": "Math",
+      "teacher_id": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.009Z"
+    },
+    {
+      "id": "subject-class-0-1",
+      "school_id": "school-01",
+      "class_id": "class-0",
+      "name": "Science",
+      "teacher_id": "teacher-1",
+      "created_at": "2026-03-17T07:22:02.009Z"
+    },
+    {
+      "id": "subject-class-1-1",
+      "school_id": "school-01",
+      "class_id": "class-1",
+      "name": "Science",
+      "teacher_id": "teacher-1",
+      "created_at": "2026-03-17T07:22:02.009Z"
+    },
+    {
+      "id": "subject-class-2-1",
+      "school_id": "school-01",
+      "class_id": "class-2",
+      "name": "Science",
+      "teacher_id": "teacher-1",
+      "created_at": "2026-03-17T07:22:02.009Z"
+    },
+    {
+      "id": "subject-class-0-2",
+      "school_id": "school-01",
+      "class_id": "class-0",
+      "name": "English",
+      "teacher_id": "teacher-2",
+      "created_at": "2026-03-17T07:22:02.009Z"
+    },
+    {
+      "id": "subject-class-1-2",
+      "school_id": "school-01",
+      "class_id": "class-1",
+      "name": "English",
+      "teacher_id": "teacher-2",
+      "created_at": "2026-03-17T07:22:02.009Z"
+    },
+    {
+      "id": "subject-class-2-2",
+      "school_id": "school-01",
+      "class_id": "class-2",
+      "name": "English",
+      "teacher_id": "teacher-2",
+      "created_at": "2026-03-17T07:22:02.009Z"
+    }
+  ],
+  "enrollments": [
+    {
+      "id": "enroll-0",
+      "school_id": "school-01",
+      "student_id": "student-0",
+      "class_id": "class-0",
+      "enrolled_at": "2026-03-17T07:22:02.009Z"
+    },
+    {
+      "id": "enroll-1",
+      "school_id": "school-01",
+      "student_id": "student-1",
+      "class_id": "class-1",
+      "enrolled_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "enroll-2",
+      "school_id": "school-01",
+      "student_id": "student-2",
+      "class_id": "class-2",
+      "enrolled_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "enroll-3",
+      "school_id": "school-01",
+      "student_id": "student-3",
+      "class_id": "class-0",
+      "enrolled_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "enroll-4",
+      "school_id": "school-01",
+      "student_id": "student-4",
+      "class_id": "class-1",
+      "enrolled_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "enroll-5",
+      "school_id": "school-01",
+      "student_id": "student-5",
+      "class_id": "class-2",
+      "enrolled_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "enroll-6",
+      "school_id": "school-01",
+      "student_id": "student-6",
+      "class_id": "class-0",
+      "enrolled_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "enroll-7",
+      "school_id": "school-01",
+      "student_id": "student-7",
+      "class_id": "class-1",
+      "enrolled_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "enroll-8",
+      "school_id": "school-01",
+      "student_id": "student-8",
+      "class_id": "class-2",
+      "enrolled_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "enroll-9",
+      "school_id": "school-01",
+      "student_id": "student-9",
+      "class_id": "class-0",
+      "enrolled_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "enroll-10",
+      "school_id": "school-01",
+      "student_id": "student-10",
+      "class_id": "class-1",
+      "enrolled_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "enroll-11",
+      "school_id": "school-01",
+      "student_id": "student-11",
+      "class_id": "class-2",
+      "enrolled_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "enroll-12",
+      "school_id": "school-01",
+      "student_id": "student-12",
+      "class_id": "class-0",
+      "enrolled_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "enroll-13",
+      "school_id": "school-01",
+      "student_id": "student-13",
+      "class_id": "class-1",
+      "enrolled_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "enroll-14",
+      "school_id": "school-01",
+      "student_id": "student-14",
+      "class_id": "class-2",
+      "enrolled_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "enroll-15",
+      "school_id": "school-01",
+      "student_id": "student-15",
+      "class_id": "class-0",
+      "enrolled_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "enroll-16",
+      "school_id": "school-01",
+      "student_id": "student-16",
+      "class_id": "class-1",
+      "enrolled_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "enroll-17",
+      "school_id": "school-01",
+      "student_id": "student-17",
+      "class_id": "class-2",
+      "enrolled_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "enroll-18",
+      "school_id": "school-01",
+      "student_id": "student-18",
+      "class_id": "class-0",
+      "enrolled_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "enroll-19",
+      "school_id": "school-01",
+      "student_id": "student-19",
+      "class_id": "class-1",
+      "enrolled_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "enroll-20",
+      "school_id": "school-01",
+      "student_id": "student-20",
+      "class_id": "class-2",
+      "enrolled_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "enroll-21",
+      "school_id": "school-01",
+      "student_id": "student-21",
+      "class_id": "class-0",
+      "enrolled_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "enroll-22",
+      "school_id": "school-01",
+      "student_id": "student-22",
+      "class_id": "class-1",
+      "enrolled_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "enroll-23",
+      "school_id": "school-01",
+      "student_id": "student-23",
+      "class_id": "class-2",
+      "enrolled_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "enroll-24",
+      "school_id": "school-01",
+      "student_id": "student-24",
+      "class_id": "class-0",
+      "enrolled_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "enroll-25",
+      "school_id": "school-01",
+      "student_id": "student-25",
+      "class_id": "class-1",
+      "enrolled_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "enroll-26",
+      "school_id": "school-01",
+      "student_id": "student-26",
+      "class_id": "class-2",
+      "enrolled_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "enroll-27",
+      "school_id": "school-01",
+      "student_id": "student-27",
+      "class_id": "class-0",
+      "enrolled_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "enroll-28",
+      "school_id": "school-01",
+      "student_id": "student-28",
+      "class_id": "class-1",
+      "enrolled_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "enroll-29",
+      "school_id": "school-01",
+      "student_id": "student-29",
+      "class_id": "class-2",
+      "enrolled_at": "2026-03-17T07:22:02.010Z"
+    }
+  ],
+  "parent_student_links": [
+    {
+      "id": "link-0",
+      "parent_id": "parent-0",
+      "student_id": "student-0"
+    },
+    {
+      "id": "link-1",
+      "parent_id": "parent-1",
+      "student_id": "student-1"
+    },
+    {
+      "id": "link-2",
+      "parent_id": "parent-2",
+      "student_id": "student-2"
+    },
+    {
+      "id": "link-3",
+      "parent_id": "parent-3",
+      "student_id": "student-3"
+    },
+    {
+      "id": "link-4",
+      "parent_id": "parent-4",
+      "student_id": "student-4"
+    },
+    {
+      "id": "link-5",
+      "parent_id": "parent-5",
+      "student_id": "student-5"
+    },
+    {
+      "id": "link-6",
+      "parent_id": "parent-6",
+      "student_id": "student-6"
+    },
+    {
+      "id": "link-7",
+      "parent_id": "parent-7",
+      "student_id": "student-7"
+    },
+    {
+      "id": "link-8",
+      "parent_id": "parent-8",
+      "student_id": "student-8"
+    },
+    {
+      "id": "link-9",
+      "parent_id": "parent-9",
+      "student_id": "student-9"
+    },
+    {
+      "id": "link-10",
+      "parent_id": "parent-10",
+      "student_id": "student-10"
+    },
+    {
+      "id": "link-11",
+      "parent_id": "parent-11",
+      "student_id": "student-11"
+    },
+    {
+      "id": "link-12",
+      "parent_id": "parent-12",
+      "student_id": "student-12"
+    },
+    {
+      "id": "link-13",
+      "parent_id": "parent-13",
+      "student_id": "student-13"
+    },
+    {
+      "id": "link-14",
+      "parent_id": "parent-14",
+      "student_id": "student-14"
+    },
+    {
+      "id": "link-15",
+      "parent_id": "parent-15",
+      "student_id": "student-15"
+    },
+    {
+      "id": "link-16",
+      "parent_id": "parent-16",
+      "student_id": "student-16"
+    },
+    {
+      "id": "link-17",
+      "parent_id": "parent-17",
+      "student_id": "student-17"
+    },
+    {
+      "id": "link-18",
+      "parent_id": "parent-18",
+      "student_id": "student-18"
+    },
+    {
+      "id": "link-19",
+      "parent_id": "parent-19",
+      "student_id": "student-19"
+    },
+    {
+      "id": "link-20",
+      "parent_id": "parent-20",
+      "student_id": "student-20"
+    },
+    {
+      "id": "link-21",
+      "parent_id": "parent-21",
+      "student_id": "student-21"
+    },
+    {
+      "id": "link-22",
+      "parent_id": "parent-22",
+      "student_id": "student-22"
+    },
+    {
+      "id": "link-23",
+      "parent_id": "parent-23",
+      "student_id": "student-23"
+    },
+    {
+      "id": "link-24",
+      "parent_id": "parent-24",
+      "student_id": "student-24"
+    },
+    {
+      "id": "link-25",
+      "parent_id": "parent-25",
+      "student_id": "student-25"
+    },
+    {
+      "id": "link-26",
+      "parent_id": "parent-26",
+      "student_id": "student-26"
+    },
+    {
+      "id": "link-27",
+      "parent_id": "parent-27",
+      "student_id": "student-27"
+    },
+    {
+      "id": "link-28",
+      "parent_id": "parent-28",
+      "student_id": "student-28"
+    },
+    {
+      "id": "link-29",
+      "parent_id": "parent-29",
+      "student_id": "student-29"
+    }
+  ],
+  "attendance": [
+    {
+      "id": "att-0-0",
+      "school_id": "school-01",
+      "class_id": "class-0",
+      "student_id": "student-0",
+      "date": "2026-03-17",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.009Z"
+    },
+    {
+      "id": "att-0-1",
+      "school_id": "school-01",
+      "class_id": "class-0",
+      "student_id": "student-0",
+      "date": "2026-03-16",
+      "status": "absent",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.009Z"
+    },
+    {
+      "id": "att-0-2",
+      "school_id": "school-01",
+      "class_id": "class-0",
+      "student_id": "student-0",
+      "date": "2026-03-15",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.009Z"
+    },
+    {
+      "id": "att-0-3",
+      "school_id": "school-01",
+      "class_id": "class-0",
+      "student_id": "student-0",
+      "date": "2026-03-14",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.009Z"
+    },
+    {
+      "id": "att-0-4",
+      "school_id": "school-01",
+      "class_id": "class-0",
+      "student_id": "student-0",
+      "date": "2026-03-13",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.009Z"
+    },
+    {
+      "id": "att-1-0",
+      "school_id": "school-01",
+      "class_id": "class-1",
+      "student_id": "student-1",
+      "date": "2026-03-17",
+      "status": "absent",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-1-1",
+      "school_id": "school-01",
+      "class_id": "class-1",
+      "student_id": "student-1",
+      "date": "2026-03-16",
+      "status": "absent",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-1-2",
+      "school_id": "school-01",
+      "class_id": "class-1",
+      "student_id": "student-1",
+      "date": "2026-03-15",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-1-3",
+      "school_id": "school-01",
+      "class_id": "class-1",
+      "student_id": "student-1",
+      "date": "2026-03-14",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-1-4",
+      "school_id": "school-01",
+      "class_id": "class-1",
+      "student_id": "student-1",
+      "date": "2026-03-13",
+      "status": "absent",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-2-0",
+      "school_id": "school-01",
+      "class_id": "class-2",
+      "student_id": "student-2",
+      "date": "2026-03-17",
+      "status": "absent",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-2-1",
+      "school_id": "school-01",
+      "class_id": "class-2",
+      "student_id": "student-2",
+      "date": "2026-03-16",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-2-2",
+      "school_id": "school-01",
+      "class_id": "class-2",
+      "student_id": "student-2",
+      "date": "2026-03-15",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-2-3",
+      "school_id": "school-01",
+      "class_id": "class-2",
+      "student_id": "student-2",
+      "date": "2026-03-14",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-2-4",
+      "school_id": "school-01",
+      "class_id": "class-2",
+      "student_id": "student-2",
+      "date": "2026-03-13",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-3-0",
+      "school_id": "school-01",
+      "class_id": "class-0",
+      "student_id": "student-3",
+      "date": "2026-03-17",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-3-1",
+      "school_id": "school-01",
+      "class_id": "class-0",
+      "student_id": "student-3",
+      "date": "2026-03-16",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-3-2",
+      "school_id": "school-01",
+      "class_id": "class-0",
+      "student_id": "student-3",
+      "date": "2026-03-15",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-3-3",
+      "school_id": "school-01",
+      "class_id": "class-0",
+      "student_id": "student-3",
+      "date": "2026-03-14",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-3-4",
+      "school_id": "school-01",
+      "class_id": "class-0",
+      "student_id": "student-3",
+      "date": "2026-03-13",
+      "status": "absent",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-4-0",
+      "school_id": "school-01",
+      "class_id": "class-1",
+      "student_id": "student-4",
+      "date": "2026-03-17",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-4-1",
+      "school_id": "school-01",
+      "class_id": "class-1",
+      "student_id": "student-4",
+      "date": "2026-03-16",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-4-2",
+      "school_id": "school-01",
+      "class_id": "class-1",
+      "student_id": "student-4",
+      "date": "2026-03-15",
+      "status": "absent",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-4-3",
+      "school_id": "school-01",
+      "class_id": "class-1",
+      "student_id": "student-4",
+      "date": "2026-03-14",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-4-4",
+      "school_id": "school-01",
+      "class_id": "class-1",
+      "student_id": "student-4",
+      "date": "2026-03-13",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-5-0",
+      "school_id": "school-01",
+      "class_id": "class-2",
+      "student_id": "student-5",
+      "date": "2026-03-17",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-5-1",
+      "school_id": "school-01",
+      "class_id": "class-2",
+      "student_id": "student-5",
+      "date": "2026-03-16",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-5-2",
+      "school_id": "school-01",
+      "class_id": "class-2",
+      "student_id": "student-5",
+      "date": "2026-03-15",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-5-3",
+      "school_id": "school-01",
+      "class_id": "class-2",
+      "student_id": "student-5",
+      "date": "2026-03-14",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-5-4",
+      "school_id": "school-01",
+      "class_id": "class-2",
+      "student_id": "student-5",
+      "date": "2026-03-13",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-6-0",
+      "school_id": "school-01",
+      "class_id": "class-0",
+      "student_id": "student-6",
+      "date": "2026-03-17",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-6-1",
+      "school_id": "school-01",
+      "class_id": "class-0",
+      "student_id": "student-6",
+      "date": "2026-03-16",
+      "status": "absent",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-6-2",
+      "school_id": "school-01",
+      "class_id": "class-0",
+      "student_id": "student-6",
+      "date": "2026-03-15",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-6-3",
+      "school_id": "school-01",
+      "class_id": "class-0",
+      "student_id": "student-6",
+      "date": "2026-03-14",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-6-4",
+      "school_id": "school-01",
+      "class_id": "class-0",
+      "student_id": "student-6",
+      "date": "2026-03-13",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-7-0",
+      "school_id": "school-01",
+      "class_id": "class-1",
+      "student_id": "student-7",
+      "date": "2026-03-17",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-7-1",
+      "school_id": "school-01",
+      "class_id": "class-1",
+      "student_id": "student-7",
+      "date": "2026-03-16",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-7-2",
+      "school_id": "school-01",
+      "class_id": "class-1",
+      "student_id": "student-7",
+      "date": "2026-03-15",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-7-3",
+      "school_id": "school-01",
+      "class_id": "class-1",
+      "student_id": "student-7",
+      "date": "2026-03-14",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-7-4",
+      "school_id": "school-01",
+      "class_id": "class-1",
+      "student_id": "student-7",
+      "date": "2026-03-13",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-8-0",
+      "school_id": "school-01",
+      "class_id": "class-2",
+      "student_id": "student-8",
+      "date": "2026-03-17",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-8-1",
+      "school_id": "school-01",
+      "class_id": "class-2",
+      "student_id": "student-8",
+      "date": "2026-03-16",
+      "status": "absent",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-8-2",
+      "school_id": "school-01",
+      "class_id": "class-2",
+      "student_id": "student-8",
+      "date": "2026-03-15",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-8-3",
+      "school_id": "school-01",
+      "class_id": "class-2",
+      "student_id": "student-8",
+      "date": "2026-03-14",
+      "status": "absent",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-8-4",
+      "school_id": "school-01",
+      "class_id": "class-2",
+      "student_id": "student-8",
+      "date": "2026-03-13",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-9-0",
+      "school_id": "school-01",
+      "class_id": "class-0",
+      "student_id": "student-9",
+      "date": "2026-03-17",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-9-1",
+      "school_id": "school-01",
+      "class_id": "class-0",
+      "student_id": "student-9",
+      "date": "2026-03-16",
+      "status": "absent",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-9-2",
+      "school_id": "school-01",
+      "class_id": "class-0",
+      "student_id": "student-9",
+      "date": "2026-03-15",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-9-3",
+      "school_id": "school-01",
+      "class_id": "class-0",
+      "student_id": "student-9",
+      "date": "2026-03-14",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-9-4",
+      "school_id": "school-01",
+      "class_id": "class-0",
+      "student_id": "student-9",
+      "date": "2026-03-13",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-10-0",
+      "school_id": "school-01",
+      "class_id": "class-1",
+      "student_id": "student-10",
+      "date": "2026-03-17",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-10-1",
+      "school_id": "school-01",
+      "class_id": "class-1",
+      "student_id": "student-10",
+      "date": "2026-03-16",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-10-2",
+      "school_id": "school-01",
+      "class_id": "class-1",
+      "student_id": "student-10",
+      "date": "2026-03-15",
+      "status": "absent",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-10-3",
+      "school_id": "school-01",
+      "class_id": "class-1",
+      "student_id": "student-10",
+      "date": "2026-03-14",
+      "status": "absent",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-10-4",
+      "school_id": "school-01",
+      "class_id": "class-1",
+      "student_id": "student-10",
+      "date": "2026-03-13",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-11-0",
+      "school_id": "school-01",
+      "class_id": "class-2",
+      "student_id": "student-11",
+      "date": "2026-03-17",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-11-1",
+      "school_id": "school-01",
+      "class_id": "class-2",
+      "student_id": "student-11",
+      "date": "2026-03-16",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-11-2",
+      "school_id": "school-01",
+      "class_id": "class-2",
+      "student_id": "student-11",
+      "date": "2026-03-15",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-11-3",
+      "school_id": "school-01",
+      "class_id": "class-2",
+      "student_id": "student-11",
+      "date": "2026-03-14",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-11-4",
+      "school_id": "school-01",
+      "class_id": "class-2",
+      "student_id": "student-11",
+      "date": "2026-03-13",
+      "status": "absent",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-12-0",
+      "school_id": "school-01",
+      "class_id": "class-0",
+      "student_id": "student-12",
+      "date": "2026-03-17",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-12-1",
+      "school_id": "school-01",
+      "class_id": "class-0",
+      "student_id": "student-12",
+      "date": "2026-03-16",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-12-2",
+      "school_id": "school-01",
+      "class_id": "class-0",
+      "student_id": "student-12",
+      "date": "2026-03-15",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-12-3",
+      "school_id": "school-01",
+      "class_id": "class-0",
+      "student_id": "student-12",
+      "date": "2026-03-14",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-12-4",
+      "school_id": "school-01",
+      "class_id": "class-0",
+      "student_id": "student-12",
+      "date": "2026-03-13",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-13-0",
+      "school_id": "school-01",
+      "class_id": "class-1",
+      "student_id": "student-13",
+      "date": "2026-03-17",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-13-1",
+      "school_id": "school-01",
+      "class_id": "class-1",
+      "student_id": "student-13",
+      "date": "2026-03-16",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-13-2",
+      "school_id": "school-01",
+      "class_id": "class-1",
+      "student_id": "student-13",
+      "date": "2026-03-15",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-13-3",
+      "school_id": "school-01",
+      "class_id": "class-1",
+      "student_id": "student-13",
+      "date": "2026-03-14",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-13-4",
+      "school_id": "school-01",
+      "class_id": "class-1",
+      "student_id": "student-13",
+      "date": "2026-03-13",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-14-0",
+      "school_id": "school-01",
+      "class_id": "class-2",
+      "student_id": "student-14",
+      "date": "2026-03-17",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-14-1",
+      "school_id": "school-01",
+      "class_id": "class-2",
+      "student_id": "student-14",
+      "date": "2026-03-16",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-14-2",
+      "school_id": "school-01",
+      "class_id": "class-2",
+      "student_id": "student-14",
+      "date": "2026-03-15",
+      "status": "absent",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-14-3",
+      "school_id": "school-01",
+      "class_id": "class-2",
+      "student_id": "student-14",
+      "date": "2026-03-14",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-14-4",
+      "school_id": "school-01",
+      "class_id": "class-2",
+      "student_id": "student-14",
+      "date": "2026-03-13",
+      "status": "absent",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-15-0",
+      "school_id": "school-01",
+      "class_id": "class-0",
+      "student_id": "student-15",
+      "date": "2026-03-17",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-15-1",
+      "school_id": "school-01",
+      "class_id": "class-0",
+      "student_id": "student-15",
+      "date": "2026-03-16",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-15-2",
+      "school_id": "school-01",
+      "class_id": "class-0",
+      "student_id": "student-15",
+      "date": "2026-03-15",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-15-3",
+      "school_id": "school-01",
+      "class_id": "class-0",
+      "student_id": "student-15",
+      "date": "2026-03-14",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-15-4",
+      "school_id": "school-01",
+      "class_id": "class-0",
+      "student_id": "student-15",
+      "date": "2026-03-13",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-16-0",
+      "school_id": "school-01",
+      "class_id": "class-1",
+      "student_id": "student-16",
+      "date": "2026-03-17",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-16-1",
+      "school_id": "school-01",
+      "class_id": "class-1",
+      "student_id": "student-16",
+      "date": "2026-03-16",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-16-2",
+      "school_id": "school-01",
+      "class_id": "class-1",
+      "student_id": "student-16",
+      "date": "2026-03-15",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-16-3",
+      "school_id": "school-01",
+      "class_id": "class-1",
+      "student_id": "student-16",
+      "date": "2026-03-14",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-16-4",
+      "school_id": "school-01",
+      "class_id": "class-1",
+      "student_id": "student-16",
+      "date": "2026-03-13",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-17-0",
+      "school_id": "school-01",
+      "class_id": "class-2",
+      "student_id": "student-17",
+      "date": "2026-03-17",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-17-1",
+      "school_id": "school-01",
+      "class_id": "class-2",
+      "student_id": "student-17",
+      "date": "2026-03-16",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-17-2",
+      "school_id": "school-01",
+      "class_id": "class-2",
+      "student_id": "student-17",
+      "date": "2026-03-15",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-17-3",
+      "school_id": "school-01",
+      "class_id": "class-2",
+      "student_id": "student-17",
+      "date": "2026-03-14",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-17-4",
+      "school_id": "school-01",
+      "class_id": "class-2",
+      "student_id": "student-17",
+      "date": "2026-03-13",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-18-0",
+      "school_id": "school-01",
+      "class_id": "class-0",
+      "student_id": "student-18",
+      "date": "2026-03-17",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-18-1",
+      "school_id": "school-01",
+      "class_id": "class-0",
+      "student_id": "student-18",
+      "date": "2026-03-16",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-18-2",
+      "school_id": "school-01",
+      "class_id": "class-0",
+      "student_id": "student-18",
+      "date": "2026-03-15",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-18-3",
+      "school_id": "school-01",
+      "class_id": "class-0",
+      "student_id": "student-18",
+      "date": "2026-03-14",
+      "status": "absent",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-18-4",
+      "school_id": "school-01",
+      "class_id": "class-0",
+      "student_id": "student-18",
+      "date": "2026-03-13",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-19-0",
+      "school_id": "school-01",
+      "class_id": "class-1",
+      "student_id": "student-19",
+      "date": "2026-03-17",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-19-1",
+      "school_id": "school-01",
+      "class_id": "class-1",
+      "student_id": "student-19",
+      "date": "2026-03-16",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-19-2",
+      "school_id": "school-01",
+      "class_id": "class-1",
+      "student_id": "student-19",
+      "date": "2026-03-15",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-19-3",
+      "school_id": "school-01",
+      "class_id": "class-1",
+      "student_id": "student-19",
+      "date": "2026-03-14",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-19-4",
+      "school_id": "school-01",
+      "class_id": "class-1",
+      "student_id": "student-19",
+      "date": "2026-03-13",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-20-0",
+      "school_id": "school-01",
+      "class_id": "class-2",
+      "student_id": "student-20",
+      "date": "2026-03-17",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-20-1",
+      "school_id": "school-01",
+      "class_id": "class-2",
+      "student_id": "student-20",
+      "date": "2026-03-16",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-20-2",
+      "school_id": "school-01",
+      "class_id": "class-2",
+      "student_id": "student-20",
+      "date": "2026-03-15",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-20-3",
+      "school_id": "school-01",
+      "class_id": "class-2",
+      "student_id": "student-20",
+      "date": "2026-03-14",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-20-4",
+      "school_id": "school-01",
+      "class_id": "class-2",
+      "student_id": "student-20",
+      "date": "2026-03-13",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-21-0",
+      "school_id": "school-01",
+      "class_id": "class-0",
+      "student_id": "student-21",
+      "date": "2026-03-17",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-21-1",
+      "school_id": "school-01",
+      "class_id": "class-0",
+      "student_id": "student-21",
+      "date": "2026-03-16",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-21-2",
+      "school_id": "school-01",
+      "class_id": "class-0",
+      "student_id": "student-21",
+      "date": "2026-03-15",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-21-3",
+      "school_id": "school-01",
+      "class_id": "class-0",
+      "student_id": "student-21",
+      "date": "2026-03-14",
+      "status": "absent",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-21-4",
+      "school_id": "school-01",
+      "class_id": "class-0",
+      "student_id": "student-21",
+      "date": "2026-03-13",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-22-0",
+      "school_id": "school-01",
+      "class_id": "class-1",
+      "student_id": "student-22",
+      "date": "2026-03-17",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-22-1",
+      "school_id": "school-01",
+      "class_id": "class-1",
+      "student_id": "student-22",
+      "date": "2026-03-16",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-22-2",
+      "school_id": "school-01",
+      "class_id": "class-1",
+      "student_id": "student-22",
+      "date": "2026-03-15",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-22-3",
+      "school_id": "school-01",
+      "class_id": "class-1",
+      "student_id": "student-22",
+      "date": "2026-03-14",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-22-4",
+      "school_id": "school-01",
+      "class_id": "class-1",
+      "student_id": "student-22",
+      "date": "2026-03-13",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-23-0",
+      "school_id": "school-01",
+      "class_id": "class-2",
+      "student_id": "student-23",
+      "date": "2026-03-17",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-23-1",
+      "school_id": "school-01",
+      "class_id": "class-2",
+      "student_id": "student-23",
+      "date": "2026-03-16",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-23-2",
+      "school_id": "school-01",
+      "class_id": "class-2",
+      "student_id": "student-23",
+      "date": "2026-03-15",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-23-3",
+      "school_id": "school-01",
+      "class_id": "class-2",
+      "student_id": "student-23",
+      "date": "2026-03-14",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-23-4",
+      "school_id": "school-01",
+      "class_id": "class-2",
+      "student_id": "student-23",
+      "date": "2026-03-13",
+      "status": "absent",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-24-0",
+      "school_id": "school-01",
+      "class_id": "class-0",
+      "student_id": "student-24",
+      "date": "2026-03-17",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-24-1",
+      "school_id": "school-01",
+      "class_id": "class-0",
+      "student_id": "student-24",
+      "date": "2026-03-16",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-24-2",
+      "school_id": "school-01",
+      "class_id": "class-0",
+      "student_id": "student-24",
+      "date": "2026-03-15",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-24-3",
+      "school_id": "school-01",
+      "class_id": "class-0",
+      "student_id": "student-24",
+      "date": "2026-03-14",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-24-4",
+      "school_id": "school-01",
+      "class_id": "class-0",
+      "student_id": "student-24",
+      "date": "2026-03-13",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-25-0",
+      "school_id": "school-01",
+      "class_id": "class-1",
+      "student_id": "student-25",
+      "date": "2026-03-17",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-25-1",
+      "school_id": "school-01",
+      "class_id": "class-1",
+      "student_id": "student-25",
+      "date": "2026-03-16",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-25-2",
+      "school_id": "school-01",
+      "class_id": "class-1",
+      "student_id": "student-25",
+      "date": "2026-03-15",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-25-3",
+      "school_id": "school-01",
+      "class_id": "class-1",
+      "student_id": "student-25",
+      "date": "2026-03-14",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-25-4",
+      "school_id": "school-01",
+      "class_id": "class-1",
+      "student_id": "student-25",
+      "date": "2026-03-13",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-26-0",
+      "school_id": "school-01",
+      "class_id": "class-2",
+      "student_id": "student-26",
+      "date": "2026-03-17",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-26-1",
+      "school_id": "school-01",
+      "class_id": "class-2",
+      "student_id": "student-26",
+      "date": "2026-03-16",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-26-2",
+      "school_id": "school-01",
+      "class_id": "class-2",
+      "student_id": "student-26",
+      "date": "2026-03-15",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-26-3",
+      "school_id": "school-01",
+      "class_id": "class-2",
+      "student_id": "student-26",
+      "date": "2026-03-14",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-26-4",
+      "school_id": "school-01",
+      "class_id": "class-2",
+      "student_id": "student-26",
+      "date": "2026-03-13",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-27-0",
+      "school_id": "school-01",
+      "class_id": "class-0",
+      "student_id": "student-27",
+      "date": "2026-03-17",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-27-1",
+      "school_id": "school-01",
+      "class_id": "class-0",
+      "student_id": "student-27",
+      "date": "2026-03-16",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-27-2",
+      "school_id": "school-01",
+      "class_id": "class-0",
+      "student_id": "student-27",
+      "date": "2026-03-15",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-27-3",
+      "school_id": "school-01",
+      "class_id": "class-0",
+      "student_id": "student-27",
+      "date": "2026-03-14",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-27-4",
+      "school_id": "school-01",
+      "class_id": "class-0",
+      "student_id": "student-27",
+      "date": "2026-03-13",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-28-0",
+      "school_id": "school-01",
+      "class_id": "class-1",
+      "student_id": "student-28",
+      "date": "2026-03-17",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-28-1",
+      "school_id": "school-01",
+      "class_id": "class-1",
+      "student_id": "student-28",
+      "date": "2026-03-16",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-28-2",
+      "school_id": "school-01",
+      "class_id": "class-1",
+      "student_id": "student-28",
+      "date": "2026-03-15",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-28-3",
+      "school_id": "school-01",
+      "class_id": "class-1",
+      "student_id": "student-28",
+      "date": "2026-03-14",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-28-4",
+      "school_id": "school-01",
+      "class_id": "class-1",
+      "student_id": "student-28",
+      "date": "2026-03-13",
+      "status": "absent",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-29-0",
+      "school_id": "school-01",
+      "class_id": "class-2",
+      "student_id": "student-29",
+      "date": "2026-03-17",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-29-1",
+      "school_id": "school-01",
+      "class_id": "class-2",
+      "student_id": "student-29",
+      "date": "2026-03-16",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-29-2",
+      "school_id": "school-01",
+      "class_id": "class-2",
+      "student_id": "student-29",
+      "date": "2026-03-15",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-29-3",
+      "school_id": "school-01",
+      "class_id": "class-2",
+      "student_id": "student-29",
+      "date": "2026-03-14",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "att-29-4",
+      "school_id": "school-01",
+      "class_id": "class-2",
+      "student_id": "student-29",
+      "date": "2026-03-13",
+      "status": "present",
+      "marked_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    }
+  ],
+  "marks": [
+    {
+      "id": "mark-0-0",
+      "school_id": "school-01",
+      "class_id": "class-0",
+      "subject_id": "subject-class-0-0",
+      "student_id": "student-0",
+      "exam_name": "Mid-Term",
+      "marks_obtained": 91,
+      "total_marks": 100,
+      "created_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.009Z"
+    },
+    {
+      "id": "mark-0-1",
+      "school_id": "school-01",
+      "class_id": "class-0",
+      "subject_id": "subject-class-0-1",
+      "student_id": "student-0",
+      "exam_name": "Mid-Term",
+      "marks_obtained": 71,
+      "total_marks": 100,
+      "created_by": "teacher-1",
+      "created_at": "2026-03-17T07:22:02.009Z"
+    },
+    {
+      "id": "mark-0-2",
+      "school_id": "school-01",
+      "class_id": "class-0",
+      "subject_id": "subject-class-0-2",
+      "student_id": "student-0",
+      "exam_name": "Mid-Term",
+      "marks_obtained": 94,
+      "total_marks": 100,
+      "created_by": "teacher-2",
+      "created_at": "2026-03-17T07:22:02.009Z"
+    },
+    {
+      "id": "mark-1-0",
+      "school_id": "school-01",
+      "class_id": "class-1",
+      "subject_id": "subject-class-1-0",
+      "student_id": "student-1",
+      "exam_name": "Mid-Term",
+      "marks_obtained": 68,
+      "total_marks": 100,
+      "created_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "mark-1-1",
+      "school_id": "school-01",
+      "class_id": "class-1",
+      "subject_id": "subject-class-1-1",
+      "student_id": "student-1",
+      "exam_name": "Mid-Term",
+      "marks_obtained": 82,
+      "total_marks": 100,
+      "created_by": "teacher-1",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "mark-1-2",
+      "school_id": "school-01",
+      "class_id": "class-1",
+      "subject_id": "subject-class-1-2",
+      "student_id": "student-1",
+      "exam_name": "Mid-Term",
+      "marks_obtained": 81,
+      "total_marks": 100,
+      "created_by": "teacher-2",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "mark-2-0",
+      "school_id": "school-01",
+      "class_id": "class-2",
+      "subject_id": "subject-class-2-0",
+      "student_id": "student-2",
+      "exam_name": "Mid-Term",
+      "marks_obtained": 77,
+      "total_marks": 100,
+      "created_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "mark-2-1",
+      "school_id": "school-01",
+      "class_id": "class-2",
+      "subject_id": "subject-class-2-1",
+      "student_id": "student-2",
+      "exam_name": "Mid-Term",
+      "marks_obtained": 65,
+      "total_marks": 100,
+      "created_by": "teacher-1",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "mark-2-2",
+      "school_id": "school-01",
+      "class_id": "class-2",
+      "subject_id": "subject-class-2-2",
+      "student_id": "student-2",
+      "exam_name": "Mid-Term",
+      "marks_obtained": 91,
+      "total_marks": 100,
+      "created_by": "teacher-2",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "mark-3-0",
+      "school_id": "school-01",
+      "class_id": "class-0",
+      "subject_id": "subject-class-0-0",
+      "student_id": "student-3",
+      "exam_name": "Mid-Term",
+      "marks_obtained": 72,
+      "total_marks": 100,
+      "created_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "mark-3-1",
+      "school_id": "school-01",
+      "class_id": "class-0",
+      "subject_id": "subject-class-0-1",
+      "student_id": "student-3",
+      "exam_name": "Mid-Term",
+      "marks_obtained": 88,
+      "total_marks": 100,
+      "created_by": "teacher-1",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "mark-3-2",
+      "school_id": "school-01",
+      "class_id": "class-0",
+      "subject_id": "subject-class-0-2",
+      "student_id": "student-3",
+      "exam_name": "Mid-Term",
+      "marks_obtained": 66,
+      "total_marks": 100,
+      "created_by": "teacher-2",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "mark-4-0",
+      "school_id": "school-01",
+      "class_id": "class-1",
+      "subject_id": "subject-class-1-0",
+      "student_id": "student-4",
+      "exam_name": "Mid-Term",
+      "marks_obtained": 76,
+      "total_marks": 100,
+      "created_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "mark-4-1",
+      "school_id": "school-01",
+      "class_id": "class-1",
+      "subject_id": "subject-class-1-1",
+      "student_id": "student-4",
+      "exam_name": "Mid-Term",
+      "marks_obtained": 66,
+      "total_marks": 100,
+      "created_by": "teacher-1",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "mark-4-2",
+      "school_id": "school-01",
+      "class_id": "class-1",
+      "subject_id": "subject-class-1-2",
+      "student_id": "student-4",
+      "exam_name": "Mid-Term",
+      "marks_obtained": 58,
+      "total_marks": 100,
+      "created_by": "teacher-2",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "mark-5-0",
+      "school_id": "school-01",
+      "class_id": "class-2",
+      "subject_id": "subject-class-2-0",
+      "student_id": "student-5",
+      "exam_name": "Mid-Term",
+      "marks_obtained": 71,
+      "total_marks": 100,
+      "created_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "mark-5-1",
+      "school_id": "school-01",
+      "class_id": "class-2",
+      "subject_id": "subject-class-2-1",
+      "student_id": "student-5",
+      "exam_name": "Mid-Term",
+      "marks_obtained": 73,
+      "total_marks": 100,
+      "created_by": "teacher-1",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "mark-5-2",
+      "school_id": "school-01",
+      "class_id": "class-2",
+      "subject_id": "subject-class-2-2",
+      "student_id": "student-5",
+      "exam_name": "Mid-Term",
+      "marks_obtained": 73,
+      "total_marks": 100,
+      "created_by": "teacher-2",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "mark-6-0",
+      "school_id": "school-01",
+      "class_id": "class-0",
+      "subject_id": "subject-class-0-0",
+      "student_id": "student-6",
+      "exam_name": "Mid-Term",
+      "marks_obtained": 70,
+      "total_marks": 100,
+      "created_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "mark-6-1",
+      "school_id": "school-01",
+      "class_id": "class-0",
+      "subject_id": "subject-class-0-1",
+      "student_id": "student-6",
+      "exam_name": "Mid-Term",
+      "marks_obtained": 79,
+      "total_marks": 100,
+      "created_by": "teacher-1",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "mark-6-2",
+      "school_id": "school-01",
+      "class_id": "class-0",
+      "subject_id": "subject-class-0-2",
+      "student_id": "student-6",
+      "exam_name": "Mid-Term",
+      "marks_obtained": 62,
+      "total_marks": 100,
+      "created_by": "teacher-2",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "mark-7-0",
+      "school_id": "school-01",
+      "class_id": "class-1",
+      "subject_id": "subject-class-1-0",
+      "student_id": "student-7",
+      "exam_name": "Mid-Term",
+      "marks_obtained": 74,
+      "total_marks": 100,
+      "created_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "mark-7-1",
+      "school_id": "school-01",
+      "class_id": "class-1",
+      "subject_id": "subject-class-1-1",
+      "student_id": "student-7",
+      "exam_name": "Mid-Term",
+      "marks_obtained": 58,
+      "total_marks": 100,
+      "created_by": "teacher-1",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "mark-7-2",
+      "school_id": "school-01",
+      "class_id": "class-1",
+      "subject_id": "subject-class-1-2",
+      "student_id": "student-7",
+      "exam_name": "Mid-Term",
+      "marks_obtained": 94,
+      "total_marks": 100,
+      "created_by": "teacher-2",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "mark-8-0",
+      "school_id": "school-01",
+      "class_id": "class-2",
+      "subject_id": "subject-class-2-0",
+      "student_id": "student-8",
+      "exam_name": "Mid-Term",
+      "marks_obtained": 68,
+      "total_marks": 100,
+      "created_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "mark-8-1",
+      "school_id": "school-01",
+      "class_id": "class-2",
+      "subject_id": "subject-class-2-1",
+      "student_id": "student-8",
+      "exam_name": "Mid-Term",
+      "marks_obtained": 55,
+      "total_marks": 100,
+      "created_by": "teacher-1",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "mark-8-2",
+      "school_id": "school-01",
+      "class_id": "class-2",
+      "subject_id": "subject-class-2-2",
+      "student_id": "student-8",
+      "exam_name": "Mid-Term",
+      "marks_obtained": 82,
+      "total_marks": 100,
+      "created_by": "teacher-2",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "mark-9-0",
+      "school_id": "school-01",
+      "class_id": "class-0",
+      "subject_id": "subject-class-0-0",
+      "student_id": "student-9",
+      "exam_name": "Mid-Term",
+      "marks_obtained": 91,
+      "total_marks": 100,
+      "created_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "mark-9-1",
+      "school_id": "school-01",
+      "class_id": "class-0",
+      "subject_id": "subject-class-0-1",
+      "student_id": "student-9",
+      "exam_name": "Mid-Term",
+      "marks_obtained": 90,
+      "total_marks": 100,
+      "created_by": "teacher-1",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "mark-9-2",
+      "school_id": "school-01",
+      "class_id": "class-0",
+      "subject_id": "subject-class-0-2",
+      "student_id": "student-9",
+      "exam_name": "Mid-Term",
+      "marks_obtained": 66,
+      "total_marks": 100,
+      "created_by": "teacher-2",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "mark-10-0",
+      "school_id": "school-01",
+      "class_id": "class-1",
+      "subject_id": "subject-class-1-0",
+      "student_id": "student-10",
+      "exam_name": "Mid-Term",
+      "marks_obtained": 71,
+      "total_marks": 100,
+      "created_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "mark-10-1",
+      "school_id": "school-01",
+      "class_id": "class-1",
+      "subject_id": "subject-class-1-1",
+      "student_id": "student-10",
+      "exam_name": "Mid-Term",
+      "marks_obtained": 70,
+      "total_marks": 100,
+      "created_by": "teacher-1",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "mark-10-2",
+      "school_id": "school-01",
+      "class_id": "class-1",
+      "subject_id": "subject-class-1-2",
+      "student_id": "student-10",
+      "exam_name": "Mid-Term",
+      "marks_obtained": 85,
+      "total_marks": 100,
+      "created_by": "teacher-2",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "mark-11-0",
+      "school_id": "school-01",
+      "class_id": "class-2",
+      "subject_id": "subject-class-2-0",
+      "student_id": "student-11",
+      "exam_name": "Mid-Term",
+      "marks_obtained": 87,
+      "total_marks": 100,
+      "created_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "mark-11-1",
+      "school_id": "school-01",
+      "class_id": "class-2",
+      "subject_id": "subject-class-2-1",
+      "student_id": "student-11",
+      "exam_name": "Mid-Term",
+      "marks_obtained": 83,
+      "total_marks": 100,
+      "created_by": "teacher-1",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "mark-11-2",
+      "school_id": "school-01",
+      "class_id": "class-2",
+      "subject_id": "subject-class-2-2",
+      "student_id": "student-11",
+      "exam_name": "Mid-Term",
+      "marks_obtained": 58,
+      "total_marks": 100,
+      "created_by": "teacher-2",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "mark-12-0",
+      "school_id": "school-01",
+      "class_id": "class-0",
+      "subject_id": "subject-class-0-0",
+      "student_id": "student-12",
+      "exam_name": "Mid-Term",
+      "marks_obtained": 85,
+      "total_marks": 100,
+      "created_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "mark-12-1",
+      "school_id": "school-01",
+      "class_id": "class-0",
+      "subject_id": "subject-class-0-1",
+      "student_id": "student-12",
+      "exam_name": "Mid-Term",
+      "marks_obtained": 80,
+      "total_marks": 100,
+      "created_by": "teacher-1",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "mark-12-2",
+      "school_id": "school-01",
+      "class_id": "class-0",
+      "subject_id": "subject-class-0-2",
+      "student_id": "student-12",
+      "exam_name": "Mid-Term",
+      "marks_obtained": 57,
+      "total_marks": 100,
+      "created_by": "teacher-2",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "mark-13-0",
+      "school_id": "school-01",
+      "class_id": "class-1",
+      "subject_id": "subject-class-1-0",
+      "student_id": "student-13",
+      "exam_name": "Mid-Term",
+      "marks_obtained": 67,
+      "total_marks": 100,
+      "created_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "mark-13-1",
+      "school_id": "school-01",
+      "class_id": "class-1",
+      "subject_id": "subject-class-1-1",
+      "student_id": "student-13",
+      "exam_name": "Mid-Term",
+      "marks_obtained": 85,
+      "total_marks": 100,
+      "created_by": "teacher-1",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "mark-13-2",
+      "school_id": "school-01",
+      "class_id": "class-1",
+      "subject_id": "subject-class-1-2",
+      "student_id": "student-13",
+      "exam_name": "Mid-Term",
+      "marks_obtained": 61,
+      "total_marks": 100,
+      "created_by": "teacher-2",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "mark-14-0",
+      "school_id": "school-01",
+      "class_id": "class-2",
+      "subject_id": "subject-class-2-0",
+      "student_id": "student-14",
+      "exam_name": "Mid-Term",
+      "marks_obtained": 86,
+      "total_marks": 100,
+      "created_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "mark-14-1",
+      "school_id": "school-01",
+      "class_id": "class-2",
+      "subject_id": "subject-class-2-1",
+      "student_id": "student-14",
+      "exam_name": "Mid-Term",
+      "marks_obtained": 74,
+      "total_marks": 100,
+      "created_by": "teacher-1",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "mark-14-2",
+      "school_id": "school-01",
+      "class_id": "class-2",
+      "subject_id": "subject-class-2-2",
+      "student_id": "student-14",
+      "exam_name": "Mid-Term",
+      "marks_obtained": 86,
+      "total_marks": 100,
+      "created_by": "teacher-2",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "mark-15-0",
+      "school_id": "school-01",
+      "class_id": "class-0",
+      "subject_id": "subject-class-0-0",
+      "student_id": "student-15",
+      "exam_name": "Mid-Term",
+      "marks_obtained": 60,
+      "total_marks": 100,
+      "created_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "mark-15-1",
+      "school_id": "school-01",
+      "class_id": "class-0",
+      "subject_id": "subject-class-0-1",
+      "student_id": "student-15",
+      "exam_name": "Mid-Term",
+      "marks_obtained": 81,
+      "total_marks": 100,
+      "created_by": "teacher-1",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "mark-15-2",
+      "school_id": "school-01",
+      "class_id": "class-0",
+      "subject_id": "subject-class-0-2",
+      "student_id": "student-15",
+      "exam_name": "Mid-Term",
+      "marks_obtained": 55,
+      "total_marks": 100,
+      "created_by": "teacher-2",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "mark-16-0",
+      "school_id": "school-01",
+      "class_id": "class-1",
+      "subject_id": "subject-class-1-0",
+      "student_id": "student-16",
+      "exam_name": "Mid-Term",
+      "marks_obtained": 63,
+      "total_marks": 100,
+      "created_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "mark-16-1",
+      "school_id": "school-01",
+      "class_id": "class-1",
+      "subject_id": "subject-class-1-1",
+      "student_id": "student-16",
+      "exam_name": "Mid-Term",
+      "marks_obtained": 94,
+      "total_marks": 100,
+      "created_by": "teacher-1",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "mark-16-2",
+      "school_id": "school-01",
+      "class_id": "class-1",
+      "subject_id": "subject-class-1-2",
+      "student_id": "student-16",
+      "exam_name": "Mid-Term",
+      "marks_obtained": 67,
+      "total_marks": 100,
+      "created_by": "teacher-2",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "mark-17-0",
+      "school_id": "school-01",
+      "class_id": "class-2",
+      "subject_id": "subject-class-2-0",
+      "student_id": "student-17",
+      "exam_name": "Mid-Term",
+      "marks_obtained": 81,
+      "total_marks": 100,
+      "created_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "mark-17-1",
+      "school_id": "school-01",
+      "class_id": "class-2",
+      "subject_id": "subject-class-2-1",
+      "student_id": "student-17",
+      "exam_name": "Mid-Term",
+      "marks_obtained": 80,
+      "total_marks": 100,
+      "created_by": "teacher-1",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "mark-17-2",
+      "school_id": "school-01",
+      "class_id": "class-2",
+      "subject_id": "subject-class-2-2",
+      "student_id": "student-17",
+      "exam_name": "Mid-Term",
+      "marks_obtained": 76,
+      "total_marks": 100,
+      "created_by": "teacher-2",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "mark-18-0",
+      "school_id": "school-01",
+      "class_id": "class-0",
+      "subject_id": "subject-class-0-0",
+      "student_id": "student-18",
+      "exam_name": "Mid-Term",
+      "marks_obtained": 55,
+      "total_marks": 100,
+      "created_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "mark-18-1",
+      "school_id": "school-01",
+      "class_id": "class-0",
+      "subject_id": "subject-class-0-1",
+      "student_id": "student-18",
+      "exam_name": "Mid-Term",
+      "marks_obtained": 88,
+      "total_marks": 100,
+      "created_by": "teacher-1",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "mark-18-2",
+      "school_id": "school-01",
+      "class_id": "class-0",
+      "subject_id": "subject-class-0-2",
+      "student_id": "student-18",
+      "exam_name": "Mid-Term",
+      "marks_obtained": 61,
+      "total_marks": 100,
+      "created_by": "teacher-2",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "mark-19-0",
+      "school_id": "school-01",
+      "class_id": "class-1",
+      "subject_id": "subject-class-1-0",
+      "student_id": "student-19",
+      "exam_name": "Mid-Term",
+      "marks_obtained": 57,
+      "total_marks": 100,
+      "created_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "mark-19-1",
+      "school_id": "school-01",
+      "class_id": "class-1",
+      "subject_id": "subject-class-1-1",
+      "student_id": "student-19",
+      "exam_name": "Mid-Term",
+      "marks_obtained": 72,
+      "total_marks": 100,
+      "created_by": "teacher-1",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "mark-19-2",
+      "school_id": "school-01",
+      "class_id": "class-1",
+      "subject_id": "subject-class-1-2",
+      "student_id": "student-19",
+      "exam_name": "Mid-Term",
+      "marks_obtained": 91,
+      "total_marks": 100,
+      "created_by": "teacher-2",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "mark-20-0",
+      "school_id": "school-01",
+      "class_id": "class-2",
+      "subject_id": "subject-class-2-0",
+      "student_id": "student-20",
+      "exam_name": "Mid-Term",
+      "marks_obtained": 66,
+      "total_marks": 100,
+      "created_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "mark-20-1",
+      "school_id": "school-01",
+      "class_id": "class-2",
+      "subject_id": "subject-class-2-1",
+      "student_id": "student-20",
+      "exam_name": "Mid-Term",
+      "marks_obtained": 88,
+      "total_marks": 100,
+      "created_by": "teacher-1",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "mark-20-2",
+      "school_id": "school-01",
+      "class_id": "class-2",
+      "subject_id": "subject-class-2-2",
+      "student_id": "student-20",
+      "exam_name": "Mid-Term",
+      "marks_obtained": 73,
+      "total_marks": 100,
+      "created_by": "teacher-2",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "mark-21-0",
+      "school_id": "school-01",
+      "class_id": "class-0",
+      "subject_id": "subject-class-0-0",
+      "student_id": "student-21",
+      "exam_name": "Mid-Term",
+      "marks_obtained": 89,
+      "total_marks": 100,
+      "created_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "mark-21-1",
+      "school_id": "school-01",
+      "class_id": "class-0",
+      "subject_id": "subject-class-0-1",
+      "student_id": "student-21",
+      "exam_name": "Mid-Term",
+      "marks_obtained": 59,
+      "total_marks": 100,
+      "created_by": "teacher-1",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "mark-21-2",
+      "school_id": "school-01",
+      "class_id": "class-0",
+      "subject_id": "subject-class-0-2",
+      "student_id": "student-21",
+      "exam_name": "Mid-Term",
+      "marks_obtained": 90,
+      "total_marks": 100,
+      "created_by": "teacher-2",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "mark-22-0",
+      "school_id": "school-01",
+      "class_id": "class-1",
+      "subject_id": "subject-class-1-0",
+      "student_id": "student-22",
+      "exam_name": "Mid-Term",
+      "marks_obtained": 77,
+      "total_marks": 100,
+      "created_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "mark-22-1",
+      "school_id": "school-01",
+      "class_id": "class-1",
+      "subject_id": "subject-class-1-1",
+      "student_id": "student-22",
+      "exam_name": "Mid-Term",
+      "marks_obtained": 57,
+      "total_marks": 100,
+      "created_by": "teacher-1",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "mark-22-2",
+      "school_id": "school-01",
+      "class_id": "class-1",
+      "subject_id": "subject-class-1-2",
+      "student_id": "student-22",
+      "exam_name": "Mid-Term",
+      "marks_obtained": 85,
+      "total_marks": 100,
+      "created_by": "teacher-2",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "mark-23-0",
+      "school_id": "school-01",
+      "class_id": "class-2",
+      "subject_id": "subject-class-2-0",
+      "student_id": "student-23",
+      "exam_name": "Mid-Term",
+      "marks_obtained": 56,
+      "total_marks": 100,
+      "created_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "mark-23-1",
+      "school_id": "school-01",
+      "class_id": "class-2",
+      "subject_id": "subject-class-2-1",
+      "student_id": "student-23",
+      "exam_name": "Mid-Term",
+      "marks_obtained": 67,
+      "total_marks": 100,
+      "created_by": "teacher-1",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "mark-23-2",
+      "school_id": "school-01",
+      "class_id": "class-2",
+      "subject_id": "subject-class-2-2",
+      "student_id": "student-23",
+      "exam_name": "Mid-Term",
+      "marks_obtained": 84,
+      "total_marks": 100,
+      "created_by": "teacher-2",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "mark-24-0",
+      "school_id": "school-01",
+      "class_id": "class-0",
+      "subject_id": "subject-class-0-0",
+      "student_id": "student-24",
+      "exam_name": "Mid-Term",
+      "marks_obtained": 88,
+      "total_marks": 100,
+      "created_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "mark-24-1",
+      "school_id": "school-01",
+      "class_id": "class-0",
+      "subject_id": "subject-class-0-1",
+      "student_id": "student-24",
+      "exam_name": "Mid-Term",
+      "marks_obtained": 60,
+      "total_marks": 100,
+      "created_by": "teacher-1",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "mark-24-2",
+      "school_id": "school-01",
+      "class_id": "class-0",
+      "subject_id": "subject-class-0-2",
+      "student_id": "student-24",
+      "exam_name": "Mid-Term",
+      "marks_obtained": 84,
+      "total_marks": 100,
+      "created_by": "teacher-2",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "mark-25-0",
+      "school_id": "school-01",
+      "class_id": "class-1",
+      "subject_id": "subject-class-1-0",
+      "student_id": "student-25",
+      "exam_name": "Mid-Term",
+      "marks_obtained": 86,
+      "total_marks": 100,
+      "created_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "mark-25-1",
+      "school_id": "school-01",
+      "class_id": "class-1",
+      "subject_id": "subject-class-1-1",
+      "student_id": "student-25",
+      "exam_name": "Mid-Term",
+      "marks_obtained": 68,
+      "total_marks": 100,
+      "created_by": "teacher-1",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "mark-25-2",
+      "school_id": "school-01",
+      "class_id": "class-1",
+      "subject_id": "subject-class-1-2",
+      "student_id": "student-25",
+      "exam_name": "Mid-Term",
+      "marks_obtained": 91,
+      "total_marks": 100,
+      "created_by": "teacher-2",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "mark-26-0",
+      "school_id": "school-01",
+      "class_id": "class-2",
+      "subject_id": "subject-class-2-0",
+      "student_id": "student-26",
+      "exam_name": "Mid-Term",
+      "marks_obtained": 87,
+      "total_marks": 100,
+      "created_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "mark-26-1",
+      "school_id": "school-01",
+      "class_id": "class-2",
+      "subject_id": "subject-class-2-1",
+      "student_id": "student-26",
+      "exam_name": "Mid-Term",
+      "marks_obtained": 63,
+      "total_marks": 100,
+      "created_by": "teacher-1",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "mark-26-2",
+      "school_id": "school-01",
+      "class_id": "class-2",
+      "subject_id": "subject-class-2-2",
+      "student_id": "student-26",
+      "exam_name": "Mid-Term",
+      "marks_obtained": 86,
+      "total_marks": 100,
+      "created_by": "teacher-2",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "mark-27-0",
+      "school_id": "school-01",
+      "class_id": "class-0",
+      "subject_id": "subject-class-0-0",
+      "student_id": "student-27",
+      "exam_name": "Mid-Term",
+      "marks_obtained": 75,
+      "total_marks": 100,
+      "created_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "mark-27-1",
+      "school_id": "school-01",
+      "class_id": "class-0",
+      "subject_id": "subject-class-0-1",
+      "student_id": "student-27",
+      "exam_name": "Mid-Term",
+      "marks_obtained": 67,
+      "total_marks": 100,
+      "created_by": "teacher-1",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "mark-27-2",
+      "school_id": "school-01",
+      "class_id": "class-0",
+      "subject_id": "subject-class-0-2",
+      "student_id": "student-27",
+      "exam_name": "Mid-Term",
+      "marks_obtained": 91,
+      "total_marks": 100,
+      "created_by": "teacher-2",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "mark-28-0",
+      "school_id": "school-01",
+      "class_id": "class-1",
+      "subject_id": "subject-class-1-0",
+      "student_id": "student-28",
+      "exam_name": "Mid-Term",
+      "marks_obtained": 59,
+      "total_marks": 100,
+      "created_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "mark-28-1",
+      "school_id": "school-01",
+      "class_id": "class-1",
+      "subject_id": "subject-class-1-1",
+      "student_id": "student-28",
+      "exam_name": "Mid-Term",
+      "marks_obtained": 86,
+      "total_marks": 100,
+      "created_by": "teacher-1",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "mark-28-2",
+      "school_id": "school-01",
+      "class_id": "class-1",
+      "subject_id": "subject-class-1-2",
+      "student_id": "student-28",
+      "exam_name": "Mid-Term",
+      "marks_obtained": 67,
+      "total_marks": 100,
+      "created_by": "teacher-2",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "mark-29-0",
+      "school_id": "school-01",
+      "class_id": "class-2",
+      "subject_id": "subject-class-2-0",
+      "student_id": "student-29",
+      "exam_name": "Mid-Term",
+      "marks_obtained": 74,
+      "total_marks": 100,
+      "created_by": "teacher-0",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "mark-29-1",
+      "school_id": "school-01",
+      "class_id": "class-2",
+      "subject_id": "subject-class-2-1",
+      "student_id": "student-29",
+      "exam_name": "Mid-Term",
+      "marks_obtained": 75,
+      "total_marks": 100,
+      "created_by": "teacher-1",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    },
+    {
+      "id": "mark-29-2",
+      "school_id": "school-01",
+      "class_id": "class-2",
+      "subject_id": "subject-class-2-2",
+      "student_id": "student-29",
+      "exam_name": "Mid-Term",
+      "marks_obtained": 79,
+      "total_marks": 100,
+      "created_by": "teacher-2",
+      "created_at": "2026-03-17T07:22:02.010Z"
+    }
+  ],
+  "assignments": [],
+  "submissions": [],
+  "notices": [],
+  "complaints": []
+}

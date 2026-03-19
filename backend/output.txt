@@ -1,0 +1,17 @@
+﻿Γ£à Connected to Database at mongodb://127.0.0.1:16898/
+≡ƒÅù∩╕Å  Creating Schools...
+   Created School A: Delhi Public School (Subdomain: dps)
+   Created School B: St. Xaviers High School (Subdomain: stxaviers)
+
+≡ƒæ¿ΓÇì≡ƒÄô Seeding Students for School A (DPS)...
+   Inserted Aarav (Roll 101) & Neha (Roll 102)
+
+≡ƒæ¿ΓÇì≡ƒÄô Seeding Students for School B (St. Xaviers)...
+   Inserted Michael (Roll 101) & Sarah (Roll 102)
+   Notice: Roll Number "101" was safely reused because it belongs to a different school!
+
+≡ƒöì Running Isolation Test Query for School A...
+   Found 2 students under School A.
+   ["Aarav (Roll 101)","Neha (Roll 102)"]
+
+≡ƒÄë Seed & Isolation test executed successfully!
