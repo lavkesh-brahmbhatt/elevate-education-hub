@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { StatCard, PageHeader } from '@/components/DashboardWidgets';
-import { Users, BookOpen, ClipboardList, Calendar } from 'lucide-react';
+import { Users, BookOpen, ClipboardList } from 'lucide-react';
 
 export default function AdminDashboard() {
   const { profile } = useAuth();
+  const navigate = useNavigate();
   const [stats, setStats] = useState({ students: 0, teachers: 0, classes: 0, subjects: 0 });
 
   useEffect(() => {
@@ -41,10 +43,10 @@ export default function AdminDashboard() {
         <div className="bg-card rounded-xl shadow-card p-6">
           <h3 className="text-sm font-medium mb-4">Quick Actions</h3>
           <div className="space-y-2">
-            <QuickAction icon={<Users className="h-4 w-4" strokeWidth={1.5} />} label="Add Teacher" href="/dashboard/teachers" />
-            <QuickAction icon={<Users className="h-4 w-4" strokeWidth={1.5} />} label="Add Student" href="/dashboard/students" />
-            <QuickAction icon={<BookOpen className="h-4 w-4" strokeWidth={1.5} />} label="Create Class" href="/dashboard/classes" />
-            <QuickAction icon={<ClipboardList className="h-4 w-4" strokeWidth={1.5} />} label="Add Subject" href="/dashboard/subjects" />
+            <QuickAction icon={<Users className="h-4 w-4" strokeWidth={1.5} />} label="Add Teacher" onClick={() => navigate('/dashboard/teachers')} />
+            <QuickAction icon={<Users className="h-4 w-4" strokeWidth={1.5} />} label="Add Student" onClick={() => navigate('/dashboard/students')} />
+            <QuickAction icon={<BookOpen className="h-4 w-4" strokeWidth={1.5} />} label="Create Class" onClick={() => navigate('/dashboard/classes')} />
+            <QuickAction icon={<ClipboardList className="h-4 w-4" strokeWidth={1.5} />} label="Add Subject" onClick={() => navigate('/dashboard/subjects')} />
           </div>
         </div>
 
@@ -57,16 +59,16 @@ export default function AdminDashboard() {
   );
 }
 
-function QuickAction({ icon, label, href }: { icon: React.ReactNode; label: string; href: string }) {
+function QuickAction({ icon, label, onClick }: { icon: React.ReactNode; label: string; onClick: () => void }) {
   return (
-    <a
-      href={href}
-      className="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-muted/50 transition-colors text-sm"
+    <button
+      onClick={onClick}
+      className="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-muted/50 transition-colors text-sm w-full text-left"
     >
       <div className="h-8 w-8 rounded-lg bg-muted flex items-center justify-center text-muted-foreground">
         {icon}
       </div>
       <span>{label}</span>
-    </a>
+    </button>
   );
 }

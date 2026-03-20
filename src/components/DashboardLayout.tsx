@@ -1,10 +1,10 @@
 import { ReactNode } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { NavLink } from '@/components/NavLink';
 import {
   GraduationCap, LayoutDashboard, Users, BookOpen, ClipboardList,
-  FileText, BarChart3, Settings, LogOut, Calendar, Upload, Award
+  FileText, BarChart3, LogOut, Calendar, Upload, Award, Bell, MessageSquare
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
@@ -14,8 +14,9 @@ const adminNav = [
   { title: 'Students', url: '/dashboard/students', icon: Users },
   { title: 'Classes', url: '/dashboard/classes', icon: BookOpen },
   { title: 'Subjects', url: '/dashboard/subjects', icon: ClipboardList },
+  { title: 'Notices', url: '/dashboard/notices', icon: Bell },
+  { title: 'Complaints', url: '/dashboard/complaints', icon: MessageSquare },
   { title: 'Analytics', url: '/dashboard/analytics', icon: BarChart3 },
-  { title: 'Settings', url: '/dashboard/settings', icon: Settings },
 ];
 
 const teacherNav = [
@@ -25,6 +26,7 @@ const teacherNav = [
   { title: 'Assignments', url: '/dashboard/assignments', icon: FileText },
   { title: 'Marks', url: '/dashboard/marks', icon: Award },
   { title: 'Materials', url: '/dashboard/materials', icon: Upload },
+  { title: 'Notices', url: '/dashboard/notices', icon: Bell },
 ];
 
 const studentNav = [
@@ -34,13 +36,16 @@ const studentNav = [
   { title: 'Attendance', url: '/dashboard/my-attendance', icon: Calendar },
   { title: 'Marks', url: '/dashboard/my-marks', icon: Award },
   { title: 'Materials', url: '/dashboard/materials', icon: Upload },
+  { title: 'Notices', url: '/dashboard/notices', icon: Bell },
+  { title: 'Complaints', url: '/dashboard/complaints', icon: MessageSquare },
 ];
 
 const parentNav = [
   { title: 'Dashboard', url: '/dashboard', icon: LayoutDashboard },
   { title: 'Attendance', url: '/dashboard/child-attendance', icon: Calendar },
   { title: 'Marks', url: '/dashboard/child-marks', icon: Award },
-  { title: 'Assignments', url: '/dashboard/child-assignments', icon: FileText },
+  { title: 'Notices', url: '/dashboard/notices', icon: Bell },
+  { title: 'Complaints', url: '/dashboard/complaints', icon: MessageSquare },
 ];
 
 function getNavItems(role: string) {
@@ -66,7 +71,6 @@ function getRoleBadge(role: string) {
 export default function DashboardLayout({ children }: { children: ReactNode }) {
   const { profile, signOut } = useAuth();
   const navigate = useNavigate();
-  const location = useLocation();
 
   if (!profile) return null;
 
@@ -83,7 +87,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
           <span className="text-base font-semibold tracking-tight">Academy OS</span>
         </div>
 
-        <nav className="flex-1 px-3 py-2 space-y-0.5">
+        <nav className="flex-1 px-3 py-2 space-y-0.5 overflow-y-auto">
           {navItems.map((item) => (
             <NavLink
               key={item.url}
