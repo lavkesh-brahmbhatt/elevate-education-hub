@@ -20,7 +20,7 @@ export default function ParentChildMarks() {
       // Get linked student
       const { data: links } = await supabase
         .from('parent_student_links')
-        .select('student_id, profiles:student_id(full_name)')
+        .select('student_id')
         .eq('parent_id', profile.id)
         .limit(1);
 
