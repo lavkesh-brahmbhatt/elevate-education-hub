@@ -31,7 +31,7 @@ export default function ComplaintPage() {
   const [resolveForm, setResolveForm] = useState({ id: '', response: '' });
   const [form, setForm] = useState({ subject: '', description: '' });
 
-  const isAdmin = profile?.role === 'admin' || profile?.role === 'global_admin';
+  const isAdmin = profile?.role === 'admin';
   const isParentOrStudent = profile?.role === 'student' || profile?.role === 'parent';
 
   const fetchComplaints = async () => {

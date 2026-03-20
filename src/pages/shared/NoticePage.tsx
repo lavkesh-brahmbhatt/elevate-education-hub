@@ -28,7 +28,7 @@ export default function NoticePage() {
   const [creating, setCreating] = useState(false);
   const [form, setForm] = useState({ title: '', description: '', category: 'update' as const });
 
-  const isAdmin = profile?.role === 'admin' || profile?.role === 'global_admin';
+  const isAdmin = profile?.role === 'admin';
 
   const fetchNotices = async () => {
     if (!profile) return;

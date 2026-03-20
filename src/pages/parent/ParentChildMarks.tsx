@@ -25,8 +25,9 @@ export default function ParentChildMarks() {
         .limit(1);
 
       if (links && links.length > 0) {
-        setChildName(links[0].profiles?.full_name || 'Child');
         const studentId = links[0].student_id;
+        const { data: studentProfile } = await supabase.from('profiles').select('full_name').eq('id', studentId).single();
+        setChildName(studentProfile?.full_name || 'Child');
 
         const [mRes, sRes] = await Promise.all([
           supabase.from('marks').select('exam_name, marks_obtained, total_marks, subject_id').eq('student_id', studentId).order('created_at', { ascending: false }),

@@ -23,8 +23,9 @@ export default function ParentChildAttendance() {
         .limit(1);
 
       if (links && links.length > 0) {
-        setChildName(links[0].profiles?.full_name || 'Child');
         const studentId = links[0].student_id;
+        const { data: studentProfile } = await supabase.from('profiles').select('full_name').eq('id', studentId).single();
+        setChildName(studentProfile?.full_name || 'Child');
         
         const { data } = await supabase
             .from('attendance')
