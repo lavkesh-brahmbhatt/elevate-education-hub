@@ -44,21 +44,11 @@ export default function ManageTeachers() {
     if (!profile) return;
     setCreating(true);
     try {
-      const { data: authData, error: authError } = await supabase.auth.signUp({
-        email: form.email,
-        password: form.password,
+      const { data, error } = await supabase.functions.invoke('create-user', {
+        body: { email: form.email, password: form.password, full_name: form.name, role: 'teacher' },
       });
-      if (authError) throw authError;
-      if (!authData.user) throw new Error('Failed to create user');
-
-      const { error: profileError } = await supabase.from('profiles').insert({
-        id: authData.user.id,
-        school_id: profile.school_id,
-        role: 'teacher',
-        full_name: form.name,
-        email: form.email,
-      });
-      if (profileError) throw profileError;
+      if (error) throw error;
+      if (data?.error) throw new Error(data.error);
 
       toast.success('Teacher added successfully');
       setDialogOpen(false);
