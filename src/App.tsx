@@ -18,6 +18,7 @@ import ManageTeachers from "./pages/admin/ManageTeachers";
 import ManageStudents from "./pages/admin/ManageStudents";
 import ManageClasses from "./pages/admin/ManageClasses";
 import ManageSubjects from "./pages/admin/ManageSubjects";
+import AnalyticsPage from "./pages/admin/AnalyticsPage";
 
 // Teacher pages
 import TeacherAttendance from "./pages/teacher/TeacherAttendance";
@@ -29,9 +30,15 @@ import StudentAssignments from "./pages/student/StudentAssignments";
 import StudentAttendance from "./pages/student/StudentAttendance";
 import StudentMarks from "./pages/student/StudentMarks";
 
+// Parent pages
+import ParentChildAttendance from "./pages/parent/ParentChildAttendance";
+import ParentChildMarks from "./pages/parent/ParentChildMarks";
+
 // Shared pages
 import MaterialsPage from "./pages/shared/MaterialsPage";
 import MyClassesPage from "./pages/shared/MyClassesPage";
+import NoticePage from "./pages/shared/NoticePage";
+import ComplaintPage from "./pages/shared/ComplaintPage";
 
 const queryClient = new QueryClient();
 
@@ -55,6 +62,7 @@ const App = () => (
             <Route path="/dashboard/students" element={<ProtectedRoute allowedRoles={['admin']}><DashboardWrapper><ManageStudents /></DashboardWrapper></ProtectedRoute>} />
             <Route path="/dashboard/classes" element={<ProtectedRoute allowedRoles={['admin']}><DashboardWrapper><ManageClasses /></DashboardWrapper></ProtectedRoute>} />
             <Route path="/dashboard/subjects" element={<ProtectedRoute allowedRoles={['admin']}><DashboardWrapper><ManageSubjects /></DashboardWrapper></ProtectedRoute>} />
+            <Route path="/dashboard/analytics" element={<ProtectedRoute allowedRoles={['admin']}><DashboardWrapper><AnalyticsPage /></DashboardWrapper></ProtectedRoute>} />
 
             {/* Teacher routes */}
             <Route path="/dashboard/attendance" element={<ProtectedRoute allowedRoles={['teacher']}><DashboardWrapper><TeacherAttendance /></DashboardWrapper></ProtectedRoute>} />
@@ -65,9 +73,15 @@ const App = () => (
             <Route path="/dashboard/my-attendance" element={<ProtectedRoute allowedRoles={['student']}><DashboardWrapper><StudentAttendance /></DashboardWrapper></ProtectedRoute>} />
             <Route path="/dashboard/my-marks" element={<ProtectedRoute allowedRoles={['student']}><DashboardWrapper><StudentMarks /></DashboardWrapper></ProtectedRoute>} />
 
+            {/* Parent routes */}
+            <Route path="/dashboard/child-attendance" element={<ProtectedRoute allowedRoles={['parent']}><DashboardWrapper><ParentChildAttendance /></DashboardWrapper></ProtectedRoute>} />
+            <Route path="/dashboard/child-marks" element={<ProtectedRoute allowedRoles={['parent']}><DashboardWrapper><ParentChildMarks /></DashboardWrapper></ProtectedRoute>} />
+
             {/* Shared routes */}
             <Route path="/dashboard/my-classes" element={<ProtectedRoute allowedRoles={['teacher', 'student']}><DashboardWrapper><MyClassesPage /></DashboardWrapper></ProtectedRoute>} />
             <Route path="/dashboard/materials" element={<ProtectedRoute allowedRoles={['teacher', 'student']}><DashboardWrapper><MaterialsPage /></DashboardWrapper></ProtectedRoute>} />
+            <Route path="/dashboard/notices" element={<ProtectedRoute><DashboardWrapper><NoticePage /></DashboardWrapper></ProtectedRoute>} />
+            <Route path="/dashboard/complaints" element={<ProtectedRoute allowedRoles={['admin', 'student', 'parent']}><DashboardWrapper><ComplaintPage /></DashboardWrapper></ProtectedRoute>} />
 
             <Route path="*" element={<NotFound />} />
           </Routes>

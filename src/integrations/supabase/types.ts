@@ -176,6 +176,64 @@ export type Database = {
           },
         ]
       }
+      complaints: {
+        Row: {
+          admin_response: string | null
+          created_at: string
+          description: string
+          id: string
+          parent_id: string | null
+          school_id: string
+          status: string
+          student_id: string
+          subject: string
+        }
+        Insert: {
+          admin_response?: string | null
+          created_at?: string
+          description: string
+          id?: string
+          parent_id?: string | null
+          school_id: string
+          status?: string
+          student_id: string
+          subject: string
+        }
+        Update: {
+          admin_response?: string | null
+          created_at?: string
+          description?: string
+          id?: string
+          parent_id?: string | null
+          school_id?: string
+          status?: string
+          student_id?: string
+          subject?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "complaints_parent_id_fkey"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "complaints_school_id_fkey"
+            columns: ["school_id"]
+            isOneToOne: false
+            referencedRelation: "schools"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "complaints_student_id_fkey"
+            columns: ["student_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       enrollments: {
         Row: {
           class_id: string
@@ -293,6 +351,51 @@ export type Database = {
             columns: ["subject_id"]
             isOneToOne: false
             referencedRelation: "subjects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      notices: {
+        Row: {
+          category: string
+          created_at: string
+          created_by: string
+          description: string
+          id: string
+          school_id: string
+          title: string
+        }
+        Insert: {
+          category?: string
+          created_at?: string
+          created_by: string
+          description: string
+          id?: string
+          school_id: string
+          title: string
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          created_by?: string
+          description?: string
+          id?: string
+          school_id?: string
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "notices_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "notices_school_id_fkey"
+            columns: ["school_id"]
+            isOneToOne: false
+            referencedRelation: "schools"
             referencedColumns: ["id"]
           },
         ]
