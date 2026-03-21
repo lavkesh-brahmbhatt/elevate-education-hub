@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
-import { supabase } from '@/integrations/supabase/client';
+import api from '@/services/api';
 import { useAuth } from '@/contexts/AuthContext';
 import { PageHeader, EmptyState } from '@/components/DashboardWidgets';
 import { Calendar, Check, X, Clock, AlertCircle } from 'lucide-react';
 
-type AttendanceRecord = { date: string; status: string; class_id: string };
+type AttendanceRecord = { date: string; status: string; classId: any };
 
 export default function StudentAttendance() {
   const { profile } = useAuth();
@@ -13,8 +13,11 @@ export default function StudentAttendance() {
 
   useEffect(() => {
     if (!profile) return;
-    supabase.from('attendance').select('date, status, class_id').eq('student_id', profile.id).order('date', { ascending: false }).then(({ data }) => {
+    api.get('/attendance').then(({ data }) => {
       setRecords((data as AttendanceRecord[]) || []);
+      setLoading(false);
+    }).catch(err => {
+      console.error(err);
       setLoading(false);
     });
   }, [profile]);
@@ -34,19 +37,26 @@ export default function StudentAttendance() {
       {loading ? (
         <div className="flex justify-center py-12"><div className="h-6 w-6 border-2 border-primary border-t-transparent rounded-full animate-spin" /></div>
       ) : records.length === 0 ? (
-        <EmptyState icon={<Calendar className="h-6 w-6" />} title="No attendance records" description="Your attendance will appear here once marked." />
+        <EmptyState icon={<Calendar className="h-6 w-6" />} title="No attendance records" description="Your attendance will appear here once marked by your teacher." />
       ) : (
         <div className="bg-card rounded-xl shadow-card overflow-hidden">
           <table className="w-full text-left">
-            <thead><tr className="border-b border-border">
-              <th className="label-text py-3 px-4">Date</th>
-              <th className="label-text py-3 px-4">Status</th>
-            </tr></thead>
+            <thead>
+              <tr className="border-b border-border">
+                <th className="label-text py-3 px-4">Date</th>
+                <th className="label-text py-3 px-4">Status</th>
+              </tr>
+            </thead>
             <tbody>
               {records.map((r, i) => (
-                <tr key={i} className="border-b border-border last:border-0">
+                <tr key={i} className="border-b border-border last:border-0 hover:bg-subtle/50 transition-colors">
                   <td className="py-3 px-4 text-sm tabular-nums">{new Date(r.date).toLocaleDateString()}</td>
-                  <td className="py-3 px-4"><div className="flex items-center gap-2">{statusIcon(r.status)}<span className="text-sm capitalize">{r.status}</span></div></td>
+                  <td className="py-3 px-4">
+                    <div className="flex items-center gap-2">
+                      {statusIcon(r.status)}
+                      <span className="text-sm capitalize">{r.status}</span>
+                    </div>
+                  </td>
                 </tr>
               ))}
             </tbody>

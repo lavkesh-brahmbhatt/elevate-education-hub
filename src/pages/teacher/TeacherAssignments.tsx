@@ -1,114 +1,120 @@
 import { useEffect, useState } from 'react';
-import { supabase } from '@/integrations/supabase/client';
+import api from '@/services/api';
 import { useAuth } from '@/contexts/AuthContext';
 import { PageHeader, EmptyState } from '@/components/DashboardWidgets';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { toast } from 'sonner';
-import { Plus, FileText } from 'lucide-react';
+import { Plus, FileText, Trash2, Calendar } from 'lucide-react';
 
-type Assignment = { id: string; title: string; description: string | null; due_date: string | null; class_id: string; created_at: string };
-type ClassItem = { id: string; name: string; section: string | null };
+type Assignment = { _id: string; title: string; dueDate: string; classId: any; subjectId: any };
+type ClassItem = { _id: string; name: string };
+type Subject = { _id: string; name: string; classId: string };
 
 export default function TeacherAssignments() {
   const { profile } = useAuth();
   const [assignments, setAssignments] = useState<Assignment[]>([]);
   const [classes, setClasses] = useState<ClassItem[]>([]);
+  const [subjects, setSubjects] = useState<Subject[]>([]);
   const [loading, setLoading] = useState(true);
   const [dialogOpen, setDialogOpen] = useState(false);
-  const [form, setForm] = useState({ title: '', description: '', class_id: '', due_date: '' });
   const [creating, setCreating] = useState(false);
+  
+  const [form, setForm] = useState({ title: '', description: '', dueDate: '', classId: '', subjectId: '' });
 
-  useEffect(() => {
-    if (!profile) return;
-    const fetch = async () => {
-      const [aRes, sRes] = await Promise.all([
-        supabase.from('assignments').select('*').eq('created_by', profile.id).order('created_at', { ascending: false }),
-        supabase.from('subjects').select('class_id').eq('teacher_id', profile.id),
+  const fetchAll = async () => {
+    try {
+      setLoading(true);
+      const [assRes, classRes, subRes] = await Promise.all([
+        api.get('/assignments'),
+        api.get('/classes'),
+        api.get('/subjects')
       ]);
-      setAssignments((aRes.data as Assignment[]) || []);
-      const classIds = [...new Set((sRes.data || []).map(s => s.class_id))];
-      if (classIds.length > 0) {
-        const { data } = await supabase.from('classes').select('id, name, section').in('id', classIds);
-        setClasses((data as ClassItem[]) || []);
-      }
+      setAssignments(assRes.data || []);
+      setClasses(classRes.data || []);
+      setSubjects(subRes.data || []);
+    } catch (err) {
+      toast.error('Failed to load assignments');
+    } finally {
       setLoading(false);
-    };
-    fetch();
-  }, [profile]);
+    }
+  };
+
+  useEffect(() => { fetchAll(); }, []);
 
   const handleCreate = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!profile) return;
     setCreating(true);
     try {
-      const { error } = await supabase.from('assignments').insert({
-        school_id: profile.school_id,
-        class_id: form.class_id,
-        title: form.title,
-        description: form.description || null,
-        due_date: form.due_date || null,
-        created_by: profile.id,
+      // Find teacher ID from profile if needed (the backend might already look it up)
+      await api.post('/assignments', {
+        ...form,
+        teacherId: profile.id
       });
-      if (error) throw error;
       toast.success('Assignment created');
       setDialogOpen(false);
-      setForm({ title: '', description: '', class_id: '', due_date: '' });
-      const { data } = await supabase.from('assignments').select('*').eq('created_by', profile.id).order('created_at', { ascending: false });
-      setAssignments((data as Assignment[]) || []);
+      setForm({ title: '', description: '', dueDate: '', classId: '', subjectId: '' });
+      fetchAll();
     } catch (err: any) {
-      toast.error(err.message);
+      toast.error('Failed to create: ' + err.message);
     } finally {
       setCreating(false);
     }
   };
 
-  const getClassName = (id: string) => {
-    const c = classes.find(cl => cl.id === id);
-    return c ? `${c.name}${c.section ? ` (${c.section})` : ''}` : '';
+  const handleDelete = async (id: string) => {
+    if (!confirm('Delete this assignment?')) return;
+    try {
+      await api.delete(`/assignments/${id}`);
+      toast.success('Deleted');
+      fetchAll();
+    } catch (err) {
+      toast.error('Failed to delete');
+    }
   };
 
   return (
     <div className="animate-fade-in">
       <PageHeader
         title="Assignments"
-        description="Create and manage assignments for your classes."
+        description="Create and manage student assignments."
         action={
           <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
             <DialogTrigger asChild>
-              <Button><Plus className="h-4 w-4 mr-2" strokeWidth={1.5} />Create Assignment</Button>
+              <Button><Plus className="h-4 w-4 mr-2" strokeWidth={1.5} />New Assignment</Button>
             </DialogTrigger>
             <DialogContent>
-              <DialogHeader><DialogTitle>Create Assignment</DialogTitle></DialogHeader>
+              <DialogHeader><DialogTitle>New Assignment</DialogTitle></DialogHeader>
               <form onSubmit={handleCreate} className="space-y-4">
                 <div className="space-y-2">
-                  <Label className="label-text">Title</Label>
+                  <Label>Title</Label>
                   <Input value={form.title} onChange={e => setForm(f => ({ ...f, title: e.target.value }))} required />
                 </div>
-                <div className="space-y-2">
-                  <Label className="label-text">Description</Label>
-                  <Textarea value={form.description} onChange={e => setForm(f => ({ ...f, description: e.target.value }))} />
+                <div className="grid grid-cols-2 gap-3">
+                    <div className="space-y-2">
+                        <Label>Class</Label>
+                        <Select value={form.classId} onValueChange={v => setForm(f => ({ ...f, classId: v }))}>
+                            <SelectTrigger><SelectValue placeholder="Select class" /></SelectTrigger>
+                            <SelectContent>{classes.map(c => <SelectItem key={c._id} value={c._id}>{c.name}</SelectItem>)}</SelectContent>
+                        </Select>
+                    </div>
+                    <div className="space-y-2">
+                        <Label>Subject</Label>
+                        <Select value={form.subjectId} onValueChange={v => setForm(f => ({ ...f, subjectId: v }))}>
+                            <SelectTrigger><SelectValue placeholder="Select subject" /></SelectTrigger>
+                            <SelectContent>{subjects.filter(s => (typeof s.classId === 'string' ? s.classId : (s as any).classId?._id) === form.classId).map(s => <SelectItem key={s._id} value={s._id}>{s.name}</SelectItem>)}</SelectContent>
+                        </Select>
+                    </div>
                 </div>
                 <div className="space-y-2">
-                  <Label className="label-text">Class</Label>
-                  <Select value={form.class_id} onValueChange={v => setForm(f => ({ ...f, class_id: v }))}>
-                    <SelectTrigger><SelectValue placeholder="Select class" /></SelectTrigger>
-                    <SelectContent>
-                      {classes.map(c => (
-                        <SelectItem key={c.id} value={c.id}>{c.name}{c.section ? ` (${c.section})` : ''}</SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                  <Label>Due Date</Label>
+                  <Input type="date" value={form.dueDate} onChange={e => setForm(f => ({ ...f, dueDate: e.target.value }))} required />
                 </div>
-                <div className="space-y-2">
-                  <Label className="label-text">Due Date</Label>
-                  <Input type="date" value={form.due_date} onChange={e => setForm(f => ({ ...f, due_date: e.target.value }))} />
-                </div>
-                <Button type="submit" className="w-full" disabled={creating || !form.class_id}>
+                <Button type="submit" className="w-full" disabled={creating}>
                   {creating ? 'Creating...' : 'Create Assignment'}
                 </Button>
               </form>
@@ -118,26 +124,28 @@ export default function TeacherAssignments() {
       />
 
       {loading ? (
-        <div className="flex justify-center py-12">
-          <div className="h-6 w-6 border-2 border-primary border-t-transparent rounded-full animate-spin" />
-        </div>
+        <div className="flex justify-center py-12"><div className="h-6 w-6 border-2 border-primary border-t-transparent rounded-full animate-spin" /></div>
       ) : assignments.length === 0 ? (
-        <EmptyState icon={<FileText className="h-6 w-6" />} title="No assignments yet" description="Create your first assignment." />
+        <EmptyState icon={<FileText className="h-6 w-6" />} title="No assignments" description="Create your first assignment to share with students." />
       ) : (
-        <div className="space-y-3">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {assignments.map(a => (
-            <div key={a.id} className="bg-card rounded-xl shadow-card p-5">
-              <div className="flex items-start justify-between">
-                <div>
-                  <h3 className="text-sm font-medium">{a.title}</h3>
-                  <p className="text-xs text-muted-foreground mt-1">{getClassName(a.class_id)}</p>
-                  {a.description && <p className="text-sm text-muted-foreground mt-2">{a.description}</p>}
+            <div key={a._id} className="bg-card rounded-xl shadow-card p-5 group">
+              <div className="flex justify-between items-start mb-4">
+                <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
+                  <FileText className="h-5 w-5" />
                 </div>
-                {a.due_date && (
-                  <span className="text-xs text-muted-foreground tabular-nums">
-                    Due: {new Date(a.due_date).toLocaleDateString()}
-                  </span>
-                )}
+                <Button variant="ghost" size="sm" onClick={() => handleDelete(a._id)} className="opacity-0 group-hover:opacity-100 transition-opacity">
+                  <Trash2 className="h-4 w-4 text-destructive" />
+                </Button>
+              </div>
+              <h3 className="font-semibold mb-1">{a.title}</h3>
+              <p className="text-xs text-muted-foreground mb-4">
+                {a.subjectId?.name} · {a.classId?.name}{a.classId?.section ? ` (${a.classId.section})` : ''}
+              </p>
+              <div className="flex items-center gap-2 text-xs text-warning font-medium">
+                <Calendar className="h-3.5 w-3.5" />
+                Due {new Date(a.dueDate).toLocaleDateString()}
               </div>
             </div>
           ))}

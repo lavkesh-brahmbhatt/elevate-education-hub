@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { supabase } from '@/integrations/supabase/client';
+import api from '@/services/api';
 import { useAuth } from '@/contexts/AuthContext';
 import { StatCard, PageHeader } from '@/components/DashboardWidgets';
 
@@ -9,24 +9,19 @@ export default function StudentDashboard() {
 
   useEffect(() => {
     if (!profile) return;
-    const fetch = async () => {
-      const [enrollments, attendance] = await Promise.all([
-        supabase.from('enrollments').select('class_id').eq('student_id', profile.id),
-        supabase.from('attendance').select('status').eq('student_id', profile.id),
-      ]);
-      const classIds = (enrollments.data || []).map(e => e.class_id);
-      let assignmentCount = 0;
-      if (classIds.length > 0) {
-        const { count } = await supabase.from('assignments').select('id', { count: 'exact', head: true }).in('class_id', classIds);
-        assignmentCount = count || 0;
+    const fetchStats = async () => {
+      try {
+        const { data } = await api.get('/stats/student');
+        setStats({
+          classes: data.classes || 0,
+          assignments: data.assignments || 0,
+          attendance: data.attendance || '—'
+        });
+      } catch (err) {
+        console.error('Error fetching student stats:', err);
       }
-      const total = (attendance.data || []).length;
-      const present = (attendance.data || []).filter(a => a.status === 'present').length;
-      const rate = total > 0 ? `${Math.round((present / total) * 100)}%` : '—';
-
-      setStats({ classes: classIds.length, assignments: assignmentCount, attendance: rate });
     };
-    fetch();
+    fetchStats();
   }, [profile]);
 
   return (

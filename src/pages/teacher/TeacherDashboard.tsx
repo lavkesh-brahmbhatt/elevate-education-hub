@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
-import { supabase } from '@/integrations/supabase/client';
+import api from '@/services/api';
 import { useAuth } from '@/contexts/AuthContext';
 import { StatCard, PageHeader } from '@/components/DashboardWidgets';
+import { toast } from 'sonner';
 
 export default function TeacherDashboard() {
   const { profile } = useAuth();
@@ -9,15 +10,20 @@ export default function TeacherDashboard() {
 
   useEffect(() => {
     if (!profile) return;
-    const fetch = async () => {
-      const [subjects, assignments] = await Promise.all([
-        supabase.from('subjects').select('id, class_id', { count: 'exact' }).eq('teacher_id', profile.id),
-        supabase.from('assignments').select('id', { count: 'exact', head: true }).eq('created_by', profile.id),
-      ]);
-      const uniqueClasses = new Set((subjects.data || []).map(s => s.class_id));
-      setStats({ classes: uniqueClasses.size, subjects: subjects.count || 0, assignments: assignments.count || 0 });
+    const fetchStats = async () => {
+      try {
+        const { data } = await api.get('/stats/teacher');
+        setStats({
+          classes: data.classes || 0,
+          subjects: data.subjects || 0,
+          assignments: data.assignments || 0
+        });
+      } catch (err) {
+        console.error('Error fetching teacher stats:', err);
+        // Fallback silence or toast
+      }
     };
-    fetch();
+    fetchStats();
   }, [profile]);
 
   return (

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { supabase } from '@/integrations/supabase/client';
+import api from '@/services/api';
 import { useAuth } from '@/contexts/AuthContext';
 import { PageHeader, EmptyState } from '@/components/DashboardWidgets';
 import { Button } from '@/components/ui/button';
@@ -10,9 +10,9 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { toast } from 'sonner';
 import { Plus, Award } from 'lucide-react';
 
-type Student = { id: string; full_name: string };
-type ClassItem = { id: string; name: string; section: string | null };
-type Subject = { id: string; name: string; class_id: string };
+type Student = { _id: string; name: string };
+type ClassItem = { _id: string; name: string; section: string | null };
+type Subject = { _id: string; name: string; classId: string };
 
 export default function TeacherMarks() {
   const { profile } = useAuth();
@@ -28,51 +28,42 @@ export default function TeacherMarks() {
 
   useEffect(() => {
     if (!profile) return;
-    supabase.from('subjects').select('id, name, class_id').eq('teacher_id', profile.id).then(({ data }) => {
-      setSubjects((data as Subject[]) || []);
-      const classIds = [...new Set((data || []).map(s => s.class_id))];
-      if (classIds.length > 0) {
-        supabase.from('classes').select('id, name, section').in('id', classIds).then(({ data }) => {
-          setClasses((data as ClassItem[]) || []);
-        });
-      }
-    });
+    // Fetch classes and subjects
+    api.get('/classes').then(({ data }) => setClasses(data || []));
+    api.get('/subjects').then(({ data }) => setSubjects(data || []));
   }, [profile]);
 
   useEffect(() => {
     if (!selectedClass) return;
-    supabase.from('enrollments').select('student_id').eq('class_id', selectedClass).then(async ({ data }) => {
-      if (!data?.length) { setStudents([]); return; }
-      const ids = data.map(e => e.student_id);
-      const { data: profiles } = await supabase.from('profiles').select('id, full_name').in('id', ids);
-      setStudents((profiles as Student[]) || []);
-    });
+    // Fetch students for this class
+    api.get(`/students?classId=${selectedClass}`).then(({ data }) => setStudents(data || []));
   }, [selectedClass]);
 
-  const filteredSubjects = subjects.filter(s => s.class_id === selectedClass);
+  const filteredSubjects = subjects.filter(s => {
+    const classIdStr = (typeof s.classId === 'string' ? s.classId : (s as any).classId?._id);
+    return classIdStr === selectedClass;
+  });
 
   const handleSave = async () => {
-    if (!profile || !selectedClass || !selectedSubject || !examName) return;
+    if (!selectedClass || !selectedSubject || !examName) return;
     setSaving(true);
     try {
       const records = students.map(s => ({
-        school_id: profile.school_id,
-        class_id: selectedClass,
-        subject_id: selectedSubject,
-        student_id: s.id,
-        exam_name: examName,
-        marks_obtained: parseFloat(marks[s.id]?.obtained || '0'),
-        total_marks: parseFloat(marks[s.id]?.total || '100'),
-        created_by: profile.id,
+        classId: selectedClass,
+        subjectId: selectedSubject,
+        studentId: s._id,
+        examType: examName === 'Final' ? 'Final' : 'Midterm', // Enum check
+        marksObtained: parseFloat(marks[s._id]?.obtained || '0'),
+        maxMarks: parseFloat(marks[s._id]?.total || '100'),
       }));
-      const { error } = await supabase.from('marks').insert(records);
-      if (error) throw error;
-      toast.success('Marks recorded');
+
+      await api.post('/marks/bulk', { records });
+      toast.success('Marks recorded successfully');
       setDialogOpen(false);
       setMarks({});
       setExamName('');
     } catch (err: any) {
-      toast.error(err.message);
+      toast.error('Failed to save marks');
     } finally {
       setSaving(false);
     }
@@ -96,7 +87,7 @@ export default function TeacherMarks() {
                   <Select value={selectedClass} onValueChange={v => { setSelectedClass(v); setSelectedSubject(''); }}>
                     <SelectTrigger><SelectValue placeholder="Select class" /></SelectTrigger>
                     <SelectContent>
-                      {classes.map(c => <SelectItem key={c.id} value={c.id}>{c.name}{c.section ? ` (${c.section})` : ''}</SelectItem>)}
+                      {classes.map(c => <SelectItem key={c._id} value={c._id}>{c.name}{c.section ? ` (${c.section})` : ''}</SelectItem>)}
                     </SelectContent>
                   </Select>
                 </div>
@@ -105,35 +96,41 @@ export default function TeacherMarks() {
                   <Select value={selectedSubject} onValueChange={setSelectedSubject}>
                     <SelectTrigger><SelectValue placeholder="Select subject" /></SelectTrigger>
                     <SelectContent>
-                      {filteredSubjects.map(s => <SelectItem key={s.id} value={s.id}>{s.name}</SelectItem>)}
+                      {filteredSubjects.map(s => <SelectItem key={s._id} value={s._id}>{s.name}</SelectItem>)}
                     </SelectContent>
                   </Select>
                 </div>
                 <div className="space-y-2">
                   <Label className="label-text">Exam Name</Label>
-                  <Input placeholder="Midterm Exam" value={examName} onChange={e => setExamName(e.target.value)} />
+                  <Select value={examName} onValueChange={setExamName}>
+                    <SelectTrigger><SelectValue placeholder="Select exam type" /></SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="Midterm">Midterm</SelectItem>
+                      <SelectItem value="Final">Final</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
 
                 {students.length > 0 && (
                   <div className="space-y-2">
                     <Label className="label-text">Student Marks</Label>
                     {students.map(s => (
-                      <div key={s.id} className="flex items-center gap-3">
-                        <span className="text-sm flex-1 truncate">{s.full_name}</span>
+                      <div key={s._id} className="flex items-center gap-3">
+                        <span className="text-sm flex-1 truncate">{s.name}</span>
                         <Input
                           type="number"
                           placeholder="Score"
                           className="w-20"
-                          value={marks[s.id]?.obtained || ''}
-                          onChange={e => setMarks(m => ({ ...m, [s.id]: { ...m[s.id], obtained: e.target.value, total: m[s.id]?.total || '100' } }))}
+                          value={marks[s._id]?.obtained || ''}
+                          onChange={e => setMarks(m => ({ ...m, [s._id]: { ...m[s._id], obtained: e.target.value, total: m[s._id]?.total || '100' } }))}
                         />
                         <span className="text-muted-foreground text-sm">/</span>
                         <Input
                           type="number"
                           placeholder="Total"
                           className="w-20"
-                          value={marks[s.id]?.total || '100'}
-                          onChange={e => setMarks(m => ({ ...m, [s.id]: { ...m[s.id], total: e.target.value, obtained: m[s.id]?.obtained || '0' } }))}
+                          value={marks[s._id]?.total || '100'}
+                          onChange={e => setMarks(m => ({ ...m, [s._id]: { ...m[s._id], total: e.target.value, obtained: m[s._id]?.obtained || '0' } }))}
                         />
                       </div>
                     ))}

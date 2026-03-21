@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
-import { supabase } from '@/integrations/supabase/client';
+import api from '@/services/api';
 import { useAuth } from '@/contexts/AuthContext';
 import { PageHeader, EmptyState } from '@/components/DashboardWidgets';
-import { FileText } from 'lucide-react';
+import { FileText, Calendar, Clock, AlertCircle } from 'lucide-react';
 
-type Assignment = { id: string; title: string; description: string | null; due_date: string | null; created_at: string };
+type Assignment = { _id: string; title: string; dueDate: string; classId: { name: string }; subjectId: { name: string } };
 
 export default function StudentAssignments() {
   const { profile } = useAuth();
@@ -13,37 +13,54 @@ export default function StudentAssignments() {
 
   useEffect(() => {
     if (!profile) return;
-    const fetch = async () => {
-      const { data: enrollments } = await supabase.from('enrollments').select('class_id').eq('student_id', profile.id);
-      if (!enrollments?.length) { setLoading(false); return; }
-      const classIds = enrollments.map(e => e.class_id);
-      const { data } = await supabase.from('assignments').select('*').in('class_id', classIds).order('created_at', { ascending: false });
+    api.get('/assignments').then(({ data }) => {
       setAssignments((data as Assignment[]) || []);
       setLoading(false);
-    };
-    fetch();
+    }).catch(err => {
+      console.error(err);
+      setLoading(false);
+    });
   }, [profile]);
 
   return (
     <div className="animate-fade-in">
-      <PageHeader title="Assignments" description="View assignments from your classes." />
+      <PageHeader title="My Assignments" description="View and track your upcoming assignments." />
+      
       {loading ? (
-        <div className="flex justify-center py-12"><div className="h-6 w-6 border-2 border-primary border-t-transparent rounded-full animate-spin" /></div>
+        <div className="flex justify-center py-12">
+          <div className="h-6 w-6 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+        </div>
       ) : assignments.length === 0 ? (
-        <EmptyState icon={<FileText className="h-6 w-6" />} title="No assignments" description="You have no assignments yet." />
+        <EmptyState 
+            icon={<FileText className="h-6 w-6" />} 
+            title="No assignments" 
+            description="Good job! You've caught up with all your current assignments." 
+        />
       ) : (
-        <div className="space-y-3">
-          {assignments.map(a => (
-            <div key={a.id} className="bg-card rounded-xl shadow-card p-5">
-              <div className="flex items-start justify-between">
-                <div>
-                  <h3 className="text-sm font-medium">{a.title}</h3>
-                  {a.description && <p className="text-sm text-muted-foreground mt-1">{a.description}</p>}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {assignments.map(a => {
+            const isLate = new Date() > new Date(a.dueDate);
+            return (
+              <div key={a._id} className="bg-card rounded-xl shadow-card p-6 border border-border transition-all hover:shadow-lg group">
+                <div className="flex items-start justify-between mb-4">
+                  <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
+                    <FileText className="h-5 w-5" />
+                  </div>
+                  <div className={`px-2 py-1 rounded text-[10px] uppercase font-bold tracking-wider ${isLate ? 'bg-destructive/10 text-destructive' : 'bg-success/10 text-success'}`}>
+                    {isLate ? 'Past Due' : 'Active'}
+                  </div>
                 </div>
-                {a.due_date && <span className="text-xs text-muted-foreground tabular-nums">Due: {new Date(a.due_date).toLocaleDateString()}</span>}
+                <h3 className="font-semibold text-lg mb-1">{a.title}</h3>
+                <p className="text-sm text-muted-foreground mb-4">
+                  {a.subjectId?.name} · {a.classId?.name}
+                </p>
+                <div className="flex items-center gap-2 text-xs font-medium text-warning">
+                  <Calendar className="h-3.5 w-3.5" />
+                  Due {new Date(a.dueDate).toLocaleDateString()}
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
     </div>

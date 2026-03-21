@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { supabase } from '@/integrations/supabase/client';
+import api from '@/services/api';
 import { useAuth } from '@/contexts/AuthContext';
 import { PageHeader, EmptyState } from '@/components/DashboardWidgets';
 import { Button } from '@/components/ui/button';
@@ -9,7 +9,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { toast } from 'sonner';
 import { Plus, Users, Trash2 } from 'lucide-react';
 
-type Profile = { id: string; full_name: string; email: string | null; created_at: string };
+type Profile = { _id: string; name: string; email: string; rollNumber: string; className: string; createdAt: string };
 
 export default function ManageStudents() {
   const { profile } = useAuth();
@@ -18,40 +18,68 @@ export default function ManageStudents() {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [form, setForm] = useState({ name: '', email: '', password: '' });
   const [creating, setCreating] = useState(false);
+  const [classes, setClasses] = useState<{ _id: string; name: string }[]>([]);
 
-  const fetchStudents = async () => {
+  const fetchData = async () => {
     if (!profile) return;
-    const { data } = await supabase
-      .from('profiles')
-      .select('*')
-      .eq('school_id', profile.school_id)
-      .eq('role', 'student')
-      .order('created_at', { ascending: false });
-    setStudents((data as Profile[]) || []);
-    setLoading(false);
+    try {
+      setLoading(true);
+      const [studentRes, classRes] = await Promise.all([
+        api.get('/students'),
+        api.get('/classes')
+      ]);
+      setStudents(studentRes.data || []);
+      setClasses(classRes.data || []);
+    } catch (err) {
+      console.error('Data fetch error:', err);
+      toast.error('Failed to load students or classes');
+    } finally {
+      setLoading(false);
+    }
   };
 
-  useEffect(() => { fetchStudents(); }, [profile]);
+  useEffect(() => { fetchData(); }, [profile]);
 
   const handleCreate = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!profile) return;
+    
+    if (classes.length === 0) {
+      toast.error('Please create at least one class first (Classes menu)');
+      return;
+    }
+
     setCreating(true);
     try {
-      const { data, error } = await supabase.functions.invoke('create-user', {
-        body: { email: form.email, password: form.password, full_name: form.name, role: 'student' },
+      await api.post('/students', {
+        name: form.name,
+        email: form.email,
+        password: form.password,
+        rollNumber: `R-${Math.floor(Math.random() * 900) + 100}`,
+        classId: classes[0]._id, // Automatically use the first class found
+        age: 15
       });
-      if (error) throw error;
-      if (data?.error) throw new Error(data.error);
-
       toast.success('Student added successfully');
       setDialogOpen(false);
       setForm({ name: '', email: '', password: '' });
-      fetchStudents();
+      fetchData();
     } catch (err: any) {
-      toast.error(err.message);
+      console.error("Student create error:", err.response?.data || err.message);
+      toast.error('Failed to create student: ' + (err.response?.data?.error || err.message));
     } finally {
       setCreating(false);
+    }
+  };
+
+  const handleDelete = async (id: string) => {
+    if (!confirm('Are you sure you want to delete this student and their login account?')) return;
+    try {
+      await api.delete(`/students/${id}`);
+      toast.success('Student deleted');
+      fetchData();
+    } catch (err) {
+      console.error(err);
+      toast.error('Failed to delete student');
     }
   };
 
@@ -108,16 +136,12 @@ export default function ManageStudents() {
             </thead>
             <tbody>
               {students.map((s) => (
-                <tr key={s.id} className="border-b border-border last:border-0 hover:bg-subtle/50 transition-colors">
-                  <td className="py-3 px-4 text-sm font-medium">{s.full_name}</td>
-                  <td className="py-3 px-4 text-sm text-muted-foreground">{s.email}</td>
-                  <td className="py-3 px-4 text-sm text-muted-foreground tabular-nums">{new Date(s.created_at).toLocaleDateString()}</td>
+                <tr key={s._id} className="border-b border-border last:border-0 hover:bg-subtle/50 transition-colors">
+                  <td className="py-3 px-4 text-sm font-medium">{s.name}</td>
+                  <td className="py-3 px-4 text-sm text-muted-foreground">{s.email || 'N/A'}</td>
+                  <td className="py-3 px-4 text-sm text-muted-foreground tabular-nums">{s.createdAt ? new Date(s.createdAt).toLocaleDateString() : 'N/A'}</td>
                   <td className="py-3 px-4">
-                    <Button variant="ghost" size="sm" onClick={async () => {
-                      await supabase.from('profiles').delete().eq('id', s.id);
-                      toast.success('Student removed');
-                      fetchStudents();
-                    }}>
+                    <Button variant="ghost" size="sm" onClick={() => handleDelete(s._id)}>
                       <Trash2 className="h-4 w-4 text-destructive" strokeWidth={1.5} />
                     </Button>
                   </td>

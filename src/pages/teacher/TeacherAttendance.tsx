@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { supabase } from '@/integrations/supabase/client';
+import api from '@/services/api';
 import { useAuth } from '@/contexts/AuthContext';
 import { PageHeader, EmptyState } from '@/components/DashboardWidgets';
 import { Button } from '@/components/ui/button';
@@ -7,8 +7,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { toast } from 'sonner';
 import { Calendar, Check, X, Clock, AlertCircle } from 'lucide-react';
 
-type Student = { id: string; full_name: string };
-type ClassItem = { id: string; name: string; section: string | null };
+type Student = { _id: string; name: string };
+type ClassItem = { _id: string; name: string; section: string | null };
 
 export default function TeacherAttendance() {
   const { profile } = useAuth();
@@ -21,40 +21,34 @@ export default function TeacherAttendance() {
 
   useEffect(() => {
     if (!profile) return;
-    supabase.from('subjects').select('class_id').eq('teacher_id', profile.id).then(({ data }) => {
-      const classIds = [...new Set((data || []).map(s => s.class_id))];
-      if (classIds.length > 0) {
-        supabase.from('classes').select('id, name, section').in('id', classIds).then(({ data }) => {
-          setClasses((data as ClassItem[]) || []);
-        });
-      }
+    // Fetch classes for this teacher (or all for now in this demo)
+    api.get('/classes').then(({ data }) => {
+      setClasses(data || []);
     });
   }, [profile]);
 
   useEffect(() => {
-    if (!selectedClass || !profile) return;
-    const fetchStudents = async () => {
-      const { data: enrollments } = await supabase
-        .from('enrollments')
-        .select('student_id')
-        .eq('class_id', selectedClass);
-      if (!enrollments?.length) { setStudents([]); return; }
-      const studentIds = enrollments.map(e => e.student_id);
-      const { data: profiles } = await supabase.from('profiles').select('id, full_name').in('id', studentIds);
-      setStudents((profiles as Student[]) || []);
+    if (!selectedClass) return;
+    
+    const fetchData = async () => {
+      try {
+        // Fetch students for this class
+        const studentRes = await api.get(`/students?classId=${selectedClass}`);
+        setStudents(studentRes.data || []);
 
-      // Load existing attendance
-      const { data: existing } = await supabase
-        .from('attendance')
-        .select('student_id, status')
-        .eq('class_id', selectedClass)
-        .eq('date', date);
-      const att: Record<string, string> = {};
-      (existing || []).forEach(a => { att[a.student_id] = a.status; });
-      setAttendance(att);
+        // Fetch existing attendance
+        const attendanceRes = await api.get(`/attendance?date=${date}&classId=${selectedClass}`);
+        const attMap: Record<string, string> = {};
+        attendanceRes.data.forEach((a: any) => {
+          attMap[a.studentId._id || a.studentId] = a.status;
+        });
+        setAttendance(attMap);
+      } catch (err) {
+        toast.error('Failed to load data');
+      }
     };
-    fetchStudents();
-  }, [selectedClass, profile, date]);
+    fetchData();
+  }, [selectedClass, date]);
 
   const toggleStatus = (studentId: string) => {
     setAttendance(prev => {
@@ -66,25 +60,20 @@ export default function TeacherAttendance() {
   };
 
   const saveAttendance = async () => {
-    if (!profile || !selectedClass) return;
+    if (!selectedClass) return;
     setSaving(true);
     try {
       const records = students.map(s => ({
-        school_id: profile.school_id,
-        class_id: selectedClass,
-        student_id: s.id,
+        classId: selectedClass,
+        studentId: s._id,
         date,
-        status: attendance[s.id] || 'present',
-        marked_by: profile.id,
+        status: attendance[s._id] || 'present',
       }));
 
-      const { error } = await supabase.from('attendance').upsert(records, {
-        onConflict: 'class_id,student_id,date',
-      });
-      if (error) throw error;
-      toast.success('Attendance saved');
+      await api.post('/attendance/bulk', { records });
+      toast.success('Attendance saved successfully');
     } catch (err: any) {
-      toast.error(err.message);
+      toast.error('Failed to save attendance');
     } finally {
       setSaving(false);
     }
@@ -109,7 +98,7 @@ export default function TeacherAttendance() {
           <SelectTrigger><SelectValue placeholder="Select a class" /></SelectTrigger>
           <SelectContent>
             {classes.map(c => (
-              <SelectItem key={c.id} value={c.id}>{c.name}{c.section ? ` (${c.section})` : ''}</SelectItem>
+              <SelectItem key={c._id} value={c._id}>{c.name}{c.section ? ` (${c.section})` : ''}</SelectItem>
             ))}
           </SelectContent>
         </Select>
@@ -118,7 +107,7 @@ export default function TeacherAttendance() {
       {!selectedClass ? (
         <EmptyState icon={<Calendar className="h-6 w-6" />} title="Select a class" description="Choose a class to mark attendance." />
       ) : students.length === 0 ? (
-        <EmptyState icon={<Calendar className="h-6 w-6" />} title="No students enrolled" description="No students are enrolled in this class." />
+        <EmptyState icon={<Calendar className="h-6 w-6" />} title="No students found" description="No students found for this class." />
       ) : (
         <>
           <div className="bg-card rounded-xl shadow-card overflow-hidden mb-4">
@@ -131,10 +120,10 @@ export default function TeacherAttendance() {
               </thead>
               <tbody>
                 {students.map(s => {
-                  const status = attendance[s.id] || 'present';
+                  const status = attendance[s._id] || 'present';
                   return (
-                    <tr key={s.id} className="border-b border-border last:border-0 hover:bg-subtle/50 transition-colors cursor-pointer" onClick={() => toggleStatus(s.id)}>
-                      <td className="py-3 px-4 text-sm font-medium">{s.full_name}</td>
+                    <tr key={s._id} className="border-b border-border last:border-0 hover:bg-subtle/50 transition-colors cursor-pointer" onClick={() => toggleStatus(s._id)}>
+                      <td className="py-3 px-4 text-sm font-medium">{s.name}</td>
                       <td className="py-3 px-4">
                         <div className="flex items-center justify-center gap-2">
                           {statusIcon(status)}

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { supabase } from '@/integrations/supabase/client';
+import api from '@/services/api';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -23,9 +23,6 @@ export default function RegisterPage() {
   const [adminEmail, setAdminEmail] = useState('');
   const [adminPassword, setAdminPassword] = useState('');
 
-  const generateSlug = (name: string) =>
-    name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
-
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
     if (step === 'school') {
@@ -39,51 +36,20 @@ export default function RegisterPage() {
 
     setLoading(true);
     try {
-      // 1. Sign up user
-      const { data: authData, error: authError } = await supabase.auth.signUp({
-        email: adminEmail,
-        password: adminPassword,
-        options: { emailRedirectTo: window.location.origin },
+      // Create school and admin on MongoDB backend
+      const res = await api.post('/auth/register', {
+        schoolName,
+        adminName,
+        adminEmail,
+        adminPassword
       });
-      if (authError) throw authError;
-      if (!authData.user) throw new Error('Registration failed');
 
-      // 2. Create school
-      const slug = generateSlug(schoolName) + '-' + Date.now().toString(36);
-      const { data: school, error: schoolError } = await supabase
-        .from('schools')
-        .insert({
-          name: schoolName,
-          slug,
-          address: schoolAddress || null,
-          phone: schoolPhone || null,
-          email: schoolEmail || null,
-        })
-        .select()
-        .single();
-      if (schoolError) throw schoolError;
-
-      // 3. Create profile
-      const { error: profileError } = await supabase.from('profiles').insert({
-        id: authData.user.id,
-        school_id: school.id,
-        role: 'admin',
-        full_name: adminName,
-        email: adminEmail,
-      });
-      if (profileError) throw profileError;
-
-      // 4. Create user role
-      const { error: roleError } = await supabase.from('user_roles').insert({
-        user_id: authData.user.id,
-        role: 'admin',
-      });
-      if (roleError) throw roleError;
-
-      toast.success('School registered successfully! Please check your email to verify your account.');
+      toast.success('Registration successful! Use your school identifier: ' + res.data.tenantId);
+      localStorage.setItem('tenantId', res.data.tenantId);
       navigate('/login');
     } catch (err: any) {
-      toast.error(err.message || 'Registration failed');
+        console.error(err);
+      toast.error(err.response?.data?.error || 'Registration failed');
     } finally {
       setLoading(false);
     }

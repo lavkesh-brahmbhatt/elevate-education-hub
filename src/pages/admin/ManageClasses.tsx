@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { supabase } from '@/integrations/supabase/client';
+import api from '@/services/api';
 import { useAuth } from '@/contexts/AuthContext';
 import { PageHeader, EmptyState } from '@/components/DashboardWidgets';
 import { Button } from '@/components/ui/button';
@@ -9,7 +9,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { toast } from 'sonner';
 import { Plus, BookOpen, Trash2 } from 'lucide-react';
 
-type ClassItem = { id: string; name: string; section: string | null; grade_level: string | null; created_at: string };
+type ClassItem = { _id: string; name: string; section: string | null; grade_level: string | null; createdAt: string };
 
 export default function ManageClasses() {
   const { profile } = useAuth();
@@ -21,13 +21,15 @@ export default function ManageClasses() {
 
   const fetchClasses = async () => {
     if (!profile) return;
-    const { data } = await supabase
-      .from('classes')
-      .select('*')
-      .eq('school_id', profile.school_id)
-      .order('created_at', { ascending: false });
-    setClasses((data as ClassItem[]) || []);
-    setLoading(false);
+    try {
+      const { data } = await api.get('/classes');
+      setClasses((data as ClassItem[]) || []);
+    } catch (err) {
+      console.error('Error fetching classes:', err);
+      toast.error('Failed to load classes');
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => { fetchClasses(); }, [profile]);
@@ -37,21 +39,29 @@ export default function ManageClasses() {
     if (!profile) return;
     setCreating(true);
     try {
-      const { error } = await supabase.from('classes').insert({
-        school_id: profile.school_id,
+      await api.post('/classes', {
         name: form.name,
         section: form.section || null,
         grade_level: form.grade_level || null,
       });
-      if (error) throw error;
       toast.success('Class created');
       setDialogOpen(false);
       setForm({ name: '', section: '', grade_level: '' });
       fetchClasses();
     } catch (err: any) {
-      toast.error(err.message);
+      toast.error(err.response?.data?.message || err.message);
     } finally {
       setCreating(false);
+    }
+  };
+
+  const handleDelete = async (id: string) => {
+    try {
+      await api.delete(`/classes/${id}`);
+      toast.success('Class deleted');
+      fetchClasses();
+    } catch (err) {
+      toast.error('Failed to delete class');
     }
   };
 
@@ -100,7 +110,7 @@ export default function ManageClasses() {
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {classes.map((c) => (
-            <div key={c.id} className="bg-card rounded-xl shadow-card p-5 group">
+            <div key={c._id} className="bg-card rounded-xl shadow-card p-5 group">
               <div className="flex items-start justify-between">
                 <div>
                   <h3 className="text-sm font-medium">{c.name}</h3>
@@ -112,11 +122,7 @@ export default function ManageClasses() {
                   variant="ghost"
                   size="sm"
                   className="opacity-0 group-hover:opacity-100 transition-opacity"
-                  onClick={async () => {
-                    await supabase.from('classes').delete().eq('id', c.id);
-                    toast.success('Class deleted');
-                    fetchClasses();
-                  }}
+                  onClick={() => handleDelete(c._id)}
                 >
                   <Trash2 className="h-4 w-4 text-destructive" strokeWidth={1.5} />
                 </Button>

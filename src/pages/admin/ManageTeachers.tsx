@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { supabase } from '@/integrations/supabase/client';
+import api from '@/services/api';
 import { useAuth } from '@/contexts/AuthContext';
 import { PageHeader, EmptyState } from '@/components/DashboardWidgets';
 import { Button } from '@/components/ui/button';
@@ -10,11 +10,11 @@ import { toast } from 'sonner';
 import { Plus, Users, Trash2 } from 'lucide-react';
 
 type Profile = {
-  id: string;
-  full_name: string;
+  _id: string;
+  name: string;
   email: string | null;
   role: string;
-  created_at: string;
+  createdAt: string;
 };
 
 export default function ManageTeachers() {
@@ -27,14 +27,15 @@ export default function ManageTeachers() {
 
   const fetchTeachers = async () => {
     if (!profile) return;
-    const { data } = await supabase
-      .from('profiles')
-      .select('*')
-      .eq('school_id', profile.school_id)
-      .eq('role', 'teacher')
-      .order('created_at', { ascending: false });
-    setTeachers((data as Profile[]) || []);
-    setLoading(false);
+    try {
+      const { data } = await api.get('/teachers');
+      setTeachers(data || []);
+    } catch (err) {
+      console.error('Error fetching teachers:', err);
+      toast.error('Failed to load teachers');
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => { fetchTeachers(); }, [profile]);
@@ -44,20 +45,33 @@ export default function ManageTeachers() {
     if (!profile) return;
     setCreating(true);
     try {
-      const { data, error } = await supabase.functions.invoke('create-user', {
-        body: { email: form.email, password: form.password, full_name: form.name, role: 'teacher' },
+      await api.post('/teachers', {
+        name: form.name,
+        email: form.email,
+        password: form.password,
+        subject: 'General', // Default for now
+        subjects: [],
+        classes: []
       });
-      if (error) throw error;
-      if (data?.error) throw new Error(data.error);
-
       toast.success('Teacher added successfully');
       setDialogOpen(false);
       setForm({ name: '', email: '', password: '' });
       fetchTeachers();
     } catch (err: any) {
-      toast.error(err.message);
+      toast.error('Failed to create teacher: ' + err.message);
     } finally {
       setCreating(false);
+    }
+  };
+
+  const handleDelete = async (id: string) => {
+    if (!confirm('Are you sure you want to delete this teacher and their login account?')) return;
+    try {
+      await api.delete(`/teachers/${id}`);
+      toast.success('Teacher deleted');
+      fetchTeachers();
+    } catch (err) {
+      toast.error('Failed to delete teacher');
     }
   };
 
@@ -114,21 +128,17 @@ export default function ManageTeachers() {
             </thead>
             <tbody>
               {teachers.map((t) => (
-                <tr key={t.id} className="border-b border-border last:border-0 hover:bg-subtle/50 transition-colors">
-                  <td className="py-3 px-4 text-sm font-medium">{t.full_name}</td>
+                <tr key={t._id} className="border-b border-border last:border-0 hover:bg-subtle/50 transition-colors">
+                  <td className="py-3 px-4 text-sm font-medium">{t.name}</td>
                   <td className="py-3 px-4 text-sm text-muted-foreground">{t.email}</td>
                   <td className="py-3 px-4 text-sm text-muted-foreground tabular-nums">
-                    {new Date(t.created_at).toLocaleDateString()}
+                    {t.createdAt ? new Date(t.createdAt).toLocaleDateString() : 'N/A'}
                   </td>
                   <td className="py-3 px-4">
                     <Button
                       variant="ghost"
                       size="sm"
-                      onClick={async () => {
-                        await supabase.from('profiles').delete().eq('id', t.id);
-                        toast.success('Teacher removed');
-                        fetchTeachers();
-                      }}
+                      onClick={() => handleDelete(t._id)}
                     >
                       <Trash2 className="h-4 w-4 text-destructive" strokeWidth={1.5} />
                     </Button>

@@ -19,6 +19,10 @@ import ManageStudents from "./pages/admin/ManageStudents";
 import ManageClasses from "./pages/admin/ManageClasses";
 import ManageSubjects from "./pages/admin/ManageSubjects";
 import AnalyticsPage from "./pages/admin/AnalyticsPage";
+import SettingsPage from "./pages/admin/SettingsPage";
+import Notice from "./pages/Notice";
+import Analytics from "./pages/Analytics";
+import Complaint from "./pages/Complaint";
 
 // Teacher pages
 import TeacherAttendance from "./pages/teacher/TeacherAttendance";
@@ -82,6 +86,13 @@ const App = () => (
             <Route path="/dashboard/materials" element={<ProtectedRoute allowedRoles={['teacher', 'student']}><DashboardWrapper><MaterialsPage /></DashboardWrapper></ProtectedRoute>} />
             <Route path="/dashboard/notices" element={<ProtectedRoute><DashboardWrapper><NoticePage /></DashboardWrapper></ProtectedRoute>} />
             <Route path="/dashboard/complaints" element={<ProtectedRoute allowedRoles={['admin', 'student', 'parent']}><DashboardWrapper><ComplaintPage /></DashboardWrapper></ProtectedRoute>} />
+
+            <Route path="/dashboard/settings" element={<ProtectedRoute allowedRoles={['admin']}><DashboardWrapper><SettingsPage /></DashboardWrapper></ProtectedRoute>} />
+            
+            {/* New Routes */}
+            <Route path="/notice" element={<ProtectedRoute><DashboardWrapper><Notice /></DashboardWrapper></ProtectedRoute>} />
+            <Route path="/analytics" element={<ProtectedRoute><DashboardWrapper><Analytics /></DashboardWrapper></ProtectedRoute>} />
+            <Route path="/complaints" element={<ProtectedRoute><DashboardWrapper><Complaint /></DashboardWrapper></ProtectedRoute>} />
 
             <Route path="*" element={<NotFound />} />
           </Routes>

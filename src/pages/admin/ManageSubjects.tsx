@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { supabase } from '@/integrations/supabase/client';
+import api from '@/services/api';
 import { useAuth } from '@/contexts/AuthContext';
 import { PageHeader, EmptyState } from '@/components/DashboardWidgets';
 import { Button } from '@/components/ui/button';
@@ -10,9 +10,9 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { toast } from 'sonner';
 import { Plus, ClipboardList, Trash2 } from 'lucide-react';
 
-type Subject = { id: string; name: string; class_id: string; teacher_id: string | null; created_at: string };
-type ClassItem = { id: string; name: string; section: string | null };
-type Teacher = { id: string; full_name: string };
+type Subject = { _id: string; name: string; classId: any; teacherId: any; createdAt: string };
+type ClassItem = { _id: string; name: string; section: string | null };
+type Teacher = { _id: string; name: string };
 
 export default function ManageSubjects() {
   const { profile } = useAuth();
@@ -21,20 +21,26 @@ export default function ManageSubjects() {
   const [teachers, setTeachers] = useState<Teacher[]>([]);
   const [loading, setLoading] = useState(true);
   const [dialogOpen, setDialogOpen] = useState(false);
-  const [form, setForm] = useState({ name: '', class_id: '', teacher_id: '' });
+  const [form, setForm] = useState({ name: '', classId: '', teacherId: '' });
   const [creating, setCreating] = useState(false);
 
   const fetchData = async () => {
     if (!profile) return;
-    const [subRes, classRes, teachRes] = await Promise.all([
-      supabase.from('subjects').select('*').eq('school_id', profile.school_id).order('created_at', { ascending: false }),
-      supabase.from('classes').select('id, name, section').eq('school_id', profile.school_id),
-      supabase.from('profiles').select('id, full_name').eq('school_id', profile.school_id).eq('role', 'teacher'),
-    ]);
-    setSubjects((subRes.data as Subject[]) || []);
-    setClasses((classRes.data as ClassItem[]) || []);
-    setTeachers((teachRes.data as Teacher[]) || []);
-    setLoading(false);
+    try {
+      const [subRes, classRes, teachRes] = await Promise.all([
+        api.get('/subjects'),
+        api.get('/classes'),
+        api.get('/teachers'),
+      ]);
+      setSubjects(subRes.data || []);
+      setClasses(classRes.data || []);
+      setTeachers(teachRes.data || []);
+    } catch (err) {
+      console.error('Error fetching data:', err);
+      toast.error('Failed to load data');
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => { fetchData(); }, [profile]);
@@ -44,32 +50,30 @@ export default function ManageSubjects() {
     if (!profile) return;
     setCreating(true);
     try {
-      const { error } = await supabase.from('subjects').insert({
-        school_id: profile.school_id,
+      await api.post('/subjects', {
         name: form.name,
-        class_id: form.class_id,
-        teacher_id: form.teacher_id || null,
+        classId: form.classId,
+        teacherId: form.teacherId || null,
       });
-      if (error) throw error;
       toast.success('Subject added');
       setDialogOpen(false);
-      setForm({ name: '', class_id: '', teacher_id: '' });
+      setForm({ name: '', classId: '', teacherId: '' });
       fetchData();
     } catch (err: any) {
-      toast.error(err.message);
+      toast.error(err.response?.data?.message || err.message);
     } finally {
       setCreating(false);
     }
   };
 
-  const getClassName = (classId: string) => {
-    const c = classes.find(cl => cl.id === classId);
-    return c ? `${c.name}${c.section ? ` (${c.section})` : ''}` : '';
-  };
-
-  const getTeacherName = (teacherId: string | null) => {
-    if (!teacherId) return 'Unassigned';
-    return teachers.find(t => t.id === teacherId)?.full_name || '';
+  const handleDelete = async (id: string) => {
+    try {
+      await api.delete(`/subjects/${id}`);
+      toast.success('Subject removed');
+      fetchData();
+    } catch (err) {
+      toast.error('Failed to delete subject');
+    }
   };
 
   return (
@@ -91,27 +95,27 @@ export default function ManageSubjects() {
                 </div>
                 <div className="space-y-2">
                   <Label className="label-text">Class</Label>
-                  <Select value={form.class_id} onValueChange={v => setForm(f => ({ ...f, class_id: v }))}>
+                  <Select value={form.classId} onValueChange={v => setForm(f => ({ ...f, classId: v }))}>
                     <SelectTrigger><SelectValue placeholder="Select class" /></SelectTrigger>
                     <SelectContent>
                       {classes.map(c => (
-                        <SelectItem key={c.id} value={c.id}>{c.name}{c.section ? ` (${c.section})` : ''}</SelectItem>
+                        <SelectItem key={c._id} value={c._id}>{c.name}{c.section ? ` (${c.section})` : ''}</SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
                 </div>
                 <div className="space-y-2">
                   <Label className="label-text">Assign Teacher</Label>
-                  <Select value={form.teacher_id} onValueChange={v => setForm(f => ({ ...f, teacher_id: v }))}>
+                  <Select value={form.teacherId} onValueChange={v => setForm(f => ({ ...f, teacherId: v }))}>
                     <SelectTrigger><SelectValue placeholder="Select teacher (optional)" /></SelectTrigger>
                     <SelectContent>
                       {teachers.map(t => (
-                        <SelectItem key={t.id} value={t.id}>{t.full_name}</SelectItem>
+                        <SelectItem key={t._id} value={t._id}>{t.name}</SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
                 </div>
-                <Button type="submit" className="w-full" disabled={creating || !form.class_id}>
+                <Button type="submit" className="w-full" disabled={creating || !form.classId}>
                   {creating ? 'Creating...' : 'Add Subject'}
                 </Button>
               </form>
@@ -139,16 +143,14 @@ export default function ManageSubjects() {
             </thead>
             <tbody>
               {subjects.map(s => (
-                <tr key={s.id} className="border-b border-border last:border-0 hover:bg-subtle/50 transition-colors">
+                <tr key={s._id} className="border-b border-border last:border-0 hover:bg-subtle/50 transition-colors">
                   <td className="py-3 px-4 text-sm font-medium">{s.name}</td>
-                  <td className="py-3 px-4 text-sm text-muted-foreground">{getClassName(s.class_id)}</td>
-                  <td className="py-3 px-4 text-sm text-muted-foreground">{getTeacherName(s.teacher_id)}</td>
+                  <td className="py-3 px-4 text-sm text-muted-foreground">
+                    {s.classId?.name} {s.classId?.section ? `(${s.classId.section})` : ''}
+                  </td>
+                  <td className="py-3 px-4 text-sm text-muted-foreground">{s.teacherId?.name || 'Unassigned'}</td>
                   <td className="py-3 px-4">
-                    <Button variant="ghost" size="sm" onClick={async () => {
-                      await supabase.from('subjects').delete().eq('id', s.id);
-                      toast.success('Subject removed');
-                      fetchData();
-                    }}>
+                    <Button variant="ghost" size="sm" onClick={() => handleDelete(s._id)}>
                       <Trash2 className="h-4 w-4 text-destructive" strokeWidth={1.5} />
                     </Button>
                   </td>

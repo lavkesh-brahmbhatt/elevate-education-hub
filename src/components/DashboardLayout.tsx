@@ -4,7 +4,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { NavLink } from '@/components/NavLink';
 import {
   GraduationCap, LayoutDashboard, Users, BookOpen, ClipboardList,
-  FileText, BarChart3, LogOut, Calendar, Upload, Award, Bell, MessageSquare
+  FileText, BarChart3, LogOut, Calendar, Upload, Award, Bell, MessageSquare, Settings
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
@@ -17,6 +17,8 @@ const adminNav = [
   { title: 'Notices', url: '/dashboard/notices', icon: Bell },
   { title: 'Complaints', url: '/dashboard/complaints', icon: MessageSquare },
   { title: 'Analytics', url: '/dashboard/analytics', icon: BarChart3 },
+  { title: 'Materials', url: '/dashboard/materials', icon: Upload },
+  { title: 'Settings', url: '/dashboard/settings', icon: Settings },
 ];
 
 const teacherNav = [
@@ -27,6 +29,7 @@ const teacherNav = [
   { title: 'Marks', url: '/dashboard/marks', icon: Award },
   { title: 'Materials', url: '/dashboard/materials', icon: Upload },
   { title: 'Notices', url: '/dashboard/notices', icon: Bell },
+  { title: 'Complaints', url: '/dashboard/complaints', icon: MessageSquare },
 ];
 
 const studentNav = [
@@ -46,6 +49,7 @@ const parentNav = [
   { title: 'Marks', url: '/dashboard/child-marks', icon: Award },
   { title: 'Notices', url: '/dashboard/notices', icon: Bell },
   { title: 'Complaints', url: '/dashboard/complaints', icon: MessageSquare },
+  { title: 'Assignments', url: '/dashboard/child-assignments', icon: FileText },
 ];
 
 function getNavItems(role: string) {

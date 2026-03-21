@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
+import api from '@/services/api';
 import { StatCard, PageHeader } from '@/components/DashboardWidgets';
 import { Users, BookOpen, ClipboardList } from 'lucide-react';
 
@@ -11,23 +11,21 @@ export default function AdminDashboard() {
   const [stats, setStats] = useState({ students: 0, teachers: 0, classes: 0, subjects: 0 });
 
   useEffect(() => {
-    if (!profile) return;
     const fetchStats = async () => {
-      const [students, teachers, classes, subjects] = await Promise.all([
-        supabase.from('profiles').select('id', { count: 'exact', head: true }).eq('school_id', profile.school_id).eq('role', 'student'),
-        supabase.from('profiles').select('id', { count: 'exact', head: true }).eq('school_id', profile.school_id).eq('role', 'teacher'),
-        supabase.from('classes').select('id', { count: 'exact', head: true }).eq('school_id', profile.school_id),
-        supabase.from('subjects').select('id', { count: 'exact', head: true }).eq('school_id', profile.school_id),
-      ]);
-      setStats({
-        students: students.count || 0,
-        teachers: teachers.count || 0,
-        classes: classes.count || 0,
-        subjects: subjects.count || 0,
-      });
+      try {
+        const { data } = await api.get('/stats');
+        setStats({
+          students: data.students || 0,
+          teachers: data.teachers || 0,
+          classes: data.classes || 0,
+          subjects: data.subjects || 0,
+        });
+      } catch (err) {
+        console.error('Error fetching dashboard stats:', err);
+      }
     };
     fetchStats();
-  }, [profile]);
+  }, []);
 
   return (
     <div className="animate-fade-in">

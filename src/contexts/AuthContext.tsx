@@ -2,7 +2,7 @@ import { createContext, useContext, useEffect, useState, ReactNode } from 'react
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
 
-type UserProfile = {
+export type UserProfile = {
   id: string;
   school_id: string;
   role: 'admin' | 'teacher' | 'student' | 'parent';
@@ -12,7 +12,7 @@ type UserProfile = {
 };
 
 type AuthContextType = {
-  user: User | null;
+  user: any | null;
   session: Session | null;
   profile: UserProfile | null;
   loading: boolean;
@@ -36,6 +36,25 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // Check Local Storage for Multi-Tenant Login
+    const localUserStr = localStorage.getItem('user');
+    const localToken = localStorage.getItem('token');
+    
+    if (localUserStr && localToken) {
+      const localUser = JSON.parse(localUserStr);
+      setUser(localUser);
+      setProfile({
+        id: localUser.id,
+        role: localUser.role.toLowerCase(), // Force lowercase to match 'admin' | 'teacher' etc
+        full_name: localUser.name,
+        email: localUser.email,
+        school_id: localStorage.getItem('tenantId') || 'unknown',
+        avatar_url: null
+      } as UserProfile);
+      setLoading(false);
+      return;
+    }
+
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (_event, session) => {
         setSession(session);
@@ -60,9 +79,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     );
 
     supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-      setUser(session?.user ?? null);
-      if (session?.user) {
+      if (session) {
+        setSession(session);
+        setUser(session?.user ?? null);
         supabase
           .from('profiles')
           .select('*')
@@ -73,7 +92,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             setLoading(false);
           });
       } else {
-        setLoading(false);
+        // If no supabase session, we already check local login above!
       }
     });
 
@@ -82,7 +101,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const signOut = async () => {
     await supabase.auth.signOut();
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    localStorage.removeItem('tenantId');
     setProfile(null);
+    setUser(null);
+    setSession(null);
   };
 
   return (
