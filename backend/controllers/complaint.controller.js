@@ -17,6 +17,15 @@ exports.createComplaint = async (req, res) => {
         });
 
         await complaint.save();
+
+        const Activity = require('../models/Activity');
+        await Activity.create({
+            tenantId: req.tenantId,
+            action: 'COMPLAINT_FILED',
+            details: `New complaint: "${subject}"`,
+            performedBy: req.user?.email || 'unknown'
+        });
+
         res.status(201).json(complaint);
     } catch (err) {
         res.status(500).json({ error: err.message });

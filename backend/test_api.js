@@ -49,9 +49,10 @@ async function test() {
     try {
       const xssRes = await axios.post(`${API_URL}/notices`, {
         title: 'Security Alert <script>alert("XSS")</script>',
-        content: 'Dangerous Notice',
-        targetAudience: 'ALL'
+        description: 'Dangerous Notice',
+        category: 'alert'
       }, { headers: { 'Authorization': `Bearer ${token}`, 'x-tenant-id': TENANT_A } });
+
       console.log('✅ Not sanitized! XSS Payload stored in DB:', xssRes.data.notice.title);
     } catch (err) {
       console.log('❌ Notice rejected (maybe restricted?):', err.response?.status);

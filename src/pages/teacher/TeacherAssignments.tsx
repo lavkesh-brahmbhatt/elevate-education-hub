@@ -22,6 +22,8 @@ export default function TeacherAssignments() {
   const [loading, setLoading] = useState(true);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [creating, setCreating] = useState(false);
+  const [teacherRecordId, setTeacherRecordId] = useState('');
+
   
   const [form, setForm] = useState({ title: '', description: '', dueDate: '', classId: '', subjectId: '' });
 
@@ -43,18 +45,22 @@ export default function TeacherAssignments() {
     }
   };
 
-  useEffect(() => { fetchAll(); }, []);
+  useEffect(() => { 
+    fetchAll(); 
+    api.get('/teachers/me').then(({ data }) => setTeacherRecordId(data._id));
+  }, []);
+
 
   const handleCreate = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!profile) return;
     setCreating(true);
     try {
-      // Find teacher ID from profile if needed (the backend might already look it up)
       await api.post('/assignments', {
         ...form,
-        teacherId: profile.id
+        teacherId: teacherRecordId
       });
+
       toast.success('Assignment created');
       setDialogOpen(false);
       setForm({ title: '', description: '', dueDate: '', classId: '', subjectId: '' });

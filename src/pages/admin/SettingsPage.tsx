@@ -17,11 +17,12 @@ export default function SettingsPage() {
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
-    if (profile) {
-      setSchoolName(profile.full_name || '');
-      setSubdomain(localStorage.getItem('tenantId') || '');
-    }
-  }, [profile]);
+    api.get('/settings').then(({ data }) => {
+      setSchoolName(data.schoolName || '');
+      setSubdomain(data.subdomain || localStorage.getItem('tenantId') || '');
+    });
+  }, []);
+
 
   const handleSave = async () => {
     setSaving(true);

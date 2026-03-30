@@ -38,17 +38,25 @@ router.post('/bulk', authenticateJWT, identifyTenant, restrictTo('TEACHER', 'ADM
         const { records } = req.body; // Expect array of formatted mark objects
         if (!records || !Array.isArray(records)) return res.status(400).json({ message: "Invalid records format" });
 
-        const formattedRecords = records.map(r => ({
-            ...r,
-            tenantId: req.tenantId
+        const operations = records.map(r => ({
+            updateOne: {
+                filter: { 
+                    studentId: r.studentId, 
+                    subjectId: r.subjectId, 
+                    examType: r.examType, 
+                    tenantId: req.tenantId 
+                },
+                update: { $set: { ...r, tenantId: req.tenantId } },
+                upsert: true
+            }
         }));
 
-        // Simple bulk insert for now, can be improved to upsert
-        const result = await Marks.insertMany(formattedRecords);
-        res.status(201).json({ message: "Marks recorded successfully", count: result.length });
+        const result = await Marks.bulkWrite(operations);
+        res.status(200).json({ message: "Marks recorded successfully", result });
     } catch (err) {
         res.status(400).json({ error: err.message });
     }
+
 });
 
 module.exports = router;

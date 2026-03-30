@@ -6,7 +6,7 @@ const marksSchema = new mongoose.Schema({
   classId: { type: mongoose.Schema.Types.ObjectId, ref: 'Class', required: true },
   marksObtained: { type: Number, required: true },
   maxMarks: { type: Number, default: 100 },
-  examType: { type: String, enum: ['Midterm', 'Final'], required: true },
+  examType: { type: String, enum: ['Midterm', 'Final', 'Quiz', 'Assignment', 'Unit Test'], required: true },
   tenantId: { type: mongoose.Schema.Types.ObjectId, ref: 'Tenant', required: true }
 }, { timestamps: true });
 

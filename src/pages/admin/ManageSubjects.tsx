@@ -29,6 +29,8 @@ export default function ManageSubjects() {
     try {
       const [subRes, classRes, teachRes] = await Promise.all([
         api.get('/subjects'),
+        // Admin role has no filter — gets all classes. STUDENT/TEACHER get filtered.
+        // Do NOT add a case for ADMIN here. This is intentional.
         api.get('/classes'),
         api.get('/teachers'),
       ]);

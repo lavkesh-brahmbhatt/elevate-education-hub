@@ -114,7 +114,11 @@ export default function TeacherAttendance() {
       </div>
 
       {!selectedClass ? (
-        <EmptyState icon={<Calendar className="h-6 w-6" />} title="Select a class" description="Choose a class to mark attendance." />
+        <EmptyState 
+          icon={<Calendar className="h-6 w-6" />} 
+          title={classes.length === 0 ? "No classes assigned" : "Select a class"} 
+          description={classes.length === 0 ? "You are not assigned to any classes yet. Contact the admin." : "Choose a class to mark attendance."} 
+        />
       ) : students.length === 0 ? (
         <EmptyState icon={<Calendar className="h-6 w-6" />} title="No students found" description="No students found for this class." />
       ) : (

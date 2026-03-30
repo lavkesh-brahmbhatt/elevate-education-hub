@@ -18,9 +18,14 @@ export default function ParentChildAttendance() {
       try {
         const { data } = await api.get('/attendance');
         setRecords((data as AttendanceRecord[]) || []);
-        if (data && data.length > 0) {
-          setChildName(data[0].studentId?.name || 'Child');
+        // Try to get child name from records or fallback
+        if (data && data.length > 0 && data[0].studentId?.name) {
+          setChildName(data[0].studentId.name);
+        } else if (data && data.length === 0) {
+          // Records empty but parent exists — show a generic title
+          setChildName('Your Child');
         }
+
       } catch (err) {
         console.error('Attendance fetch error:', err);
       } finally {
@@ -44,7 +49,7 @@ export default function ParentChildAttendance() {
       <PageHeader title={`${childName}'s Attendance`} description={`View attendance history for ${childName}.`} />
       {loading ? (
         <div className="flex justify-center py-12"><div className="h-6 w-6 border-2 border-primary border-t-transparent rounded-full animate-spin" /></div>
-      ) : !childName ? (
+      ) : records.length === 0 && !childName ? (
         <EmptyState icon={<Calendar className="h-6 w-6" />} title="No student linked" description="Please contact administrator to link your child." />
       ) : records.length === 0 ? (
         <EmptyState icon={<Calendar className="h-6 w-6" />} title="No records found" description={`No attendance has been marked for ${childName} yet.`} />

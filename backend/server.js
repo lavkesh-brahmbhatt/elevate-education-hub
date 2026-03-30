@@ -52,8 +52,16 @@ app.post('/api/auth/login', identifyTenant, async (req, res) => {
   if (!user) return res.status(401).json({ message: 'User not found' });
   const isMatch = await bcrypt.compare(password, user.password);
   if (!isMatch) return res.status(401).json({ message: 'Invalid credentials' });
-  const token = jwt.sign({ userId: user._id, role: user.role, tenantId: user.tenantId }, JWT_SECRET, { expiresIn: '8h' });
-  res.json({ token, user: { id: user._id, role: user.role, name: user.email, tenantId: user.tenantId } });
+  const token = jwt.sign(
+    { userId: user._id, role: user.role, tenantId: user.tenantId, email: user.email },
+    JWT_SECRET,
+    { expiresIn: '8h' }
+  );
+  res.json({ 
+    token, 
+    user: { id: user._id, role: user.role, name: user.email, email: user.email, tenantId: user.tenantId } 
+  });
+
 });
 
 const Tenant = require('./models/Tenant');
@@ -97,27 +105,53 @@ app.get('/api/stats', identifyTenant, async (req, res) => {
   }
 });
 
-app.get('/api/stats/teacher', identifyTenant, async (req, res) => {
-  try {
-    const [subjects, classes] = await Promise.all([
-        Subject.countDocuments({ tenantId: req.tenantId }),
-        Class.countDocuments({ tenantId: req.tenantId })
-    ]);
-    res.json({ subjects, classes, assignments: 12 });
-  } catch (err) {
-    res.status(500).json({ message: 'Error' });
-  }
-});
+app.get('/api/stats/teacher', authenticateJWT, identifyTenant, async (req, res) => {
+    try {
+      const teacher = await Teacher.findOne({ email: req.user.email, tenantId: req.tenantId });
+      if (!teacher) return res.json({ classes: 0, subjects: 0, assignments: 0 });
+      
+      const taughtSubjects = await Subject.find({ teacherId: teacher._id, tenantId: req.tenantId });
+      const classIds = [...new Set(taughtSubjects.map(s => s.classId?.toString()))];
+      
+      const [classCount, subjectCount, assignmentCount] = await Promise.all([
+        Class.countDocuments({ _id: { $in: classIds }, tenantId: req.tenantId }),
+        Subject.countDocuments({ teacherId: teacher._id, tenantId: req.tenantId }),
+        Assignment.countDocuments({ teacherId: teacher._id, tenantId: req.tenantId })
+      ]);
+      res.json({ classes: classCount, subjects: subjectCount, assignments: assignmentCount });
+    } catch (err) { res.status(500).json({ message: 'Error' }); }
+  });
 
-app.get('/api/stats/student', identifyTenant, async (req, res) => {
-  try {
-    res.json({ classes: 6, assignments: 8, attendance: '94%' });
-  } catch (err) {
-    res.status(500).json({ message: 'Error' });
-  }
-});
+
+app.get('/api/stats/student', authenticateJWT, identifyTenant, async (req, res) => {
+    try {
+      const student = await Student.findOne({ email: req.user.email, tenantId: req.tenantId });
+      if (!student) return res.json({ classes: 1, assignments: 0, attendance: '0%' });
+
+      const [attendanceRecords, assignmentCount] = await Promise.all([
+        Attendance.find({ studentId: student._id, tenantId: req.tenantId }),
+        Assignment.countDocuments({ classId: student.classId, tenantId: req.tenantId })
+      ]);
+      
+      const present = attendanceRecords.filter(r => r.status === 'present').length;
+      const attendancePct = attendanceRecords.length > 0
+        ? Math.round((present / attendanceRecords.length) * 100) + '%'
+        : '0%';
+      
+      res.json({ classes: 1, assignments: assignmentCount, attendance: attendancePct });
+    } catch (err) { res.status(500).json({ message: 'Error' }); }
+  });
+
 
 // --- TEACHER ROUTES ---
+app.get('/api/teachers/me', authenticateJWT, identifyTenant, async (req, res) => {
+    try {
+        const teacher = await Teacher.findOne({ email: req.user.email, tenantId: req.tenantId });
+        if (!teacher) return res.status(404).json({ message: 'Teacher record not found' });
+        res.json(teacher);
+    } catch (err) { res.status(500).json({ error: err.message }); }
+});
+
 app.get('/api/teachers', authenticateJWT, identifyTenant, restrictTo('ADMIN'), async (req, res) => {
     const teachers = await Teacher.find({ tenantId: req.tenantId });
     res.json(teachers);
@@ -139,7 +173,8 @@ app.post('/api/teachers', authenticateJWT, identifyTenant, restrictTo('ADMIN'), 
             tenantId: req.tenantId
         });
         await user.save();
-        await logActivity(req.tenantId, 'TEACHER_CREATED', `Added teacher: ${name}`, req.user.email);
+        await logActivity(req.tenantId, 'TEACHER_CREATED', `Added teacher: ${name}`, req.user?.email || 'admin');
+
 
         res.status(201).json({ teacher, user: { email: user.email, role: user.role } });
     } catch (err) { res.status(400).json({ error: err.message }); }
@@ -190,7 +225,8 @@ app.post('/api/students', authenticateJWT, identifyTenant, restrictTo('ADMIN'), 
             tenantId: req.tenantId
         });
         await user.save();
-        await logActivity(req.tenantId, 'STUDENT_CREATED', `Added student: ${name}`, req.user.email);
+        await logActivity(req.tenantId, 'STUDENT_CREATED', `Added student: ${name}`, req.user?.email || 'admin');
+
 
         res.status(201).json({ student, user: { email: user.email, role: user.role } });
     } catch (err) { 
@@ -219,8 +255,35 @@ app.put('/api/students/:id', authenticateJWT, identifyTenant, restrictTo('ADMIN'
     } catch (err) { res.status(500).json({ error: err.message }); }
 });
 
+// --- PARENT ROUTES ---
+app.get('/api/parents', authenticateJWT, identifyTenant, restrictTo('ADMIN'), async (req, res) => {
+    const parents = await Parent.find({ tenantId: req.tenantId }).populate('studentId', 'name className');
+    res.json(parents);
+});
+
+app.post('/api/parents', authenticateJWT, identifyTenant, restrictTo('ADMIN'), async (req, res) => {
+    try {
+        const { name, email, phone, studentId } = req.body;
+        
+        // 1. Create Parent record
+        const parent = new Parent({ name, email, phone, studentId, tenantId: req.tenantId });
+        await parent.save();
+
+        // 2. Create User record for login
+        const passwordHash = await bcrypt.hash('password123', 10);
+        const user = new User({ email, password: passwordHash, role: 'PARENT', tenantId: req.tenantId });
+        await user.save();
+
+        await logActivity(req.tenantId, 'PARENT_LINKED', `Linked parent ${name} to student`, req.user?.email || 'admin');
+        res.status(201).json({ parent, user: { email: user.email, role: user.role } });
+    } catch (err) { res.status(400).json({ error: err.message }); }
+});
+
 // --- CLASS ROUTES ---
+// Admin role has no filter — gets all classes. STUDENT/TEACHER get filtered.
+// Do NOT add a case for ADMIN here. This is intentional.
 app.get('/api/classes', authenticateJWT, identifyTenant, async (req, res) => {
+
     try {
         let query = { tenantId: req.tenantId };
         
@@ -244,8 +307,9 @@ app.post('/api/classes', authenticateJWT, identifyTenant, restrictTo('ADMIN'), a
     try {
         const schoolClass = new Class({ ...req.body, tenantId: req.tenantId });
         await schoolClass.save();
-        await logActivity(req.tenantId, 'CLASS_CREATED', `Created class: ${schoolClass.name}`, req.user.email);
+        await logActivity(req.tenantId, 'CLASS_CREATED', `Created class: ${schoolClass.name}`, req.user?.email || 'admin');
         res.status(201).json(schoolClass);
+
     } catch (err) { res.status(400).json({ error: err.message }); }
 });
 app.delete('/api/classes/:id', authenticateJWT, identifyTenant, restrictTo('ADMIN'), async (req, res) => {
@@ -289,7 +353,16 @@ app.use('/api/assignments', authenticateJWT, identifyTenant, assignmentRoutes);
 
 
 // --- SETTINGS / TENANT MGMT ---
+app.get('/api/settings', authenticateJWT, identifyTenant, restrictTo('ADMIN'), 
+  async (req, res) => {
+    const tenant = await Tenant.findById(req.tenantId);
+    if (!tenant) return res.status(404).json({ message: 'Tenant not found' });
+    res.json({ schoolName: tenant.name, subdomain: tenant.subdomain });
+  }
+);
+
 app.put('/api/settings', authenticateJWT, identifyTenant, restrictTo('ADMIN'), async (req, res) => {
+
     try {
         const tenant = await Tenant.findByIdAndUpdate(req.tenantId, { name: req.body.schoolName }, { new: true });
         res.json(tenant);

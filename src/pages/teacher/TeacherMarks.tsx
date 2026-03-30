@@ -59,8 +59,9 @@ export default function TeacherMarks() {
         classId: selectedClass,
         subjectId: selectedSubject,
         studentId: s._id,
-        examType: examName === 'Final' ? 'Final' : 'Midterm', // Enum check
+        examType: examName,
         marksObtained: parseFloat(marks[s._id]?.obtained || '0'),
+
         maxMarks: parseFloat(marks[s._id]?.total || '100'),
       }));
 
@@ -123,6 +124,10 @@ export default function TeacherMarks() {
                     <SelectContent>
                       <SelectItem value="Midterm">Midterm</SelectItem>
                       <SelectItem value="Final">Final</SelectItem>
+                      <SelectItem value="Quiz">Quiz</SelectItem>
+                      <SelectItem value="Assignment">Assignment</SelectItem>
+                      <SelectItem value="Unit Test">Unit Test</SelectItem>
+
                     </SelectContent>
                   </Select>
                 </div>

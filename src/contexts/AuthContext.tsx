@@ -58,12 +58,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setUser(localUser);
         setProfile({
           id: localUser.id || localUser._id,
-          role: localUser.role.toLowerCase(), // Force lowercase to match 'admin' | 'teacher' etc
+          role: localUser.role.toLowerCase(),
           full_name: localUser.name,
-          email: localUser.email,
+          email: localUser.email || localUser.name, // fallback to name
           school_id: localStorage.getItem('tenantId') || 'unknown',
           avatar_url: null
         } as UserProfile);
+
       } catch (e) {
         console.error('Invalid token found', e);
         localStorage.removeItem('token');

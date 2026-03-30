@@ -8,6 +8,8 @@ import { Label } from '@/components/ui/label';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { toast } from 'sonner';
 import { Plus, Users, Trash2, Edit2 } from 'lucide-react';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+
 
 type Profile = { _id: string; name: string; email: string; rollNumber: string; className: string; createdAt: string };
 
@@ -18,9 +20,13 @@ export default function ManageStudents() {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editOpen, setEditOpen] = useState(false);
   const [editTarget, setEditTarget] = useState<Profile | null>(null);
-  const [form, setForm] = useState({ name: '', email: '', password: '' });
+  const [form, setForm] = useState({ name: '', email: '', password: '', classId: '', age: '' });
   const [creating, setCreating] = useState(false);
   const [classes, setClasses] = useState<{ _id: string; name: string }[]>([]);
+  const [parentDialogOpen, setParentDialogOpen] = useState(false);
+  const [parentTarget, setParentTarget] = useState<Profile | null>(null);
+  const [parentForm, setParentForm] = useState({ name: '', email: '', phone: '' });
+
 
   const fetchData = async () => {
     if (!profile) return;
@@ -51,6 +57,12 @@ export default function ManageStudents() {
       return;
     }
 
+    if (!form.classId) {
+      toast.error('Please select a class');
+      return;
+    }
+
+
     setCreating(true);
     try {
       await api.post('/students', {
@@ -58,12 +70,13 @@ export default function ManageStudents() {
         email: form.email,
         password: form.password,
         rollNumber: `R-${Math.floor(Math.random() * 900) + 100}`,
-        classId: classes[0]._id, // Automatically use the first class found
-        age: 15
+        classId: form.classId, // Now explicitly chosen by admin
+        age: parseInt(form.age) || 15
       });
+
       toast.success('Student added successfully');
       setDialogOpen(false);
-      setForm({ name: '', email: '', password: '' });
+      setForm({ name: '', email: '', password: '', classId: '', age: '' });
       fetchData();
     } catch (err: any) {
       console.error("Student create error:", err.response?.data || err.message);
@@ -101,6 +114,23 @@ export default function ManageStudents() {
     }
   };
 
+  const handleLinkParent = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!parentTarget) return;
+    setCreating(true);
+    try {
+      await api.post('/parents', { ...parentForm, studentId: parentTarget._id });
+      toast.success(`Parent linked to ${parentTarget.name}`);
+      setParentDialogOpen(false);
+      setParentForm({ name: '', email: '', phone: '' });
+    } catch (err: any) {
+      toast.error('Failed to link parent: ' + (err.response?.data?.error || err.message));
+    } finally {
+      setCreating(false);
+    }
+  };
+
+
   return (
     <div className="animate-fade-in">
       <PageHeader
@@ -126,6 +156,28 @@ export default function ManageStudents() {
                   <Label className="label-text">Password</Label>
                   <Input type="password" value={form.password} onChange={e => setForm(f => ({ ...f, password: e.target.value }))} required minLength={6} />
                 </div>
+                <div className="space-y-2">
+                  <Label className="label-text">Class</Label>
+                  <Select value={form.classId} onValueChange={v => setForm(f => ({ ...f, classId: v }))}>
+                    <SelectTrigger><SelectValue placeholder="Select class" /></SelectTrigger>
+                    <SelectContent>
+                      {classes.map(c => <SelectItem key={c._id} value={c._id}>{c.name}</SelectItem>)}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="space-y-2">
+                  <Label className="label-text">Age</Label>
+                  <Input 
+                    type="number" 
+                    placeholder="e.g. 14" 
+                    min="5" max="25"
+                    value={form.age} 
+                    onChange={e => setForm(f => ({ ...f, age: e.target.value }))} 
+                    required 
+                  />
+                </div>
+
+
                 <Button type="submit" className="w-full" disabled={creating}>
                   {creating ? 'Creating...' : 'Add Student'}
                 </Button>
@@ -154,6 +206,31 @@ export default function ManageStudents() {
           </form>
         </DialogContent>
       </Dialog>
+      
+      {/* Parent Linking Dialog */}
+      <Dialog open={parentDialogOpen} onOpenChange={setParentDialogOpen}>
+        <DialogContent>
+          <DialogHeader><DialogTitle>Link Parent to {parentTarget?.name}</DialogTitle></DialogHeader>
+          <form onSubmit={handleLinkParent} className="space-y-4">
+            <div className="space-y-2">
+              <Label className="label-text">Parent Full Name</Label>
+              <Input value={parentForm.name} onChange={e => setParentForm(f => ({ ...f, name: e.target.value }))} required />
+            </div>
+            <div className="space-y-2">
+              <Label className="label-text">Parent Email</Label>
+              <Input type="email" value={parentForm.email} onChange={e => setParentForm(f => ({ ...f, email: e.target.value }))} required />
+            </div>
+            <div className="space-y-2">
+              <Label className="label-text">Parent Phone</Label>
+              <Input type="tel" value={parentForm.phone} onChange={e => setParentForm(f => ({ ...f, phone: e.target.value }))} required />
+            </div>
+            <Button type="submit" className="w-full" disabled={creating}>
+              {creating ? 'Saving...' : 'Create Parent Account'}
+            </Button>
+          </form>
+        </DialogContent>
+      </Dialog>
+
 
       {loading ? (
         <div className="flex justify-center py-12">
@@ -187,9 +264,18 @@ export default function ManageStudents() {
                       >
                         <Edit2 className="h-4 w-4 text-primary" strokeWidth={1.5} />
                       </Button>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => { setParentTarget(s); setParentDialogOpen(true); }}
+                        title="Link Parent"
+                      >
+                        <Plus className="h-4 w-4 text-primary" strokeWidth={1.5} />
+                      </Button>
                       <Button variant="ghost" size="sm" onClick={() => handleDelete(s._id)}>
                         <Trash2 className="h-4 w-4 text-destructive" strokeWidth={1.5} />
                       </Button>
+
                     </div>
                   </td>
                 </tr>

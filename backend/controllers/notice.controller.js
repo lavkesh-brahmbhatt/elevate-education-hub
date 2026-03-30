@@ -2,7 +2,7 @@ const Notice = require('../models/Notice');
 
 exports.createNotice = async (req, res) => {
     try {
-        const { title, description } = req.body;
+        const { title, description, category } = req.body;
         const tenantId = req.tenantId;
         const userId = req.user.userId;
         const role = req.user.role;
@@ -10,12 +10,22 @@ exports.createNotice = async (req, res) => {
         const notice = new Notice({
             title,
             description,
+            category: category || 'update',
             createdBy: userId,
             role,
             tenantId
         });
 
         await notice.save();
+        
+        const Activity = require('../models/Activity');
+        await Activity.create({
+            tenantId,
+            action: 'NOTICE_POSTED',
+            details: `Posted notice: "${title}"`,
+            performedBy: req.user?.email || 'admin'
+        });
+
         res.status(201).json(notice);
     } catch (err) {
         res.status(500).json({ error: err.message });
