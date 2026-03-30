@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
-import { supabase } from '@/integrations/supabase/client';
+import api from '@/services/api';
 import { useAuth } from '@/contexts/AuthContext';
 import { PageHeader, EmptyState } from '@/components/DashboardWidgets';
 import { Calendar, Check, X, Clock, AlertCircle } from 'lucide-react';
 
-type AttendanceRecord = { date: string; status: string; class_id: string };
+type AttendanceRecord = { _id: string; date: string; status: string; studentId: { name: string } };
 
 export default function ParentChildAttendance() {
   const { profile } = useAuth();
@@ -14,30 +14,20 @@ export default function ParentChildAttendance() {
 
   useEffect(() => {
     if (!profile) return;
-    const fetch = async () => {
-      // Get linked student
-      const { data: links } = await supabase
-        .from('parent_student_links')
-        .select('student_id')
-        .eq('parent_id', profile.id)
-        .limit(1);
-
-      if (links && links.length > 0) {
-        const studentId = links[0].student_id;
-        const { data: studentProfile } = await supabase.from('profiles').select('full_name').eq('id', studentId).single();
-        setChildName(studentProfile?.full_name || 'Child');
-        
-        const { data } = await supabase
-            .from('attendance')
-            .select('date, status, class_id')
-            .eq('student_id', studentId)
-            .order('date', { ascending: false });
-            
+    const fetchData = async () => {
+      try {
+        const { data } = await api.get('/attendance');
         setRecords((data as AttendanceRecord[]) || []);
+        if (data && data.length > 0) {
+          setChildName(data[0].studentId?.name || 'Child');
+        }
+      } catch (err) {
+        console.error('Attendance fetch error:', err);
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     };
-    fetch();
+    fetchData();
   }, [profile]);
 
   const statusIcon = (s: string) => {

@@ -1,9 +1,13 @@
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
+const bcrypt = require('bcryptjs');
 
 // Models
+const Tenant = require('./models/Tenant');
+const User = require('./models/User');
 const Student = require('./models/Student');
 const Teacher = require('./models/Teacher');
+const Class = require('./models/Class');
 const Subject = require('./models/Subject');
 const Parent = require('./models/Parent');
 const Notice = require('./models/Notice');
@@ -20,63 +24,116 @@ const seedDatabase = async () => {
 
         // 1. Clear All Collections
         await Promise.all([
+            Tenant.deleteMany({}),
+            User.deleteMany({}),
             Student.deleteMany({}),
             Teacher.deleteMany({}),
+            Class.deleteMany({}),
             Subject.deleteMany({}),
             Parent.deleteMany({}),
             Notice.deleteMany({}),
             Complaint.deleteMany({})
         ]);
 
-        // 2. Mock Tenant ID
-        const tenantId = new mongoose.Types.ObjectId();
+        const passwordHash = await bcrypt.hash('password123', 10);
 
-        // 3. Create Parents
-        const parents = await Parent.create([
-            { name: 'John Doe Sr.', email: 'john.sr@gmail.com', phone: '1234567890' },
-            { name: 'Maria Garcia', email: 'm.garcia@outlook.com', phone: '9876543210' }
+        // 2. Create Tenant
+        const tenant = await Tenant.create({ name: 'Fresh Academy', subdomain: 'fresh' });
+        const tenantId = tenant._id;
+
+        // 3. Create Admin
+        const adminUser = await User.create({
+            email: 'admin@fresh.com',
+            password: passwordHash,
+            role: 'ADMIN',
+            tenantId
+        });
+
+        // 4. Create Classes
+        const classes = await Class.insertMany([
+            { name: 'Grade 10', section: 'A', tenantId },
+            { name: 'Grade 12', section: 'B', tenantId }
         ]);
 
-        // 4. Create Teachers
-        const teachers = await Teacher.create([
-            { name: 'Prof. Alice Johnson', email: 'alice.j@school.edu', subject: 'Mathematics', tenantId },
-            { name: 'Dr. Robert Brown', email: 'r.brown@school.edu', subject: 'Physics', tenantId }
+        // 5. Create Teachers
+        const teacherData = [
+            { name: 'Prof. Alice Johnson', email: 'alice.j@fresh.edu', tenantId },
+            { name: 'Dr. Robert Brown', email: 'r.brown@fresh.edu', tenantId }
+        ];
+        const teachers = await Teacher.insertMany(teacherData);
+        const teacherUsers = await User.insertMany(teachers.map(t => ({
+            email: t.email,
+            password: passwordHash,
+            role: 'TEACHER',
+            tenantId
+        })));
+
+        // 6. Create Subjects
+        await Subject.insertMany([
+            { name: 'Algebra 101', teacherId: teachers[0]._id, classId: classes[0]._id, tenantId },
+            { name: 'Calculus BC', teacherId: teachers[0]._id, classId: classes[1]._id, tenantId },
+            { name: 'Quantum Physics', teacherId: teachers[1]._id, classId: classes[1]._id, tenantId }
         ]);
 
-        // 5. Create Subjects
-        await Subject.create([
-            { name: 'Algebra 101', teacherId: teachers[0]._id, class: 'Grade-10' },
-            { name: 'Calculus BC', teacherId: teachers[0]._id, class: 'Grade-12' },
-            { name: 'Quantum Physics', teacherId: teachers[1]._id, class: 'Grade-12' }
+        // 7. Create Students
+        const studentData = [
+            { name: 'Alice Doe', email: 'alice.doe@fresh.edu', age: 15, classId: classes[0]._id, tenantId },
+            { name: 'Bob Smith', email: 'bob.s@fresh.edu', age: 15, classId: classes[0]._id, tenantId }
+        ];
+        const students = await Student.insertMany(studentData);
+        const studentUsers = await User.insertMany(students.map(s => ({
+            email: s.email,
+            password: passwordHash,
+            role: 'STUDENT',
+            tenantId
+        })));
+
+        // 7.5. Create Parents
+        const parents = await Parent.insertMany([
+            { name: 'John Doe Sr.', email: 'john.sr@gmail.com', phone: '1234567890', studentId: students[0]._id, tenantId }
+        ]);
+        await User.insertMany(parents.map(p => ({
+            email: p.email,
+            password: passwordHash,
+            role: 'PARENT',
+            tenantId
+        })));
+
+        // 8. Create Notices
+        await Notice.insertMany([
+            { title: 'Final Exams', description: 'Exam schedule published.', createdBy: adminUser._id, role: 'ADMIN', tenantId },
+            { title: 'Sports Week', description: 'Join the annual sports competition.', createdBy: teacherUsers[0]._id, role: 'TEACHER', tenantId }
         ]);
 
-        // 6. Create Students
-        const students = await Student.create([
-            { name: 'Alice Doe', email: 'alice.doe@edu.com', class: 'Grade-10', age: 15, parentId: parents[0]._id, tenantId },
-            { name: 'Bob Doe', email: 'bob.doe@edu.com', class: 'Grade-10', age: 15, parentId: parents[0]._id, tenantId },
-            { name: 'Charlie Garcia', email: 'charlie.g@edu.com', class: 'Grade-12', age: 17, parentId: parents[1]._id, tenantId },
-            { name: 'David Garcia', email: 'david.g@edu.com', class: 'Grade-12', age: 18, parentId: parents[1]._id, tenantId }
+        // 9. Create Complaints
+        await Complaint.insertMany([
+            { 
+              userId: studentUsers[0]._id, 
+              userRole: 'STUDENT', 
+              subject: 'Bus Delay', 
+              message: 'Morning bus route 5 is consistently late.', 
+              status: 'Pending', 
+              tenantId 
+            },
+            { 
+              userId: studentUsers[1]._id, 
+              userRole: 'STUDENT', 
+              subject: 'Cafeteria', 
+              message: 'Request more healthy options.', 
+              status: 'Resolved', 
+              response: 'We will update the menu next week.', 
+              tenantId 
+            }
         ]);
 
-        // 7. Create Notices
-        await Notice.create([
-            { title: 'Final Exams', description: 'Exam schedule for March 2026 is published.', createdBy: 'Admin', tenantId },
-            { title: 'Sports Week', description: 'Join us for the annual sports competition next week.', createdBy: 'Teacher Alice', tenantId }
-        ]);
-
-        // 8. Create Complaints
-        await Complaint.create([
-            { studentId: students[0]._id, parentId: parents[0]._id, message: 'Missing bus service for morning shift.', status: 'Pending' },
-            { studentId: students[2]._id, parentId: parents[1]._id, message: 'Request to review chemistry mid-term results.', status: 'Resolved' }
-        ]);
-
-        console.log('Database connected');
-        console.log('Seeding completed');
+        console.log('✅ Fresh database seeded successfully');
+        console.log('Login credentials: admin@fresh.com / password123 (Tenant: fresh)');
         process.exit(0);
     } catch (err) {
-        console.error('Seeding failed:', err);
+        console.error('❌ Seeding failed:', err);
         process.exit(1);
     }
 };
 
 seedDatabase();
+

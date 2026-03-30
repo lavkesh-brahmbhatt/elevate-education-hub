@@ -26,11 +26,18 @@ export default function TeacherMarks() {
   const [examName, setExamName] = useState('');
   const [saving, setSaving] = useState(false);
 
+  const [existingMarks, setExistingMarks] = useState<any[]>([]);
+
+  const fetchMarks = () => {
+    api.get('/marks').then(({ data }) => setExistingMarks(data || []));
+  };
+
   useEffect(() => {
     if (!profile) return;
     // Fetch classes and subjects
     api.get('/classes').then(({ data }) => setClasses(data || []));
     api.get('/subjects').then(({ data }) => setSubjects(data || []));
+    fetchMarks();
   }, [profile]);
 
   useEffect(() => {
@@ -62,6 +69,7 @@ export default function TeacherMarks() {
       setDialogOpen(false);
       setMarks({});
       setExamName('');
+      fetchMarks();
     } catch (err: any) {
       toast.error('Failed to save marks');
     } finally {
@@ -69,8 +77,16 @@ export default function TeacherMarks() {
     }
   };
 
+  // Group marks by subject for readability
+  const marksBySubject = existingMarks.reduce((acc, current) => {
+    const subName = current.subjectId?.name || 'Unknown Subject';
+    if (!acc[subName]) acc[subName] = [];
+    acc[subName].push(current);
+    return acc;
+  }, {} as Record<string, any[]>);
+
   return (
-    <div className="animate-fade-in">
+    <div className="animate-fade-in pb-10">
       <PageHeader
         title="Marks"
         description="Record and manage student marks."
@@ -146,7 +162,41 @@ export default function TeacherMarks() {
         }
       />
 
-      <EmptyState icon={<Award className="h-6 w-6" />} title="Record marks" description="Use the Record Marks button to enter exam scores for your students." />
+      {existingMarks.length === 0 ? (
+        <EmptyState icon={<Award className="h-6 w-6" />} title="Record marks" description="Use the Record Marks button to enter exam scores for your students." />
+      ) : (
+        <div className="space-y-8">
+          {Object.entries(marksBySubject).map(([subject, marks]) => (
+            <div key={subject} className="bg-card rounded-xl shadow-card overflow-hidden border border-border">
+              <div className="px-6 py-4 bg-muted/20 border-b border-border">
+                <h3 className="font-semibold">{subject}</h3>
+              </div>
+              <table className="w-full text-left">
+                <thead>
+                  <tr className="border-b border-border bg-subtle/30 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                    <th className="py-3 px-6">Student</th>
+                    <th className="py-3 px-6">Class</th>
+                    <th className="py-3 px-6">Exam Type</th>
+                    <th className="py-3 px-6 text-right">Score</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {(marks as any[]).map((m: any) => (
+                    <tr key={m._id} className="border-b border-border last:border-0 hover:bg-subtle/20 transition-colors">
+                      <td className="py-3 px-6 text-sm font-medium">{m.studentId?.name || 'N/A'}</td>
+                      <td className="py-3 px-6 text-sm text-muted-foreground">{m.classId?.name} {m.classId?.section}</td>
+                      <td className="py-3 px-6 text-sm italic">{m.examType}</td>
+                      <td className="py-3 px-6 text-sm text-right font-bold text-primary">
+                        {m.marksObtained} / {m.maxMarks}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

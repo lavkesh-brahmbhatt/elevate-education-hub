@@ -19,6 +19,13 @@ const Complaint = require('./models/Complaint');
 const Attendance = require('./models/Attendance');
 const Marks = require('./models/Marks');
 const Assignment = require('./models/Assignment');
+const Activity = require('./models/Activity');
+
+// --- HELPERS ---
+const logActivity = async (tenantId, action, details, performedBy) => {
+    try { await Activity.create({ tenantId, action, details, performedBy }); }
+    catch (e) { console.error('Log failed', e); }
+};
 
 // Middlewares
 const identifyTenant = require('./middleware/tenantMiddleware');
@@ -132,6 +139,7 @@ app.post('/api/teachers', authenticateJWT, identifyTenant, restrictTo('ADMIN'), 
             tenantId: req.tenantId
         });
         await user.save();
+        await logActivity(req.tenantId, 'TEACHER_CREATED', `Added teacher: ${name}`, req.user.email);
 
         res.status(201).json({ teacher, user: { email: user.email, role: user.role } });
     } catch (err) { res.status(400).json({ error: err.message }); }
@@ -146,9 +154,23 @@ app.delete('/api/teachers/:id', authenticateJWT, identifyTenant, restrictTo('ADM
     } catch (err) { res.status(500).json({ error: err.message }); }
 });
 
+app.put('/api/teachers/:id', authenticateJWT, identifyTenant, restrictTo('ADMIN'), async (req, res) => {
+    try {
+        const teacher = await Teacher.findOneAndUpdate(
+            { _id: req.params.id, tenantId: req.tenantId },
+            { name: req.body.name },
+            { new: true }
+        );
+        res.json(teacher);
+    } catch (err) { res.status(500).json({ error: err.message }); }
+});
+
 // --- STUDENT ROUTES ---
 app.get('/api/students', authenticateJWT, identifyTenant, restrictTo('ADMIN', 'TEACHER'), async (req, res) => {
-    const students = await Student.find({ tenantId: req.tenantId }).populate('classId', 'name section');
+    const { classId } = req.query;
+    const query = { tenantId: req.tenantId };
+    if (classId) query.classId = classId;
+    const students = await Student.find(query).populate('classId', 'name section');
     res.json(students);
 });
 app.post('/api/students', authenticateJWT, identifyTenant, restrictTo('ADMIN'), async (req, res) => {
@@ -168,6 +190,7 @@ app.post('/api/students', authenticateJWT, identifyTenant, restrictTo('ADMIN'), 
             tenantId: req.tenantId
         });
         await user.save();
+        await logActivity(req.tenantId, 'STUDENT_CREATED', `Added student: ${name}`, req.user.email);
 
         res.status(201).json({ student, user: { email: user.email, role: user.role } });
     } catch (err) { 
@@ -185,15 +208,43 @@ app.delete('/api/students/:id', authenticateJWT, identifyTenant, restrictTo('ADM
     } catch (err) { res.status(500).json({ error: err.message }); }
 });
 
+app.put('/api/students/:id', authenticateJWT, identifyTenant, restrictTo('ADMIN'), async (req, res) => {
+    try {
+        const student = await Student.findOneAndUpdate(
+            { _id: req.params.id, tenantId: req.tenantId },
+            { name: req.body.name },
+            { new: true }
+        );
+        res.json(student);
+    } catch (err) { res.status(500).json({ error: err.message }); }
+});
+
 // --- CLASS ROUTES ---
 app.get('/api/classes', authenticateJWT, identifyTenant, async (req, res) => {
-    const classes = await Class.find({ tenantId: req.tenantId });
-    res.json(classes);
+    try {
+        let query = { tenantId: req.tenantId };
+        
+        if (req.user.role === 'STUDENT') {
+            const student = await Student.findOne({ email: req.user.email, tenantId: req.tenantId });
+            if (student) query._id = student.classId;
+            else return res.json([]); 
+        } else if (req.user.role === 'TEACHER') {
+            const teacher = await Teacher.findOne({ email: req.user.email, tenantId: req.tenantId });
+            if (teacher) {
+                const taughtClasses = await Subject.find({ teacherId: teacher._id, tenantId: req.tenantId }).distinct('classId');
+                query._id = { $in: taughtClasses };
+            } else return res.json([]);
+        }
+
+        const classes = await Class.find(query);
+        res.json(classes);
+    } catch (err) { res.status(500).json({ error: err.message }); }
 });
 app.post('/api/classes', authenticateJWT, identifyTenant, restrictTo('ADMIN'), async (req, res) => {
     try {
         const schoolClass = new Class({ ...req.body, tenantId: req.tenantId });
         await schoolClass.save();
+        await logActivity(req.tenantId, 'CLASS_CREATED', `Created class: ${schoolClass.name}`, req.user.email);
         res.status(201).json(schoolClass);
     } catch (err) { res.status(400).json({ error: err.message }); }
 });
@@ -235,6 +286,42 @@ app.use('/api/materials', authenticateJWT, identifyTenant, materialRoutes);
 app.use('/api/attendance', authenticateJWT, identifyTenant, attendanceRoutes);
 app.use('/api/marks', authenticateJWT, identifyTenant, marksRoutes);
 app.use('/api/assignments', authenticateJWT, identifyTenant, assignmentRoutes);
+
+
+// --- SETTINGS / TENANT MGMT ---
+app.put('/api/settings', authenticateJWT, identifyTenant, restrictTo('ADMIN'), async (req, res) => {
+    try {
+        const tenant = await Tenant.findByIdAndUpdate(req.tenantId, { name: req.body.schoolName }, { new: true });
+        res.json(tenant);
+    } catch (err) { res.status(500).json({ error: err.message }); }
+});
+
+app.delete('/api/settings/data', authenticateJWT, identifyTenant, restrictTo('ADMIN'), async (req, res) => {
+    try {
+        const tenantId = req.tenantId;
+        // Delete all data for this tenant
+        await Promise.all([
+            User.deleteMany({ tenantId, role: { $ne: 'ADMIN' } }), // Keep current admin? User said "Delete ALL data". Usually implies school data. 
+            Student.deleteMany({ tenantId }),
+            Teacher.deleteMany({ tenantId }),
+            Class.deleteMany({ tenantId }),
+            Subject.deleteMany({ tenantId }),
+            Parent.deleteMany({ tenantId }),
+            Notice.deleteMany({ tenantId }),
+            Complaint.deleteMany({ tenantId }),
+            Attendance.deleteMany({ tenantId }),
+            Marks.deleteMany({ tenantId }),
+            Assignment.deleteMany({ tenantId })
+        ]);
+        // Finally delete the tenant and the admin user if needed, but usually we just wipe data.
+        // User said "clears localStorage and redirects to /register". 
+        // So let's delete the tenant too.
+        await User.deleteMany({ tenantId }); 
+        await Tenant.findByIdAndDelete(tenantId);
+
+        res.json({ message: 'All data deleted successfully' });
+    } catch (err) { res.status(500).json({ error: err.message }); }
+});
 
 // Static folder for file downloads
 const path = require('path');

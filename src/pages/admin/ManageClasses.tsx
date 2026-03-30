@@ -56,6 +56,7 @@ export default function ManageClasses() {
   };
 
   const handleDelete = async (id: string) => {
+    if (!confirm('Are you sure you want to delete this class? This may affect student assignments.')) return;
     try {
       await api.delete(`/classes/${id}`);
       toast.success('Class deleted');

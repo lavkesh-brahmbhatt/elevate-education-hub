@@ -3,6 +3,8 @@ import api from '@/services/api';
 import { useAuth } from '@/contexts/AuthContext';
 import { PageHeader, EmptyState } from '@/components/DashboardWidgets';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { toast } from 'sonner';
 import { Calendar, Check, X, Clock, AlertCircle } from 'lucide-react';
@@ -17,7 +19,7 @@ export default function TeacherAttendance() {
   const [students, setStudents] = useState<Student[]>([]);
   const [attendance, setAttendance] = useState<Record<string, string>>({});
   const [saving, setSaving] = useState(false);
-  const [date] = useState(new Date().toISOString().split('T')[0]);
+  const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
 
   useEffect(() => {
     if (!profile) return;
@@ -91,17 +93,24 @@ export default function TeacherAttendance() {
 
   return (
     <div className="animate-fade-in">
-      <PageHeader title="Attendance" description={`Mark attendance for ${date}`} />
-
-      <div className="mb-6 max-w-xs">
-        <Select value={selectedClass} onValueChange={setSelectedClass}>
-          <SelectTrigger><SelectValue placeholder="Select a class" /></SelectTrigger>
-          <SelectContent>
-            {classes.map(c => (
-              <SelectItem key={c._id} value={c._id}>{c.name}{c.section ? ` (${c.section})` : ''}</SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+      <PageHeader title="Attendance" description="Mark or update attendance for your students." />
+      
+      <div className="flex flex-col sm:flex-row gap-4 mb-8">
+        <div className="flex-1 max-w-xs space-y-2">
+          <Label className="label-text">Select Class</Label>
+          <Select value={selectedClass} onValueChange={setSelectedClass}>
+            <SelectTrigger><SelectValue placeholder="Select a class" /></SelectTrigger>
+            <SelectContent>
+              {classes.map(c => (
+                <SelectItem key={c._id} value={c._id}>{c.name}{c.section ? ` (${c.section})` : ''}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+        <div className="flex-1 max-w-xs space-y-2">
+          <Label className="label-text">Select Date</Label>
+          <Input type="date" value={date} onChange={e => setDate(e.target.value)} />
+        </div>
       </div>
 
       {!selectedClass ? (

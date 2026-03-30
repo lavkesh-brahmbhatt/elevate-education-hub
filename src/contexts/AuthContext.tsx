@@ -41,16 +41,33 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const localToken = localStorage.getItem('token');
     
     if (localUserStr && localToken) {
-      const localUser = JSON.parse(localUserStr);
-      setUser(localUser);
-      setProfile({
-        id: localUser.id,
-        role: localUser.role.toLowerCase(), // Force lowercase to match 'admin' | 'teacher' etc
-        full_name: localUser.name,
-        email: localUser.email,
-        school_id: localStorage.getItem('tenantId') || 'unknown',
-        avatar_url: null
-      } as UserProfile);
+      try {
+        const payload = JSON.parse(atob(localToken.split('.')[1]));
+        const isExpired = Date.now() >= payload.exp * 1000;
+        
+        if (isExpired) {
+          console.warn('Session expired, logging out...');
+          localStorage.removeItem('token');
+          localStorage.removeItem('user');
+          localStorage.removeItem('tenantId');
+          setLoading(false);
+          return;
+        }
+
+        const localUser = JSON.parse(localUserStr);
+        setUser(localUser);
+        setProfile({
+          id: localUser.id || localUser._id,
+          role: localUser.role.toLowerCase(), // Force lowercase to match 'admin' | 'teacher' etc
+          full_name: localUser.name,
+          email: localUser.email,
+          school_id: localStorage.getItem('tenantId') || 'unknown',
+          avatar_url: null
+        } as UserProfile);
+      } catch (e) {
+        console.error('Invalid token found', e);
+        localStorage.removeItem('token');
+      }
       setLoading(false);
       return;
     }

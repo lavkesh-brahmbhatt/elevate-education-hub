@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { toast } from 'sonner';
-import { Plus, Users, Trash2 } from 'lucide-react';
+import { Plus, Users, Trash2, Edit2 } from 'lucide-react';
 
 type Profile = { _id: string; name: string; email: string; rollNumber: string; className: string; createdAt: string };
 
@@ -16,6 +16,8 @@ export default function ManageStudents() {
   const [students, setStudents] = useState<Profile[]>([]);
   const [loading, setLoading] = useState(true);
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [editOpen, setEditOpen] = useState(false);
+  const [editTarget, setEditTarget] = useState<Profile | null>(null);
   const [form, setForm] = useState({ name: '', email: '', password: '' });
   const [creating, setCreating] = useState(false);
   const [classes, setClasses] = useState<{ _id: string; name: string }[]>([]);
@@ -65,7 +67,23 @@ export default function ManageStudents() {
       fetchData();
     } catch (err: any) {
       console.error("Student create error:", err.response?.data || err.message);
-      toast.error('Failed to create student: ' + (err.response?.data?.error || err.message));
+      toast.error('Failed to create student');
+    } finally {
+      setCreating(false);
+    }
+  };
+
+  const handleEdit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!editTarget) return;
+    setCreating(true);
+    try {
+      await api.put(`/students/${editTarget._id}`, { name: editTarget.name });
+      toast.success('Student updated');
+      setEditOpen(false);
+      fetchData();
+    } catch (err) {
+      toast.error('Failed to update student');
     } finally {
       setCreating(false);
     }
@@ -117,6 +135,26 @@ export default function ManageStudents() {
         }
       />
 
+      {/* Edit Dialog */}
+      <Dialog open={editOpen} onOpenChange={setEditOpen}>
+        <DialogContent>
+          <DialogHeader><DialogTitle>Edit Student</DialogTitle></DialogHeader>
+          <form onSubmit={handleEdit} className="space-y-4">
+            <div className="space-y-2">
+              <Label className="label-text">Full Name</Label>
+              <Input 
+                value={editTarget?.name || ''} 
+                onChange={e => setEditTarget(prev => prev ? { ...prev, name: e.target.value } : null)} 
+                required 
+              />
+            </div>
+            <Button type="submit" className="w-full" disabled={creating}>
+              {creating ? 'Saving...' : 'Save Changes'}
+            </Button>
+          </form>
+        </DialogContent>
+      </Dialog>
+
       {loading ? (
         <div className="flex justify-center py-12">
           <div className="h-6 w-6 border-2 border-primary border-t-transparent rounded-full animate-spin" />
@@ -131,7 +169,7 @@ export default function ManageStudents() {
                 <th className="label-text py-3 px-4">Name</th>
                 <th className="label-text py-3 px-4">Email</th>
                 <th className="label-text py-3 px-4">Joined</th>
-                <th className="label-text py-3 px-4 w-12"></th>
+                <th className="label-text py-3 px-4 w-24"></th>
               </tr>
             </thead>
             <tbody>
@@ -141,9 +179,18 @@ export default function ManageStudents() {
                   <td className="py-3 px-4 text-sm text-muted-foreground">{s.email || 'N/A'}</td>
                   <td className="py-3 px-4 text-sm text-muted-foreground tabular-nums">{s.createdAt ? new Date(s.createdAt).toLocaleDateString() : 'N/A'}</td>
                   <td className="py-3 px-4">
-                    <Button variant="ghost" size="sm" onClick={() => handleDelete(s._id)}>
-                      <Trash2 className="h-4 w-4 text-destructive" strokeWidth={1.5} />
-                    </Button>
+                    <div className="flex items-center gap-1">
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => { setEditTarget(s); setEditOpen(true); }}
+                      >
+                        <Edit2 className="h-4 w-4 text-primary" strokeWidth={1.5} />
+                      </Button>
+                      <Button variant="ghost" size="sm" onClick={() => handleDelete(s._id)}>
+                        <Trash2 className="h-4 w-4 text-destructive" strokeWidth={1.5} />
+                      </Button>
+                    </div>
                   </td>
                 </tr>
               ))}

@@ -1,16 +1,14 @@
 import { useEffect, useState } from 'react';
+import api from '@/services/api';
 import { useAuth } from '@/contexts/AuthContext';
 import { PageHeader, EmptyState } from '@/components/DashboardWidgets';
 import { Upload, FileText, Download, Trash2, Plus } from 'lucide-react';
-import axios from 'axios';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 
-// Assuming backend runs on port 5000 as per server.js
-const API_BASE_URL = 'http://localhost:5000/api';
 const UPLOADS_BASE_URL = 'http://localhost:5000';
 
 type Material = { 
@@ -39,15 +37,7 @@ export default function MaterialsPage() {
 
   const fetchMaterials = async () => {
     try {
-      const token = localStorage.getItem('token');
-      const tenantId = localStorage.getItem('tenantId');
-      
-      const response = await axios.get(`${API_BASE_URL}/materials`, {
-        headers: { 
-          'Authorization': `Bearer ${token}`,
-          'x-tenant-id': tenantId 
-        }
-      });
+      const response = await api.get('/materials');
       setMaterials(response.data);
     } catch (err) {
       console.error('Error fetching materials:', err);
@@ -78,15 +68,8 @@ export default function MaterialsPage() {
     formData.append('subject', subject);
 
     try {
-      const token = localStorage.getItem('token');
-      const tenantId = localStorage.getItem('tenantId');
-
-      await axios.post(`${API_BASE_URL}/materials/upload`, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-          'Authorization': `Bearer ${token}`,
-          'x-tenant-id': tenantId
-        }
+      await api.post('/materials/upload', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' }
       });
 
       toast.success('Material uploaded successfully!');
@@ -108,14 +91,7 @@ export default function MaterialsPage() {
     if (!confirm('Are you sure you want to delete this material?')) return;
 
     try {
-      const token = localStorage.getItem('token');
-      const tenantId = localStorage.getItem('tenantId');
-      await axios.delete(`${API_BASE_URL}/materials/${id}`, {
-        headers: { 
-          'Authorization': `Bearer ${token}`,
-          'x-tenant-id': tenantId 
-        }
-      });
+      await api.delete(`/materials/${id}`);
       toast.success('Material deleted');
       fetchMaterials();
     } catch (err) {

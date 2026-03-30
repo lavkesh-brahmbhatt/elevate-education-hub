@@ -15,9 +15,14 @@ router.get('/', authenticateJWT, identifyTenant, async (req, res) => {
         // Extra check for student
         if (req.user.role === 'STUDENT') {
             const Student = require('../models/Student');
-            const s = await Student.findOne({ email: req.user.email });
+            const s = await Student.findOne({ email: req.user.email, tenantId: req.tenantId });
             if (s) query.studentId = s._id;
             else return res.status(404).json({ message: 'Student profile not found' });
+        } else if (req.user.role === 'PARENT') {
+            const Parent = require('../models/Parent');
+            const parent = await Parent.findOne({ email: req.user.email, tenantId: req.tenantId });
+            if (parent && parent.studentId) query.studentId = parent.studentId;
+            else return res.status(404).json({ message: 'No student linked to this parent' });
         }
 
         const data = await Attendance.find(query).populate('studentId', 'name rollNumber');

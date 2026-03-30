@@ -9,11 +9,24 @@ router.get('/', authenticateJWT, identifyTenant, async (req, res) => {
     try {
         let query = { tenantId: req.tenantId };
         
-        // If teacher, show their own assignments
         if (req.user.role === 'TEACHER') {
             const Teacher = require('../models/Teacher');
-            const t = await Teacher.findOne({ email: req.user.email });
+            const t = await Teacher.findOne({ email: req.user.email, tenantId: req.tenantId });
             if (t) query.teacherId = t._id;
+        } else if (req.user.role === 'STUDENT') {
+            const Student = require('../models/Student');
+            const s = await Student.findOne({ email: req.user.email, tenantId: req.tenantId });
+            if (s && s.classId) query.classId = s.classId;
+            else return res.json([]); // No class assigned
+        } else if (req.user.role === 'PARENT') {
+            const Parent = require('../models/Parent');
+            const Student = require('../models/Student');
+            const parent = await Parent.findOne({ email: req.user.email, tenantId: req.tenantId });
+            if (parent && parent.studentId) {
+                const student = await Student.findById(parent.studentId);
+                if (student && student.classId) query.classId = student.classId;
+                else return res.json([]);
+            } else return res.json([]);
         }
 
         const data = await Assignment.find(query)

@@ -1,6 +1,6 @@
 
 import { useEffect, useState } from 'react';
-import { supabase } from '@/integrations/supabase/client';
+import api from '@/services/api';
 import { useAuth } from '@/contexts/AuthContext';
 import { PageHeader, EmptyState } from '@/components/DashboardWidgets';
 import { Button } from '@/components/ui/button';
@@ -13,11 +13,11 @@ import { toast } from 'sonner';
 import { Bell, Plus, Calendar as CalendarIcon, Trash2 } from 'lucide-react';
 
 type Notice = {
-  id: string;
+  _id: string;
   title: string;
   description: string;
-  category: 'event' | 'update' | 'alert';
-  created_at: string;
+  category?: 'event' | 'update' | 'alert';
+  createdAt: string;
 };
 
 export default function NoticePage() {
@@ -32,13 +32,14 @@ export default function NoticePage() {
 
   const fetchNotices = async () => {
     if (!profile) return;
-    const { data } = await supabase
-      .from('notices')
-      .select('*')
-      .eq('school_id', profile.school_id)
-      .order('created_at', { ascending: false });
-    setNotices((data as Notice[]) || []);
-    setLoading(false);
+    try {
+      const { data } = await api.get('/notices');
+      setNotices((data as Notice[]) || []);
+    } catch (err) {
+      console.error('Fetch notices error:', err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => { fetchNotices(); }, [profile]);
@@ -48,20 +49,17 @@ export default function NoticePage() {
     if (!profile) return;
     setCreating(true);
     try {
-      const { error } = await supabase.from('notices').insert({
-        school_id: profile.school_id,
+      await api.post('/notices', {
         title: form.title,
         description: form.description,
         category: form.category,
-        created_by: profile.id === 'global-admin' ? profile.id : profile.id, // Handle global admin mock
       });
-      if (error) throw error;
       toast.success('Notice posted successfully');
       setDialogOpen(false);
       setForm({ title: '', description: '', category: 'update' });
       fetchNotices();
     } catch (err: any) {
-      toast.error(err.message);
+      toast.error(err.response?.data?.error || err.message);
     } finally {
       setCreating(false);
     }
@@ -69,12 +67,11 @@ export default function NoticePage() {
 
   const handleDelete = async (id: string) => {
     try {
-      const { error } = await supabase.from('notices').delete().eq('id', id);
-      if (error) throw error;
+      await api.delete(`/notices/${id}`);
       toast.success('Notice deleted');
       fetchNotices();
     } catch (err: any) {
-      toast.error(err.message);
+      toast.error(err.response?.data?.error || err.message);
     }
   };
 
@@ -126,13 +123,13 @@ export default function NoticePage() {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {notices.map((notice) => (
-            <div key={notice.id} className="bg-card rounded-xl shadow-card p-6 flex flex-col relative group">
+            <div key={notice._id} className="bg-card rounded-xl shadow-card p-6 flex flex-col relative group">
               {isAdmin && (
                 <Button 
                   variant="ghost" 
                   size="sm" 
                   className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity h-8 w-8 p-0"
-                  onClick={() => handleDelete(notice.id)}
+                  onClick={() => handleDelete(notice._id)}
                 >
                   <Trash2 className="h-4 w-4 text-destructive" />
                 </Button>
@@ -153,7 +150,7 @@ export default function NoticePage() {
               <div className="pt-4 border-t border-border flex items-center justify-between mt-auto">
                 <div className="flex items-center gap-2 text-xs text-muted-foreground font-medium">
                   <CalendarIcon className="h-3.5 w-3.5" />
-                  {new Date(notice.created_at).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}
+                  {new Date(notice.createdAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}
                 </div>
               </div>
             </div>

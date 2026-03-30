@@ -27,7 +27,7 @@ export default function ComplaintPage() {
   const [loading, setLoading] = useState(true);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [submitting, setSubmitting] = useState(false);
-  const [resolveForm, setResolveForm] = useState({ id: '', response: '' });
+  const [resolveResponses, setResolveResponses] = useState<Record<string, string>>({});
   const [form, setForm] = useState({ subject: '', message: '' });
 
   const isAdmin = profile?.role === 'admin';
@@ -64,12 +64,18 @@ export default function ComplaintPage() {
     }
   };
 
-  const handleResolve = async (e: React.FormEvent) => {
+  const handleResolve = async (e: React.FormEvent, id: string) => {
     e.preventDefault();
+    const response = resolveResponses[id];
+    if (!response) return;
     try {
-      await api.put(`/complaints/${resolveForm.id}/resolve`, { response: resolveForm.response });
+      await api.put(`/complaints/${id}/resolve`, { response });
       toast.success('Concern marked as resolved.');
-      setResolveForm({ id: '', response: '' });
+      setResolveResponses(prev => {
+        const next = { ...prev };
+        delete next[id];
+        return next;
+      });
       fetchComplaints();
     } catch (err: any) {
       toast.error('Failed to resolve');
@@ -143,15 +149,15 @@ export default function ComplaintPage() {
                 </div>
               ) : isManagement ? (
                 <div className="px-6 py-4 bg-muted/20 border-t border-border">
-                  <form onSubmit={handleResolve} className="flex gap-3">
+                  <form onSubmit={(e) => handleResolve(e, c._id)} className="flex gap-3">
                     <Input 
                       placeholder="Add a response to resolve..." 
                       className="flex-1"
-                      value={resolveForm.id === c._id ? resolveForm.response : ''}
-                      onChange={e => setResolveForm({ id: c._id, response: e.target.value })}
+                      value={resolveResponses[c._id] || ''}
+                      onChange={e => setResolveResponses(prev => ({ ...prev, [c._id]: e.target.value }))}
                       required
                     />
-                    <Button type="submit" size="sm" onClick={() => setResolveForm(f => ({ ...f, id: c._id }))}>Resolve Now</Button>
+                    <Button type="submit" size="sm">Resolve Now</Button>
                   </form>
                 </div>
               ) : null}

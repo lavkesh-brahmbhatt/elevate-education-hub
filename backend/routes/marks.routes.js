@@ -12,13 +12,14 @@ router.get('/', authenticateJWT, identifyTenant, async (req, res) => {
         // If student or parent, filter marks
         if (req.user.role === 'STUDENT') {
             const Student = require('../models/Student');
-            const student = await Student.findOne({ email: req.user.email });
+            const student = await Student.findOne({ email: req.user.email, tenantId: req.tenantId });
             if (student) query.studentId = student._id;
             else return res.status(404).json({ message: 'Student record not found' });
         } else if (req.user.role === 'PARENT') {
-            // For now, parents see all marks in tenant or we'd need a Student-Parent link
-            // As a shim, we'll just allow them to see marks for now or add a studentId query param
-            if (req.query.studentId) query.studentId = req.query.studentId;
+            const Parent = require('../models/Parent');
+            const parent = await Parent.findOne({ email: req.user.email, tenantId: req.tenantId });
+            if (parent && parent.studentId) query.studentId = parent.studentId;
+            else return res.status(404).json({ message: 'No student linked to this parent' });
         }
         
         const marks = await Marks.find(query)

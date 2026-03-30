@@ -12,6 +12,7 @@ const Subject = require('./models/Subject');
 const Notice = require('./models/Notice');
 const Complaint = require('./models/Complaint');
 const Marks = require('./models/Marks');
+const Parent = require('./models/Parent');
 
 dotenv.config();
 
@@ -41,10 +42,10 @@ const seedDatabase = async () => {
         // 1. Create Tenants
         const tenantA = await Tenant.create({ name: "Green Valley Public School", subdomain: "tenantA" });
         const tenantB = await Tenant.create({ name: "Shree Saraswati Vidyalaya", subdomain: "tenantB" });
-        console.log('🏛️ Tenants created');
+        console.log('🏛️ Tenants created:', tenantA._id, tenantB._id);
 
         // 2. Create Admin Users
-        const admins = await User.create([
+        const admins = await User.insertMany([
             { email: 'admin@tenantA.com', password: passwordHash, role: 'ADMIN', tenantId: tenantA._id },
             { email: 'admin@tenantB.com', password: passwordHash, role: 'ADMIN', tenantId: tenantB._id }
         ]);
@@ -104,6 +105,21 @@ const seedDatabase = async () => {
         })));
         console.log('🎓 Students and User records created');
 
+        // 5.5. Parents
+        console.log('Creating parents for tenantA:', tenantA._id);
+        const parentsData = [
+            { name: "John Doe Sr.", email: "john.sr@gmail.com", phone: "1234567890", studentId: students[0]._id, tenantId: tenantA._id },
+            { name: "Maria Garcia", email: "m.garcia@outlook.com", phone: "9876543210", studentId: students[2]._id, tenantId: tenantB._id }
+        ];
+        const parents = await Parent.insertMany(parentsData);
+        await User.insertMany(parents.map(p => ({
+            email: p.email,
+            password: passwordHash,
+            role: 'PARENT',
+            tenantId: p.tenantId
+        })));
+        console.log('👪 Parents and User records created');
+
         // 6. Subjects
         const subjectsA = await Subject.insertMany([
             { name: "Mathematics", classId: classesA[4]._id, teacherId: teachers[0]._id, tenantId: tenantA._id },
@@ -118,10 +134,12 @@ const seedDatabase = async () => {
         ]);
 
         // 8. Notices
+        console.log('Posting notices with adminA role:', adminA?.role);
         await Notice.insertMany([
             { title: "Midterm Exams", description: "Midterm exams will begin next week", createdBy: adminA._id, role: 'ADMIN', tenantId: tenantA._id },
             { title: "Holiday Notice", description: "School remains closed on Friday", createdBy: adminB._id, role: 'ADMIN', tenantId: tenantB._id }
         ]);
+        console.log('📢 Notices created');
 
         // 9. Complaints
         await Complaint.insertMany([

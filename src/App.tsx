@@ -20,9 +20,6 @@ import ManageClasses from "./pages/admin/ManageClasses";
 import ManageSubjects from "./pages/admin/ManageSubjects";
 import AnalyticsPage from "./pages/admin/AnalyticsPage";
 import SettingsPage from "./pages/admin/SettingsPage";
-import Notice from "./pages/Notice";
-import Analytics from "./pages/Analytics";
-import Complaint from "./pages/Complaint";
 
 // Teacher pages
 import TeacherAttendance from "./pages/teacher/TeacherAttendance";
@@ -37,6 +34,7 @@ import StudentMarks from "./pages/student/StudentMarks";
 // Parent pages
 import ParentChildAttendance from "./pages/parent/ParentChildAttendance";
 import ParentChildMarks from "./pages/parent/ParentChildMarks";
+import ParentChildAssignments from "./pages/parent/ParentChildAssignments";
 
 // Shared pages
 import MaterialsPage from "./pages/shared/MaterialsPage";
@@ -70,7 +68,8 @@ const App = () => (
 
             {/* Teacher routes */}
             <Route path="/dashboard/attendance" element={<ProtectedRoute allowedRoles={['teacher']}><DashboardWrapper><TeacherAttendance /></DashboardWrapper></ProtectedRoute>} />
-            <Route path="/dashboard/assignments" element={<ProtectedRoute allowedRoles={['teacher', 'student']}><DashboardWrapper><TeacherAssignments /></DashboardWrapper></ProtectedRoute>} />
+            <Route path="/dashboard/assignments" element={<ProtectedRoute allowedRoles={['teacher']}><DashboardWrapper><TeacherAssignments /></DashboardWrapper></ProtectedRoute>} />
+            <Route path="/dashboard/my-assignments" element={<ProtectedRoute allowedRoles={['student']}><DashboardWrapper><StudentAssignments /></DashboardWrapper></ProtectedRoute>} />
             <Route path="/dashboard/marks" element={<ProtectedRoute allowedRoles={['teacher']}><DashboardWrapper><TeacherMarks /></DashboardWrapper></ProtectedRoute>} />
 
             {/* Student routes */}
@@ -80,20 +79,16 @@ const App = () => (
             {/* Parent routes */}
             <Route path="/dashboard/child-attendance" element={<ProtectedRoute allowedRoles={['parent']}><DashboardWrapper><ParentChildAttendance /></DashboardWrapper></ProtectedRoute>} />
             <Route path="/dashboard/child-marks" element={<ProtectedRoute allowedRoles={['parent']}><DashboardWrapper><ParentChildMarks /></DashboardWrapper></ProtectedRoute>} />
+            <Route path="/dashboard/child-assignments" element={<ProtectedRoute allowedRoles={['parent']}><DashboardWrapper><ParentChildAssignments /></DashboardWrapper></ProtectedRoute>} />
 
             {/* Shared routes */}
             <Route path="/dashboard/my-classes" element={<ProtectedRoute allowedRoles={['teacher', 'student']}><DashboardWrapper><MyClassesPage /></DashboardWrapper></ProtectedRoute>} />
-            <Route path="/dashboard/materials" element={<ProtectedRoute allowedRoles={['teacher', 'student']}><DashboardWrapper><MaterialsPage /></DashboardWrapper></ProtectedRoute>} />
+            <Route path="/dashboard/materials" element={<ProtectedRoute allowedRoles={['admin', 'teacher', 'student']}><DashboardWrapper><MaterialsPage /></DashboardWrapper></ProtectedRoute>} />
             <Route path="/dashboard/notices" element={<ProtectedRoute><DashboardWrapper><NoticePage /></DashboardWrapper></ProtectedRoute>} />
-            <Route path="/dashboard/complaints" element={<ProtectedRoute allowedRoles={['admin', 'student', 'parent']}><DashboardWrapper><ComplaintPage /></DashboardWrapper></ProtectedRoute>} />
+            <Route path="/dashboard/complaints" element={<ProtectedRoute allowedRoles={['admin', 'teacher', 'student', 'parent']}><DashboardWrapper><ComplaintPage /></DashboardWrapper></ProtectedRoute>} />
 
             <Route path="/dashboard/settings" element={<ProtectedRoute allowedRoles={['admin']}><DashboardWrapper><SettingsPage /></DashboardWrapper></ProtectedRoute>} />
             
-            {/* New Routes */}
-            <Route path="/notice" element={<ProtectedRoute><DashboardWrapper><Notice /></DashboardWrapper></ProtectedRoute>} />
-            <Route path="/analytics" element={<ProtectedRoute><DashboardWrapper><Analytics /></DashboardWrapper></ProtectedRoute>} />
-            <Route path="/complaints" element={<ProtectedRoute><DashboardWrapper><Complaint /></DashboardWrapper></ProtectedRoute>} />
-
             <Route path="*" element={<NotFound />} />
           </Routes>
         </AuthProvider>

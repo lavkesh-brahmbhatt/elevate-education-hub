@@ -35,7 +35,7 @@ const teacherNav = [
 const studentNav = [
   { title: 'Dashboard', url: '/dashboard', icon: LayoutDashboard },
   { title: 'My Classes', url: '/dashboard/my-classes', icon: BookOpen },
-  { title: 'Assignments', url: '/dashboard/assignments', icon: FileText },
+  { title: 'Assignments', url: '/dashboard/my-assignments', icon: FileText },
   { title: 'Attendance', url: '/dashboard/my-attendance', icon: Calendar },
   { title: 'Marks', url: '/dashboard/my-marks', icon: Award },
   { title: 'Materials', url: '/dashboard/materials', icon: Upload },

@@ -1,9 +1,12 @@
 import { ReactNode } from 'react';
 
-export function StatCard({ label, value, subtitle }: { label: string; value: string | number; subtitle?: string }) {
+export function StatCard({ label, value, subtitle, icon }: { label: string; value: string | number; subtitle?: string; icon?: ReactNode }) {
   return (
-    <div className="bg-card rounded-xl shadow-card p-5">
-      <p className="label-text mb-2">{label}</p>
+    <div className="bg-card rounded-xl shadow-card p-5 relative overflow-hidden group">
+      <div className="flex items-center justify-between mb-2">
+        <p className="label-text">{label}</p>
+        {icon && <div className="text-muted-foreground group-hover:text-primary transition-colors">{icon}</div>}
+      </div>
       <p className="text-2xl font-semibold tracking-tight tabular-nums">{value}</p>
       {subtitle && <p className="text-xs text-muted-foreground mt-1">{subtitle}</p>}
     </div>
