@@ -18,6 +18,14 @@ exports.createNotice = async (req, res) => {
 
         await notice.save();
         
+        const { notifyAll } = require('../services/notificationService');
+        await notifyAll(tenantId, {
+            type: 'notice',
+            title: `New Notice: ${title}`,
+            body: description.substring(0, 50) + '...',
+            link: '/dashboard/notices'
+        });
+
         const Activity = require('../models/Activity');
         await Activity.create({
             tenantId,

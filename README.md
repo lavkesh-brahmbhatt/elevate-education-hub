@@ -40,47 +40,31 @@ Use these credentials to test the system's isolation. All data is scoped specifi
 
 ---
 
-## 🛠️ Setup Instructions
+## 📂 Production Deployment
 
-### 1. Prerequisites
-- Node.js (v16+)
-- MongoDB (Running locally on port 27017)
-
-### 2. Backend Setup
+### 1. Build for Production
+Compiles the frontend into high-performance static assets:
 ```bash
-cd backend
-npm install
+npm run build
 ```
 
-### 3. Environment Variables
-Create a `.env` file in the `backend/` directory:
-```env
-PORT=5000
-MONGO_URI=mongodb://localhost:27017/school-management
-JWT_SECRET=your_jwt_secret
-```
+### 2. Configure Environment
+Ensure `backend/.env` has a production-ready `MONGO_URI` (e.g., MongoDB Atlas).
 
-### 4. Database Seeding
-Populate the database with the demo tenants and users:
+### 3. Start Unified Server
+The backend now serves the frontend assets from the `dist/` folder:
 ```bash
-node seed.js
+npm start
 ```
+The app will now be hosted entirely on your specified `PORT` (default 5000).
 
-### 5. Start the Application
+---
 
-**Run Backend:**
-```bash
-cd backend
-node server.js
-```
-
-**Run Frontend:**
-```bash
-npm install
-npm run dev
-```
-
-The application will be available at `http://localhost:8080`.
+## 🛠️ Security & Scaling
+- **Static Asset Serving:** Express is configured to serve the `dist` folder automatically.
+- **Graceful Error Handling:** Production ready 404 and 500 catch-all routes.
+- **Security Headers:** Integrated `helmet` with customized CSP for multi-tenant assets.
+- **Node Environment:** Optimized for low-latency with `0.0.0.0` binding.
 
 ---
 

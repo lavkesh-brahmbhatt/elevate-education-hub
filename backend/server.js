@@ -1,9 +1,11 @@
+const path = require('path');
 const dotenv = require('dotenv');
-dotenv.config();
+dotenv.config({ path: path.join(__dirname, '.env') });
 
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const helmet = require('helmet');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
@@ -36,7 +38,17 @@ const app = express();
 const JWT_SECRET = process.env.JWT_SECRET || 'your_secret_key';
 
 // Global Middlewares
-app.use(cors());
+app.use(helmet({
+  crossOriginResourcePolicy: { policy: "cross-origin" }, 
+  contentSecurityPolicy: false
+}));
+app.use(cors({
+  origin: process.env.ALLOWED_ORIGINS?.split(',') || 
+          ['http://localhost:8080', 'http://localhost:3000'],
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'x-tenant-id']
+}));
 app.use(express.json());
 
 // Logger
@@ -52,26 +64,54 @@ app.post('/api/auth/login', identifyTenant, async (req, res) => {
   if (!user) return res.status(401).json({ message: 'User not found' });
   const isMatch = await bcrypt.compare(password, user.password);
   if (!isMatch) return res.status(401).json({ message: 'Invalid credentials' });
-  const token = jwt.sign(
-    { userId: user._id, role: user.role, tenantId: user.tenantId, email: user.email },
-    JWT_SECRET,
-    { expiresIn: '8h' }
+  
+  const payload = { userId: user._id, role: user.role, tenantId: user.tenantId, email: user.email };
+  const accessToken = jwt.sign(payload, JWT_SECRET, { expiresIn: '8h' });
+  const refreshToken = jwt.sign(
+    { userId: user._id, tenantId: user.tenantId }, 
+    process.env.REFRESH_SECRET || 'refresh_secret', 
+    { expiresIn: '7d' }
   );
+
+  // Store refresh token hash in DB
+  await User.findByIdAndUpdate(user._id, { refreshToken });
+
   res.json({ 
-    token, 
+    token: accessToken,
+    refreshToken,
     user: { id: user._id, role: user.role, name: user.email, email: user.email, tenantId: user.tenantId } 
   });
+});
 
+app.post('/api/auth/refresh', async (req, res) => {
+  const { refreshToken } = req.body;
+  if (!refreshToken) return res.status(401).json({ message: 'No refresh token' });
+  try {
+    const payload = jwt.verify(refreshToken, process.env.REFRESH_SECRET || 'refresh_secret');
+    const user = await User.findOne({ _id: payload.userId, refreshToken });
+    if (!user) return res.status(403).json({ message: 'Invalid refresh token' });
+    const newToken = jwt.sign(
+      { userId: user._id, role: user.role, tenantId: user.tenantId, email: user.email },
+      JWT_SECRET, { expiresIn: '8h' }
+    );
+    res.json({ accessToken: newToken });
+  } catch (err) { res.status(403).json({ message: 'Refresh token expired' }); }
 });
 
 const Tenant = require('./models/Tenant');
 app.post('/api/auth/register', async (req, res) => {
     try {
-        const { schoolName, adminName, adminEmail, adminPassword } = req.body;
+        const { schoolName, adminName, adminEmail, adminPassword, schoolAddress, schoolPhone, schoolEmail } = req.body;
         
         // 1. Create Tenant
         const subdomain = schoolName.toLowerCase().replace(/[^a-z0-9]+/g, '-');
-        const tenant = new Tenant({ name: schoolName, subdomain });
+        const tenant = new Tenant({ 
+            name: schoolName, 
+            subdomain,
+            address: schoolAddress,
+            phone: schoolPhone,
+            email: schoolEmail
+        });
         await tenant.save();
 
         // 2. Create Admin User
@@ -343,6 +383,11 @@ const attendanceRoutes = require('./routes/attendance.routes');
 const marksRoutes = require('./routes/marks.routes');
 const assignmentRoutes = require('./routes/assignment.routes');
 
+const feeRoutes = require('./routes/fee.routes');
+const submissionRoutes = require('./routes/submission.routes');
+const notificationRoutes = require('./routes/notification.routes');
+const timetableRoutes = require('./routes/timetable.routes');
+
 app.use('/api/complaints', authenticateJWT, identifyTenant, complaintRoutes);
 app.use('/api/notices', authenticateJWT, identifyTenant, noticeRoutes);
 app.use('/api/analytics', authenticateJWT, identifyTenant, analyticsRoutes);
@@ -350,6 +395,14 @@ app.use('/api/materials', authenticateJWT, identifyTenant, materialRoutes);
 app.use('/api/attendance', authenticateJWT, identifyTenant, attendanceRoutes);
 app.use('/api/marks', authenticateJWT, identifyTenant, marksRoutes);
 app.use('/api/assignments', authenticateJWT, identifyTenant, assignmentRoutes);
+app.use('/api/fees', authenticateJWT, identifyTenant, feeRoutes);
+app.use('/api/submissions', authenticateJWT, identifyTenant, submissionRoutes);
+app.use('/api/notifications', authenticateJWT, identifyTenant, notificationRoutes);
+app.use('/api/timetable', authenticateJWT, identifyTenant, timetableRoutes);
+
+
+
+
 
 
 // --- SETTINGS / TENANT MGMT ---
@@ -357,14 +410,25 @@ app.get('/api/settings', authenticateJWT, identifyTenant, restrictTo('ADMIN'),
   async (req, res) => {
     const tenant = await Tenant.findById(req.tenantId);
     if (!tenant) return res.status(404).json({ message: 'Tenant not found' });
-    res.json({ schoolName: tenant.name, subdomain: tenant.subdomain });
+    res.json({ 
+        schoolName: tenant.name, 
+        subdomain: tenant.subdomain,
+        address: tenant.address,
+        phone: tenant.phone,
+        email: tenant.email
+    });
   }
 );
 
 app.put('/api/settings', authenticateJWT, identifyTenant, restrictTo('ADMIN'), async (req, res) => {
 
     try {
-        const tenant = await Tenant.findByIdAndUpdate(req.tenantId, { name: req.body.schoolName }, { new: true });
+        const { schoolName, address, phone, email } = req.body;
+        const tenant = await Tenant.findByIdAndUpdate(
+            req.tenantId, 
+            { name: schoolName, address, phone, email }, 
+            { new: true }
+        );
         res.json(tenant);
     } catch (err) { res.status(500).json({ error: err.message }); }
 });
@@ -397,7 +461,6 @@ app.delete('/api/settings/data', authenticateJWT, identifyTenant, restrictTo('AD
 });
 
 // Static folder for file downloads
-const path = require('path');
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Ensure upload directory exists
@@ -406,6 +469,23 @@ const uploadDir = path.join(__dirname, 'uploads');
 if (!fs.existsSync(uploadDir)) {
     fs.mkdirSync(uploadDir);
 }
+
+// --- PRODUCTION SERVING ---
+const buildPath = path.join(__dirname, '../dist');
+if (fs.existsSync(buildPath)) {
+    app.use(express.static(buildPath));
+    app.get('*splat', (req, res, next) => {
+        if (req.url.startsWith('/api')) return next();
+        res.sendFile(path.join(buildPath, 'index.html'));
+    });
+}
+
+// --- ERROR HANDLING ---
+app.use((req, res, next) => res.status(404).json({ message: 'Route not found' }));
+app.use((err, req, res, next) => {
+    console.error('🔥 Server Error:', err.stack);
+    res.status(500).json({ status: 'error', message: 'Internal Server Error' });
+});
 
 // --- DB CONNECTION & START ---
 const connectDB = require('./db');
@@ -421,7 +501,7 @@ connectDB().then(async () => {
         console.log('✅ Demo data seeded successfully');
     }
 
-    app.listen(PORT, () => {
+    app.listen(PORT, '0.0.0.0', () => {
         console.log(`🚀 Academy OS Backend ready at http://localhost:${PORT}`);
         console.log(`📡 Multi-tenant detection active`);
     });

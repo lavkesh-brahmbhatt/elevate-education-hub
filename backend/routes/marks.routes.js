@@ -52,6 +52,29 @@ router.post('/bulk', authenticateJWT, identifyTenant, restrictTo('TEACHER', 'ADM
         }));
 
         const result = await Marks.bulkWrite(operations);
+        
+        // Notify students
+        const { createNotification } = require('../services/notificationService');
+        const User = require('../models/User');
+        const Student = require('../models/Student');
+        
+        for (const r of records) {
+            const student = await Student.findById(r.studentId);
+            if (student) {
+                const user = await User.findOne({ email: student.email, tenantId: req.tenantId });
+                if (user) {
+                    await createNotification({
+                        userId: user._id,
+                        tenantId: req.tenantId,
+                        type: 'marks_added',
+                        title: 'New Marks Added',
+                        body: `New marks have been posted for your ${r.examType} exam. Check your results now.`,
+                        link: '/dashboard/my-marks'
+                    });
+                }
+            }
+        }
+
         res.status(200).json({ message: "Marks recorded successfully", result });
     } catch (err) {
         res.status(400).json({ error: err.message });

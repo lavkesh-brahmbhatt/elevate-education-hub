@@ -6,7 +6,10 @@ const tenantSchema = new mongoose.Schema({
   adminDetails: {
     contactName: { type: String },
     contactEmail: { type: String }
-  }
+  },
+  address: { type: String },
+  phone:   { type: String },
+  email:   { type: String }
 }, { timestamps: true });
 
 module.exports = mongoose.model('Tenant', tenantSchema);

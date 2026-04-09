@@ -1,7 +1,7 @@
 const express = require('express');
 const multer = require('multer');
-const path = require('path');
-const fs = require('fs');
+const cloudinary = require('cloudinary').v2;
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
 
 const { authenticateJWT, restrictTo } = require('../middleware/authMiddleware');
 const identifyTenant = require('../middleware/tenantMiddleware');
@@ -9,22 +9,21 @@ const materialController = require('../controllers/material.controller');
 
 const router = express.Router();
 
-// MULTER SETUP
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    const uploadPath = path.join(__dirname, '../uploads');
-    if (!fs.existsSync(uploadPath)) {
-      fs.mkdirSync(uploadPath, { recursive: true });
-    }
-    cb(null, uploadPath);
-  },
-  filename: function (req, file, cb) {
-    const uniqueName = Date.now() + '-' + Math.round(Math.random() * 1e9) + path.extname(file.originalname);
-    cb(null, uniqueName);
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+
+const storage = new CloudinaryStorage({
+  cloudinary,
+  params: { 
+    folder: 'academy-os/materials', 
+    resource_type: 'auto' 
   }
 });
 
-const upload = multer({ storage: storage });
+const upload = multer({ storage });
 
 // ROUTES
 // 1. Upload Material (Only Admin or Teacher)

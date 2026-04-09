@@ -63,6 +63,17 @@ exports.resolveComplaint = async (req, res) => {
         );
         
         if (!complaint) return res.status(404).json({ message: 'Complaint not found' });
+        
+        const { createNotification } = require('../services/notificationService');
+        await createNotification({
+            userId: complaint.userId,
+            tenantId: req.tenantId,
+            type: 'complaint_resolved',
+            title: 'Complaint Resolved',
+            body: `Your complaint about "${complaint.subject}" has been resolved.`,
+            link: '/dashboard/complaints'
+        });
+
         res.json(complaint);
     } catch (err) {
         res.status(500).json({ error: err.message });

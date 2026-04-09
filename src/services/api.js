@@ -36,17 +36,29 @@ api.interceptors.request.use(
 // 4. Add Response Interceptor
 api.interceptors.response.use(
     (response) => response,
-    (error) => {
-      // 4. Handle errors globally (e.g. 401 Unauthorized)
-      if (error.response && error.response.status === 401) {
-        console.warn('Session expired or unauthorized. Logging out...');
-        
-        // Remove credentials
-        localStorage.removeItem('token');
-        localStorage.removeItem('tenantId');
-        localStorage.removeItem('user');
+    async (error) => {
+      const originalRequest = error.config;
 
-        // Redirect to login page
+      // When 401 received, try to refresh before redirecting to login
+      if (error.response?.status === 401 && !originalRequest._retry) {
+        originalRequest._retry = true;
+        const refreshToken = localStorage.getItem('refreshToken');
+        
+        if (refreshToken) {
+          try {
+            const { data } = await axios.post(`${api.defaults.baseURL}/auth/refresh`, { refreshToken });
+            localStorage.setItem('token', data.accessToken);
+            api.defaults.headers.common['Authorization'] = `Bearer ${data.accessToken}`;
+            originalRequest.headers['Authorization'] = `Bearer ${data.accessToken}`;
+            return api(originalRequest); // retry original request
+          } catch (refreshError) {
+            console.error('Refresh token expired or invalid:', refreshError);
+            // Refresh failed — clear and redirect
+          }
+        }
+        
+        console.warn('Session expired or unauthorized. Logging out...');
+        localStorage.clear();
         window.location.href = '/login';
       }
       

@@ -1,22 +1,23 @@
 const mongoose = require('mongoose');
+const path = require('path');
 const dotenv = require('dotenv');
-const { MongoMemoryServer } = require('mongodb-memory-server');
+dotenv.config({ path: path.join(__dirname, '.env') });
 
-dotenv.config();
+// Event Listeners
+mongoose.connection.on('connected', () => console.log('MongoDB connected'));
+mongoose.connection.on('error', (err) => console.error('MongoDB error:', err));
+mongoose.connection.on('disconnected', () => console.warn('MongoDB disconnected'));
 
 const connectDB = async () => {
     try {
-        let MONGO_URI = process.env.MONGO_URI;
+        const MONGO_URI = process.env.MONGO_URI;
         
         if (!MONGO_URI) {
-            console.log("⚠️  No MONGO_URI found in environment. Starting MongoMemoryServer...");
-            const mongoServer = await MongoMemoryServer.create();
-            MONGO_URI = mongoServer.getUri();
-            process.env.MONGO_URI = MONGO_URI; // Set it back for the seed script
+            throw new Error("MONGO_URI is not defined in environment");
         }
 
         const conn = await mongoose.connect(MONGO_URI);
-        console.log(`🚀 Database connected: ${conn.connection.host} (${MONGO_URI})`);
+        console.log(`🚀 Database connected: ${conn.connection.host}`);
     } catch (err) {
         console.error(`❌ Database connection error: ${err.message}`);
         process.exit(1);

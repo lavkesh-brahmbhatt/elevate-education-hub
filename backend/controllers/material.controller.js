@@ -2,12 +2,6 @@ const Material = require('../models/Material');
 const path = require('path');
 const fs = require('fs');
 
-// Ensure the upload directory exists
-const UPLOAD_DIR = path.join(__dirname, '../uploads');
-if (!fs.existsSync(UPLOAD_DIR)) {
-  fs.mkdirSync(UPLOAD_DIR, { recursive: true });
-}
-
 exports.uploadMaterial = async (req, res) => {
     try {
         console.log("Upload attempt:", req.body);
@@ -23,8 +17,8 @@ exports.uploadMaterial = async (req, res) => {
 
         console.log("User Info:", { userId, role, tenantId });
 
-        // Construct fileUrl: e.g. /uploads/filename
-        const fileUrl = `/uploads/${req.file.filename}`;
+        // req.file.path contains the Cloudinary URL when using multer-storage-cloudinary
+        const fileUrl = req.file.path;
 
         const material = new Material({
             title,
@@ -74,10 +68,14 @@ exports.deleteMaterial = async (req, res) => {
         // Remove from DB
         await Material.deleteOne({ _id: req.params.id });
 
-        // Remove from File System
-        const filePath = path.join(__dirname, '../', material.fileUrl);
-        if (fs.existsSync(filePath)) {
-            fs.unlinkSync(filePath);
+        // Note: For Cloudinary, we would need to call cloudinary.uploader.destroy(public_id)
+        // For simplicity in this step, we just remove the DB record.
+        // If it was a local file, we would unlink it.
+        if (material.fileUrl.startsWith('/uploads')) {
+            const filePath = path.join(__dirname, '../', material.fileUrl);
+            if (fs.existsSync(filePath)) {
+                fs.unlinkSync(filePath);
+            }
         }
 
         res.json({ message: 'Deleted' });

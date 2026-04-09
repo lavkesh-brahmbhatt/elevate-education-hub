@@ -47,6 +47,38 @@ router.post('/bulk', authenticateJWT, identifyTenant, restrictTo('TEACHER', 'ADM
         }));
 
         const result = await Attendance.bulkWrite(operations);
+        
+        // Notify parents if attendance drops below 75%
+        const { createNotification } = require('../services/notificationService');
+        const Parent = require('../models/Parent');
+        const User = require('../models/User');
+        const Student = require('../models/Student');
+
+        for (const r of records) {
+            // Calculate total for this student
+            const allRecords = await Attendance.find({ studentId: r.studentId, tenantId: req.tenantId });
+            const present = allRecords.filter(rec => rec.status === 'present').length;
+            const percentage = (present / allRecords.length) * 100;
+
+            if (percentage < 75 && allRecords.length >= 5) { // Minimum 5 records to alert
+                const student = await Student.findById(r.studentId);
+                const parent = await Parent.findOne({ studentId: r.studentId, tenantId: req.tenantId });
+                if (parent) {
+                    const parentUser = await User.findOne({ email: parent.email, tenantId: req.tenantId });
+                    if (parentUser) {
+                        await createNotification({
+                            userId: parentUser._id,
+                            tenantId: req.tenantId,
+                            type: 'attendance_alert',
+                            title: 'Low Attendance Alert',
+                            body: `${student?.name}'s attendance has dropped to ${Math.round(percentage)}%. Please contact the school.`,
+                            link: '/dashboard/child-attendance'
+                        });
+                    }
+                }
+            }
+        }
+
         res.json({ message: "Attendance updated", result });
     } catch (err) {
         res.status(400).json({ error: err.message });

@@ -20,6 +20,8 @@ import ManageClasses from "./pages/admin/ManageClasses";
 import ManageSubjects from "./pages/admin/ManageSubjects";
 import AnalyticsPage from "./pages/admin/AnalyticsPage";
 import SettingsPage from "./pages/admin/SettingsPage";
+import ManageFees from "./pages/admin/ManageFees";
+import ManageTimetable from "./pages/admin/ManageTimetable";
 
 // Teacher pages
 import TeacherAttendance from "./pages/teacher/TeacherAttendance";
@@ -30,6 +32,7 @@ import TeacherMarks from "./pages/teacher/TeacherMarks";
 import StudentAssignments from "./pages/student/StudentAssignments";
 import StudentAttendance from "./pages/student/StudentAttendance";
 import StudentMarks from "./pages/student/StudentMarks";
+import StudentFees from "./pages/student/StudentFees";
 
 // Parent pages
 import ParentChildAttendance from "./pages/parent/ParentChildAttendance";
@@ -41,6 +44,8 @@ import MaterialsPage from "./pages/shared/MaterialsPage";
 import MyClassesPage from "./pages/shared/MyClassesPage";
 import NoticePage from "./pages/shared/NoticePage";
 import ComplaintPage from "./pages/shared/ComplaintPage";
+import ViewTimetable from "./pages/shared/ViewTimetable";
+
 
 const queryClient = new QueryClient();
 
@@ -65,6 +70,9 @@ const App = () => (
             <Route path="/dashboard/classes" element={<ProtectedRoute allowedRoles={['admin']}><DashboardWrapper><ManageClasses /></DashboardWrapper></ProtectedRoute>} />
             <Route path="/dashboard/subjects" element={<ProtectedRoute allowedRoles={['admin']}><DashboardWrapper><ManageSubjects /></DashboardWrapper></ProtectedRoute>} />
             <Route path="/dashboard/analytics" element={<ProtectedRoute allowedRoles={['admin']}><DashboardWrapper><AnalyticsPage /></DashboardWrapper></ProtectedRoute>} />
+            <Route path="/dashboard/fees" element={<ProtectedRoute allowedRoles={['admin']}><DashboardWrapper><ManageFees /></DashboardWrapper></ProtectedRoute>} />
+            <Route path="/dashboard/timetable" element={<ProtectedRoute allowedRoles={['admin']}><DashboardWrapper><ManageTimetable /></DashboardWrapper></ProtectedRoute>} />
+
 
             {/* Teacher routes */}
             <Route path="/dashboard/attendance" element={<ProtectedRoute allowedRoles={['teacher']}><DashboardWrapper><TeacherAttendance /></DashboardWrapper></ProtectedRoute>} />
@@ -75,6 +83,7 @@ const App = () => (
             {/* Student routes */}
             <Route path="/dashboard/my-attendance" element={<ProtectedRoute allowedRoles={['student']}><DashboardWrapper><StudentAttendance /></DashboardWrapper></ProtectedRoute>} />
             <Route path="/dashboard/my-marks" element={<ProtectedRoute allowedRoles={['student']}><DashboardWrapper><StudentMarks /></DashboardWrapper></ProtectedRoute>} />
+            <Route path="/dashboard/my-fees" element={<ProtectedRoute allowedRoles={['student']}><DashboardWrapper><StudentFees /></DashboardWrapper></ProtectedRoute>} />
 
             {/* Parent routes */}
             <Route path="/dashboard/child-attendance" element={<ProtectedRoute allowedRoles={['parent']}><DashboardWrapper><ParentChildAttendance /></DashboardWrapper></ProtectedRoute>} />
@@ -87,7 +96,9 @@ const App = () => (
             <Route path="/dashboard/notices" element={<ProtectedRoute><DashboardWrapper><NoticePage /></DashboardWrapper></ProtectedRoute>} />
             <Route path="/dashboard/complaints" element={<ProtectedRoute allowedRoles={['admin', 'teacher', 'student', 'parent']}><DashboardWrapper><ComplaintPage /></DashboardWrapper></ProtectedRoute>} />
 
+            <Route path="/dashboard/timetable-view" element={<ProtectedRoute allowedRoles={['admin', 'teacher', 'student']}><DashboardWrapper><ViewTimetable /></DashboardWrapper></ProtectedRoute>} />
             <Route path="/dashboard/settings" element={<ProtectedRoute allowedRoles={['admin']}><DashboardWrapper><SettingsPage /></DashboardWrapper></ProtectedRoute>} />
+
             
             <Route path="*" element={<NotFound />} />
           </Routes>
